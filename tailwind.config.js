@@ -11,7 +11,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: colors.sky,
+        primary: colors.yellow,
       },
     },
   },
