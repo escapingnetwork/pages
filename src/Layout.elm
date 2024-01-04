@@ -442,7 +442,7 @@ footer =
                                     [ Attrs.href "tel:+17207380798"
                                     , Attrs.class "hover:underline"
                                     ]
-                                    [ Html.text "+1 720 738 0798" ]
+                                    [ Html.text "🇺🇸 +1 720 738 0798" ]
                                 ]
                             ]
                         ]
