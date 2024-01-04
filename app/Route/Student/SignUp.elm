@@ -102,9 +102,10 @@ view app shared model =
         [ Html.div []
             [ Html.iframe
                 [ Attrs.attribute "data-tally-src" "https://tally.so/r/mRD80Q?hideTitle=0&transparentBackground=1&dynamicHeight=1"
+                , Attrs.attribute "loading" "lazy"
                 , Attrs.attribute "frameborder" "0"
                 , Attrs.style "width" "100%"
-                , Attrs.height 1200
+                , Attrs.height 1800
                 , Attrs.attribute "frameborder" "0"
                 , Attrs.attribute "marginheight" "0"
                 , Attrs.attribute "marginwidth" "0"

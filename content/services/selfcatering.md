@@ -1,6 +1,6 @@
 ---
 name: Self-Catering
-description: "flexibility and freedom to tailor your meals according to your preferences and schedule"
+description: "Flexibility and freedom to tailor your meals according to your preferences and schedule"
 image: "/images/services/self-catering.jpg"
 ---
 

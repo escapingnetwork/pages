@@ -12,9 +12,12 @@ export default {
 <link rel="apple-touch-icon" href="logo-180.png">
 <meta name="generator" content="elm-pages v${context.cliVersion}" />
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff" />
-<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0f172a" />
+
+<script defer data-domain="capybara.house" src="https://plausible.escaping.network/js/plausible.js"></script>
+<script>var d=document,w="https://tally.so/widgets/embed.js",v=function(){"undefined"!=typeof Tally?Tally.loadEmbeds():d.querySelectorAll("iframe[data-tally-src]:not([src])").forEach((function(e){e.src=e.dataset.tallySrc}))};if("undefined"!=typeof Tally)v();else if(d.querySelector('script[src="'+w+'"]')==null){var s=d.createElement("script");s.src=w,s.onload=v,s.onerror=v,d.body.appendChild(s);}</script>
+
 `;
-//  <link rel="manifest" href="manifest.json">
+    //  <link rel="manifest" href="manifest.json">
 
   },
   preloadTagForFile(file) {
@@ -23,3 +26,5 @@ export default {
     return !file.endsWith(".css");
   },
 };
+
+{/* <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0f172a" /> */ }

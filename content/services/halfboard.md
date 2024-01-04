@@ -1,6 +1,6 @@
 ---
 name: Half-Board
-description: "includes both breakfast and dinner during your stay"
+description: "Includes both breakfast and dinner during your stay"
 image: "/images/services/half-board.jpg"
 ---
 

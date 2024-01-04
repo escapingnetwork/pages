@@ -45,8 +45,22 @@ allServices =
                         Array.indexedMap
                             (\index service ->
                                 { service
-                                    | previousService = Array.get (index + 1) services |> Maybe.map .service
-                                    , nextService = Array.get (index - 1) services |> Maybe.map .service
+                                    | previousService =
+                                        (if Array.get (index + 1) services == Nothing then
+                                            Array.get (index - 2) services
+
+                                         else
+                                            Array.get (index + 1) services
+                                        )
+                                            |> Maybe.map .service
+                                    , nextService =
+                                        (if Array.get (index - 1) services == Nothing then
+                                            Array.get (index + 2) services
+
+                                         else
+                                            Array.get (index - 1) services
+                                        )
+                                            |> Maybe.map .service
                                 }
                             )
                             services

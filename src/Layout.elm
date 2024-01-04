@@ -359,7 +359,7 @@ view showMenu onMenuToggle body =
             [ Html.header
                 [ Attrs.class "flex items-center justify-between py-10"
                 ]
-                [ Html.div []
+                [ Html.div [ Attrs.class "text-black" ]
                     [ Html.a
                         [ Attrs.attribute "aria-label" Settings.title
                         , Attrs.href "/"

@@ -42,27 +42,59 @@ viewService { service, body, previousService, nextService } =
     let
         bottomLink slug title =
             Route.link
-                [ Attrs.class "text-primary-700 dark:text-primary-500 hover:text-primary-600 dark:hover:text-primary-400" ]
+                [ Attrs.class "hover:text-primary-400 dark:hover:text-primary-400" ]
                 [ Html.text title ]
                 (Route.Services__Slug_ { slug = slug })
 
         previous =
             previousService
                 |> Html.Extra.viewMaybe
-                    (\{ title, slug } ->
-                        Html.div [ Attrs.class "sm:col-start-1 flex flex-col mt-4 xl:mt-8" ]
-                            [ Html.span [] [ Html.text "Service" ]
-                            , "← " ++ title |> bottomLink slug
+                    (\{ title, slug, image } ->
+                        Html.div
+                            [ Attrs.class "sm:col-start-1 mt-4 xl:mt-8 relative"
+                            ]
+                            [ image
+                                |> Html.Extra.viewMaybe
+                                    (\imagePath ->
+                                        Html.img
+                                            [ Attrs.alt title
+                                            , Attrs.attribute "decoding" "async"
+                                            , Attrs.class "h-48 w-full object-cover md:h-144 md:w-full"
+                                            , Attrs.src imagePath
+                                            ]
+                                            []
+                                    )
+                            , Html.div
+                                [ Attrs.class "uppercase tracking-wide text-4xl font-semibold absolute text-white top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+                                ]
+                                [ title |> bottomLink slug
+                                ]
                             ]
                     )
 
         next =
             nextService
                 |> Html.Extra.viewMaybe
-                    (\{ title, slug } ->
-                        Html.div [ Attrs.class "sm:col-start-2 flex flex-col sm:text-right mt-4 xl:mt-8" ]
-                            [ Html.span [] [ Html.text "Service" ]
-                            , title ++ " →" |> bottomLink slug
+                    (\{ title, slug, image } ->
+                        Html.div
+                            [ Attrs.class "sm:col-start-2 mt-4 xl:mt-8 relative"
+                            ]
+                            [ image
+                                |> Html.Extra.viewMaybe
+                                    (\imagePath ->
+                                        Html.img
+                                            [ Attrs.alt title
+                                            , Attrs.attribute "decoding" "async"
+                                            , Attrs.class "h-48 w-full object-cover md:h-144 md:w-full"
+                                            , Attrs.src imagePath
+                                            ]
+                                            []
+                                    )
+                            , Html.div
+                                [ Attrs.class "uppercase tracking-wide text-4xl font-semibold absolute text-white top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+                                ]
+                                [ title |> bottomLink slug
+                                ]
                             ]
                     )
 
@@ -72,7 +104,7 @@ viewService { service, body, previousService, nextService } =
                 ]
                 [ Html.div
                     []
-                    [ Html.h1 [ Attrs.class "mt-8 pb-4 font-bold text-3xl md:text-5xl text-gray-900 dark:text-gray-100" ]
+                    [ Html.h1 [ Attrs.class "mt-8 pb-4 font-bold text-3xl md:text-5xl text-gray-900 dark:text-gray-100 items-center text-center" ]
                         [ Html.text service.title
                         ]
                     ]
@@ -120,10 +152,10 @@ viewService { service, body, previousService, nextService } =
         --     )
         --     service.description
         , Html.article
-            [ Attrs.class "mx-auto prose lg:prose-xl dark:prose-invert" ]
+            [ Attrs.class "mx-auto prose lg:prose-xl dark:prose-invert pt-10" ]
             (Markdown.blogpostToHtml body)
         , Html.div
-            [ Attrs.class "mt-8 border-t grid grid-cols-1 text-sm font-medium sm:grid-cols-2 sm:text-base" ]
+            [ Attrs.class "mx-auto grid grid-flow-row sm:grid-cols-2 text-sm font-medium sm:text-base" ]
             [ previous, next ]
         ]
 
@@ -171,7 +203,6 @@ viewListItem metadata =
                     ]
                     [ Html.img
                         [ Attrs.alt metadata.title
-                        , Attrs.attribute "loading" "lazy"
                         , Attrs.attribute "decoding" "async"
                         , Attrs.class "h-48 w-full object-cover md:h-144 md:w-full"
                         , Attrs.src imagePath
@@ -182,7 +213,7 @@ viewListItem metadata =
                         ]
                         [ Route.Services__Slug_ { slug = metadata.slug }
                             |> Route.link
-                                [ Attrs.class "hover:underline decoration-primary-600"
+                                [ Attrs.class "hover:text-primary-400 dark:hover:text-primary-400"
                                 ]
                                 [ Html.text metadata.title ]
                         ]
@@ -193,7 +224,7 @@ viewListItem metadata =
             [ Html.Extra.viewMaybe
                 (\description ->
                     Html.div
-                        [ Attrs.class "block mt-1 text-lg leading-tight font-medium text-black hover:underline"
+                        [ Attrs.class "block mt-1 text-lg leading-tight font-medium text-gray-500"
                         ]
                         [ Html.text description ]
                 )
