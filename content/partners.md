@@ -3,7 +3,7 @@ title: Become A Partner
 company: Tranquera LLC
 ---
 
-![](../public/images/dublin.jpg)
+![](/images/dublin.jpg)
 
 # Providers
 
