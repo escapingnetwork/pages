@@ -1,25 +1,20 @@
 ---
-name: Franklin Frisby
-avatar: /images/authors/default.png
-occupation: Professor of Functional Programming
-company: East Elm University
+name: Capybara House
+avatar: /media/logo.svg
+company: Tranquera LLC
 socials:
-  email: professor.frisby@example.com
-  twitter: https://twitter.com/Twitter
-  facebook: https://www.facebook.com
-  linkedin: https://www.linkedin.com
-  youtube: https://youtube.com
-  github: https://github.com
+  email: info@capybara.house
+  linkedin: https://www.linkedin.com/company/tranquera-llc
 ---
 
-# Hi there!
+## Who are we?
 
-## I'm Professor Franklin Frisby. 
+We are a team who have been working with international students and the accommodation sector in Ireland for years and we are focused on improving the customer experience and providers' satisfaction.
 
-Pleased to make your acquaintance. We'll be spending some time together, as I'm supposed to teach you a bit about functional programming.
+## Our product
 
-I won't assume that you have any previous functional programming knowledge, because we both know what happens when you assume. 
+Capybara House is a brand owned by Tranquera LLC a USA company.
 
-I will, however, expect you to have run into some of the _unfavorable situations_ that arise when working with **mutable state**, **unrestricted side effects**, and **unprincipled design**. 
+### Why we are based USA?
 
-Now that we've been properly introduced, let's get on with it.
+We are a company which works with international students and Irish providers. For this reason, the USA is perfect to run our international business.

@@ -10,6 +10,8 @@ import Html.Attributes as Attrs
 import Html.Extra
 import Layout.Markdown as Markdown
 import Route
+import Svg exposing (path, svg)
+import Svg.Attributes as SvgAttr
 
 
 
@@ -154,6 +156,14 @@ viewService { service, body, previousService, nextService } =
         , Html.article
             [ Attrs.class "mx-auto prose lg:prose-xl dark:prose-invert pt-10" ]
             (Markdown.blogpostToHtml body)
+        , Html.div [ Attrs.class "text-center mt-10" ]
+            [ Html.a
+                [ Attrs.href "/student/sign-up"
+                , Attrs.class "inline-flex justify-center py-5 px-10 text-base font-medium text-center text-white rounded-lg bg-primary-400 hover:bg-primary-600 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-600"
+                ]
+                [ Html.text "Request Accomodation"
+                ]
+            ]
         , Html.div
             [ Attrs.class "mx-auto grid grid-flow-row sm:grid-cols-2 text-sm font-medium sm:text-base" ]
             [ previous, next ]

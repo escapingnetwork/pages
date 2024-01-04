@@ -104,9 +104,9 @@ view author =
             [ Attrs.class "space-y-2 pb-8 pt-6 md:space-y-5"
             ]
             [ Html.h1
-                [ Attrs.class "text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14"
+                [ Attrs.class "text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14 text-center"
                 ]
-                [ Html.text "About" ]
+                [ Html.text "About Us" ]
             ]
         , Html.div
             [ Attrs.class "items-start space-y-2 xl:grid xl:grid-cols-3 xl:gap-x-8 xl:space-y-0"
@@ -121,8 +121,8 @@ view author =
                     , Attrs.height 192
                     , Attrs.attribute "decoding" "async"
                     , Attrs.attribute "data-nimg" "1"
-                    , Attrs.class "h-48 w-48 rounded-full"
-                    , Attrs.src "/images/authors/default.png"
+                    , Attrs.class "h-48 w-48 rounded-full bg-primary-200"
+                    , Attrs.src "/media/logo.svg"
                     , Attrs.style "color" "transparent"
                     ]
                     []

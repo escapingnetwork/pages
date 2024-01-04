@@ -41,7 +41,7 @@ menu : List { label : String, route : Route }
 menu =
     [ { label = "Become a Host", route = Route.Host__SignUp }
     , { label = "Become a Partner", route = Route.Partner__SignUp }
-    , { label = "About", route = Route.About }
+    , { label = "About Us", route = Route.About }
     ]
 
 
@@ -439,7 +439,7 @@ footer =
                                 ]
                             , Html.li []
                                 [ Html.a
-                                    [ Attrs.href "#"
+                                    [ Attrs.href "tel:+17207380798"
                                     , Attrs.class "hover:underline"
                                     ]
                                     [ Html.text "+1 720 738 0798" ]
