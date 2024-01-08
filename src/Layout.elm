@@ -437,6 +437,13 @@ footer =
                                     ]
                                     [ Html.text "info@capybara.house" ]
                                 ]
+                            , Html.li [ Attrs.class "mb-4" ]
+                                [ Html.a
+                                    [ Attrs.href "tel:+35314434958"
+                                    , Attrs.class "hover:underline"
+                                    ]
+                                    [ Html.text "🇮🇪 +353 1 443 4958" ]
+                                ]
                             , Html.li []
                                 [ Html.a
                                     [ Attrs.href "tel:+17207380798"
