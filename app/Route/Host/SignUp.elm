@@ -75,13 +75,13 @@ view app shared =
         [ Html.div [ Attrs.class "mx-auto prose max-w-none pb-8 pt-8 dark:prose-invert xl:col-span-2 xl:max-w-5xl xl:px-0" ]
             [ Layout.Legals.view app.data.legal
             , Html.iframe
-                [ Attrs.attribute "data-tally-src" "https://tally.so/embed/nPz85x?hideTitle=0&transparentBackground=1&dynamicHeight=1"
+                [ Attrs.attribute "data-tally-src" "https://tally.so/embed/nPz85x?hideTitle=1&transparentBackground=1&dynamicHeight=1"
                 , Attrs.attribute "frameborder" "0"
                 , Attrs.style "width" "100%"
-                , Attrs.height 2200
+                , Attrs.height 900
                 , Attrs.class "mx-auto prose dark:prose-invert xl:max-w-5xl xl:px-0"
                 , Attrs.title "Contact us"
-                , Attrs.src "https://tally.so/embed/nPz85x?hideTitle=0&transparentBackground=1&dynamicHeight=1"
+                , Attrs.src "https://tally.so/embed/nPz85x?hideTitle=1&transparentBackground=1&dynamicHeight=1"
                 ]
                 []
             ]
