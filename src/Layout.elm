@@ -357,7 +357,7 @@ view showMenu onMenuToggle body =
         -- Attrs.class "mx-auto max-w-3xl px-4 sm:px-6 xl:max-w-5xl xl:px-0"
         [ Html.div [ Attrs.class "flex h-screen flex-col justify-between font-sans" ]
             [ Html.header
-                [ Attrs.class "flex items-center justify-between py-10"
+                [ Attrs.class "flex items-center justify-between py-2"
                 ]
                 [ Html.div [ Attrs.class "text-black" ]
                     [ Html.a
