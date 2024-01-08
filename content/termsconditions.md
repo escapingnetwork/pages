@@ -55,4 +55,4 @@ Appeals must be made in writing directly to the Operation Manager within 5 days.
 
 ## CAPYBARA HOUSE EMERGENCY CONTACT
 
-When a student or company books accommodation with Capybara House, they will be supplied with all contact details of the host family where he/she will be hosted, along with emergency contact numbers for use in emergency situations outside of office hours. A Capybara House member of staff is available on this number 24 hours of the day, 365 days a year. Our emergency contact is +
+When a student or company books accommodation with Capybara House, they will be supplied with all contact details of the host family where he/she will be hosted, along with emergency contact numbers for use in emergency situations outside of office hours. A Capybara House member of staff is available on this number 24 hours of the day, 365 days a year. Our emergency contact is +353 1 443 4958
