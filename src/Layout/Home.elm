@@ -11,7 +11,6 @@ import Pages.Url
 import Phosphor
 import Settings
 import Svg exposing (path, svg)
-import Svg.Attributes as SvgAttr
 import UrlPath
 
 
@@ -22,7 +21,7 @@ seoHeaders author =
             author.avatar
                 |> Maybe.map (\authorAvatar -> Pages.Url.fromPath <| UrlPath.fromString authorAvatar)
                 |> Maybe.withDefault
-                    ([ "media", "blog-image.png" ] |> UrlPath.join |> Pages.Url.fromPath)
+                    ([ "media", "logo.svg" ] |> UrlPath.join |> Pages.Url.fromPath)
     in
     Seo.summary
         { canonicalUrlOverride = Nothing
@@ -33,7 +32,7 @@ seoHeaders author =
             , dimensions = Just { width = 300, height = 300 }
             , mimeType = Nothing
             }
-        , description = author.name ++ " - " ++ (author.occupation |> Maybe.withDefault ("Author of blogposts on " ++ Settings.title))
+        , description = author.name ++ " - " ++ (author.occupation |> Maybe.withDefault Settings.title)
         , locale = Settings.locale
         , title = author.name
         }
@@ -135,6 +134,7 @@ view =
                 [ Attrs.autoplay True
                 , Attrs.loop True
                 , Attrs.attribute "muted" ""
+                , Attrs.id "dublin"
                 , Attrs.class "absolute z-10 w-auto min-w-full min-h-full max-w-none"
                 , Attrs.class "bg-center bg-no-repeat bg-[url('/media/video.mp4')] bg-gray-700 bg-blend-multiply"
                 ]

@@ -105,7 +105,7 @@ view app shared model =
                 , Attrs.attribute "loading" "lazy"
                 , Attrs.attribute "frameborder" "0"
                 , Attrs.style "width" "100%"
-                , Attrs.height 1800
+                , Attrs.height 1900
                 , Attrs.attribute "frameborder" "0"
                 , Attrs.attribute "marginheight" "0"
                 , Attrs.attribute "marginwidth" "0"
