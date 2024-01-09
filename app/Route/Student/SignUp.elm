@@ -7,14 +7,16 @@ module Route.Student.SignUp exposing (Model, Msg, RouteParams, route, Data, Acti
 -}
 
 import BackendTask
+import Content.Legals
 import Effect
 import ErrorPage
-import FatalError
+import FatalError exposing (FatalError)
 import Head
 import Html
 import Html.Attributes as Attrs exposing (height)
+import Layout.Legals
 import PagesMsg
-import RouteBuilder
+import RouteBuilder exposing (App, StatelessRoute)
 import Server.Request
 import Server.Response
 import Shared
@@ -26,64 +28,36 @@ type alias Model =
     {}
 
 
-type Msg
-    = NoOp
+type alias Msg =
+    ()
 
 
 type alias RouteParams =
     {}
 
 
-route : RouteBuilder.StatefulRoute RouteParams Data ActionData Model Msg
+route : StatelessRoute RouteParams Data ActionData
 route =
-    RouteBuilder.serverRender { data = data, action = action, head = head }
-        |> RouteBuilder.buildWithLocalState
-            { view = view
-            , init = init
-            , update = update
-            , subscriptions = subscriptions
-            }
-
-
-init :
-    RouteBuilder.App Data ActionData RouteParams
-    -> Shared.Model
-    -> ( Model, Effect.Effect Msg )
-init app shared =
-    ( {}, Effect.none )
-
-
-update :
-    RouteBuilder.App Data ActionData RouteParams
-    -> Shared.Model
-    -> Msg
-    -> Model
-    -> ( Model, Effect.Effect Msg )
-update app shared msg model =
-    case msg of
-        NoOp ->
-            ( model, Effect.none )
-
-
-subscriptions : RouteParams -> UrlPath.UrlPath -> Shared.Model -> Model -> Sub Msg
-subscriptions routeParams path shared model =
-    Sub.none
+    RouteBuilder.single
+        { head = head
+        , data = data
+        }
+        |> RouteBuilder.buildNoState { view = view }
 
 
 type alias Data =
-    {}
+    { legal : Content.Legals.Legal }
 
 
 type alias ActionData =
     {}
 
 
-data :
-    RouteParams
-    -> Server.Request.Request
-    -> BackendTask.BackendTask FatalError.FatalError (Server.Response.Response Data ErrorPage.ErrorPage)
-data routeParams request =
-    BackendTask.succeed (Server.Response.render {})
+data : BackendTask.BackendTask FatalError Data
+data =
+    Content.Legals.accommodation
+        |> BackendTask.allowFatal
+        |> BackendTask.map Data
 
 
 head : RouteBuilder.App Data ActionData RouteParams -> List Head.Tag
@@ -92,27 +66,23 @@ head app =
 
 
 view :
-    RouteBuilder.App Data ActionData RouteParams
+    App Data ActionData RouteParams
     -> Shared.Model
-    -> Model
     -> View.View (PagesMsg.PagesMsg Msg)
-view app shared model =
+view app shared =
     { title = "Capybara House - Request Accomodation"
     , body =
-        [ Html.div []
-            [ Html.iframe
-                [ Attrs.attribute "data-tally-src" "https://tally.so/r/mRD80Q?hideTitle=0&transparentBackground=1&dynamicHeight=1"
+        [ Html.div [ Attrs.class "mx-auto prose max-w-none pb-8 pt-8 dark:prose-invert xl:col-span-2 xl:max-w-5xl xl:px-0" ]
+            [ Layout.Legals.view app.data.legal
+            , Html.iframe
+                [ Attrs.attribute "data-tally-src" "https://tally.so/embed/mOGP0g?alignLeft=0&hideTitle=1&transparentBackground=1&dynamicHeight=1"
                 , Attrs.attribute "loading" "lazy"
-                , Attrs.attribute "frameborder" "0"
                 , Attrs.style "width" "100%"
-                , Attrs.height 1900
-                , Attrs.attribute "frameborder" "0"
-                , Attrs.attribute "marginheight" "0"
-                , Attrs.attribute "marginwidth" "0"
+                , Attrs.height 1500
                 , Attrs.title "Request Accommodation"
                 , Attrs.class "mx-auto prose dark:prose-invert xl:max-w-5xl xl:px-0"
-                , Attrs.title "Contact us"
-                , Attrs.src "https://tally.so/r/mRD80Q?hideTitle=0&transparentBackground=1&dynamicHeight=1"
+                , Attrs.title "Request Accommodation"
+                , Attrs.src "https://tally.so/embed/mOGP0g?alignLeft=0&hideTitle=1&transparentBackground=1&dynamicHeight=1"
                 ]
                 []
             ]

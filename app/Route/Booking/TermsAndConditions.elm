@@ -74,7 +74,7 @@ view :
     -> Shared.Model
     -> View.View (PagesMsg.PagesMsg Msg)
 view app _ =
-    { title = "Privacy Policy", body = [ Layout.Legals.view app.data.legal ] }
+    { title = "Capybara House - Privacy Policy", body = [ Layout.Legals.view app.data.legal ] }
 
 
 action :

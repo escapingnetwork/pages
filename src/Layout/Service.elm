@@ -42,35 +42,32 @@ authorImages authors =
 viewService : Service -> Html msg
 viewService { service, body, previousService, nextService } =
     let
-        bottomLink slug title =
-            Route.link
-                [ Attrs.class "hover:text-primary-400 dark:hover:text-primary-400" ]
-                [ Html.text title ]
-                (Route.Services__Slug_ { slug = slug })
-
         previous =
             previousService
                 |> Html.Extra.viewMaybe
                     (\{ title, slug, image } ->
                         Html.div
-                            [ Attrs.class "sm:col-start-1 mt-4 xl:mt-8 relative"
+                            [ Attrs.class "sm:col-start-1 mt-4 xl:mt-8 relative text-white hover:text-primary-500"
                             ]
-                            [ image
-                                |> Html.Extra.viewMaybe
-                                    (\imagePath ->
-                                        Html.img
-                                            [ Attrs.alt title
-                                            , Attrs.attribute "decoding" "async"
-                                            , Attrs.class "h-48 w-full object-cover md:h-144 md:w-full"
-                                            , Attrs.src imagePath
-                                            ]
-                                            []
-                                    )
-                            , Html.div
-                                [ Attrs.class "uppercase tracking-wide text-4xl font-semibold absolute text-white top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
-                                ]
-                                [ title |> bottomLink slug
-                                ]
+                            [ Route.Services__Slug_ { slug = slug }
+                                |> Route.link
+                                    []
+                                    [ image
+                                        |> Html.Extra.viewMaybe
+                                            (\imagePath ->
+                                                Html.img
+                                                    [ Attrs.alt title
+                                                    , Attrs.attribute "decoding" "async"
+                                                    , Attrs.class "h-48 w-full object-cover md:h-144 md:w-full"
+                                                    , Attrs.src imagePath
+                                                    ]
+                                                    []
+                                            )
+                                    , Html.h2
+                                        [ Attrs.class "uppercase tracking-wide md:text-4xl text-2xl font-extrabold absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+                                        ]
+                                        [ Html.text title ]
+                                    ]
                             ]
                     )
 
@@ -79,24 +76,27 @@ viewService { service, body, previousService, nextService } =
                 |> Html.Extra.viewMaybe
                     (\{ title, slug, image } ->
                         Html.div
-                            [ Attrs.class "sm:col-start-2 mt-4 xl:mt-8 relative"
+                            [ Attrs.class "sm:col-start-2 mt-4 xl:mt-8 relative text-white hover:text-primary-500"
                             ]
-                            [ image
-                                |> Html.Extra.viewMaybe
-                                    (\imagePath ->
-                                        Html.img
-                                            [ Attrs.alt title
-                                            , Attrs.attribute "decoding" "async"
-                                            , Attrs.class "h-48 w-full object-cover md:h-144 md:w-full"
-                                            , Attrs.src imagePath
-                                            ]
-                                            []
-                                    )
-                            , Html.div
-                                [ Attrs.class "uppercase tracking-wide text-4xl font-semibold absolute text-white top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
-                                ]
-                                [ title |> bottomLink slug
-                                ]
+                            [ Route.Services__Slug_ { slug = slug }
+                                |> Route.link
+                                    []
+                                    [ image
+                                        |> Html.Extra.viewMaybe
+                                            (\imagePath ->
+                                                Html.img
+                                                    [ Attrs.alt title
+                                                    , Attrs.attribute "decoding" "async"
+                                                    , Attrs.class "h-48 w-full object-cover md:h-144 md:w-full"
+                                                    , Attrs.src imagePath
+                                                    ]
+                                                    []
+                                            )
+                                    , Html.h2
+                                        [ Attrs.class "uppercase tracking-wide md:text-4xl text-2xl font-extrabold absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+                                        ]
+                                        [ Html.text title ]
+                                    ]
                             ]
                     )
 
@@ -106,7 +106,7 @@ viewService { service, body, previousService, nextService } =
                 ]
                 [ Html.div
                     []
-                    [ Html.h1 [ Attrs.class "mt-8 pb-4 font-bold text-3xl md:text-5xl text-gray-900 dark:text-gray-100 items-center text-center" ]
+                    [ Html.h1 [ Attrs.class "mt-8 pb-4 font-extrabold text-3xl md:text-5xl text-gray-900 dark:text-gray-100 items-center text-center" ]
                         [ Html.text service.title
                         ]
                     ]
@@ -159,13 +159,13 @@ viewService { service, body, previousService, nextService } =
         , Html.div [ Attrs.class "text-center mt-10" ]
             [ Html.a
                 [ Attrs.href "/student/sign-up"
-                , Attrs.class "inline-flex justify-center py-5 px-10 text-base font-medium text-center text-white rounded-lg bg-primary-400 hover:bg-primary-600 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-600"
+                , Attrs.class "inline-flex justify-center py-5 px-10 text-base font-semibold text-center text-white rounded-lg bg-primary-500 hover:bg-primary-600 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-600"
                 ]
                 [ Html.text "Request Accomodation"
                 ]
             ]
         , Html.div
-            [ Attrs.class "mx-auto grid grid-flow-row sm:grid-cols-2 text-sm font-medium sm:text-base" ]
+            [ Attrs.class "mx-auto grid grid-flow-row sm:grid-cols-2" ]
             [ previous, next ]
         ]
 
@@ -204,29 +204,28 @@ viewServiceMetadata metadata =
 viewListItem : Metadata -> Html.Html msg
 viewListItem metadata =
     Html.div
-        [ Attrs.class "row-span 3"
+        [ Attrs.class "row-span-3"
         ]
         [ Html.Extra.viewMaybe
             (\imagePath ->
                 Html.div
-                    [ Attrs.class "md:shrink-0 relative"
+                    [ Attrs.class "md:shrink-0 relative text-white hover:text-primary-500"
                     ]
-                    [ Html.img
-                        [ Attrs.alt metadata.title
-                        , Attrs.attribute "decoding" "async"
-                        , Attrs.class "h-48 w-full object-cover md:h-144 md:w-full"
-                        , Attrs.src imagePath
-                        ]
-                        []
-                    , Html.h2
-                        [ Attrs.class "uppercase tracking-wide text-4xl font-semibold absolute text-white top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
-                        ]
-                        [ Route.Services__Slug_ { slug = metadata.slug }
-                            |> Route.link
-                                [ Attrs.class "hover:text-primary-400 dark:hover:text-primary-400"
+                    [ Route.Services__Slug_ { slug = metadata.slug }
+                        |> Route.link
+                            []
+                            [ Html.img
+                                [ Attrs.alt metadata.title
+                                , Attrs.attribute "decoding" "async"
+                                , Attrs.class "h-48 w-full object-cover md:h-144 md:w-full "
+                                , Attrs.src imagePath
+                                ]
+                                []
+                            , Html.h2
+                                [ Attrs.class "uppercase tracking-wide md:text-4xl text-2xl font-extrabold absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
                                 ]
                                 [ Html.text metadata.title ]
-                        ]
+                            ]
                     ]
             )
             metadata.image

@@ -91,7 +91,7 @@ view :
     -> Shared.Model
     -> View (PagesMsg Msg)
 view app _ =
-    { title = app.data.service.service.title
+    { title = "Capybara House - " ++ app.data.service.service.title
     , body = [ Layout.Service.viewService app.data.service ]
     }
 

@@ -111,7 +111,7 @@ view =
                     ]
                     [ Html.text "Looking for accomodation in Dublin?" ]
                 , Html.p
-                    [ Attrs.class "mb-8 text-lg font-normal text-gray-300 lg:text-xl sm:px-16 lg:px-48"
+                    [ Attrs.class "mb-8 text-lg font-bold text-gray-200 lg:text-xl sm:px-16 lg:px-48"
                     ]
                     [ Html.text "Here at Capybara House we focus on providing the best options for lodging in Ireland." ]
                 , Html.div
@@ -119,13 +119,13 @@ view =
                     ]
                     [ Html.a
                         [ Attrs.href "/student/sign-up"
-                        , Attrs.class "inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-primary-400 hover:bg-primary-600 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-600"
+                        , Attrs.class "inline-flex justify-center items-center py-3 px-5 text-base font-semibold text-center text-white rounded-lg bg-primary-500 hover:bg-primary-600 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-600"
                         ]
                         [ Html.text "Request Accomodation"
                         ]
                     , Html.a
                         [ Attrs.href "/services"
-                        , Attrs.class "inline-flex justify-center hover:text-gray-900 items-center py-3 px-5 sm:ms-4 text-base font-medium text-center text-white rounded-lg border border-white hover:bg-gray-100 focus:ring-4 focus:ring-gray-400"
+                        , Attrs.class "inline-flex justify-center hover:text-gray-900 items-center py-3 px-5 sm:ms-4 text-base font-semibold text-center text-white rounded-lg border border-white hover:bg-gray-100 focus:ring-4 focus:ring-gray-400"
                         ]
                         [ Html.text "Our Services" ]
                     ]
