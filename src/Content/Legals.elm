@@ -1,4 +1,4 @@
-module Content.Legals exposing (Legal, accommodation, hosts, partners, privacyPolicy, support, termsAndConditions)
+module Content.Legals exposing (Legal, accommodation, completeRegistration, hosts, partners, privacyPolicy, support, termsAndConditions)
 
 import BackendTask exposing (BackendTask)
 import BackendTask.File as File
@@ -66,3 +66,8 @@ support =
 accommodation : BackendTask { fatal : FatalError, recoverable : File.FileReadError Decode.Error } Legal
 accommodation =
     File.bodyWithFrontmatter (legalDecoder "accommodation") "/content/accommodation.md"
+
+
+completeRegistration : BackendTask { fatal : FatalError, recoverable : File.FileReadError Decode.Error } Legal
+completeRegistration =
+    File.bodyWithFrontmatter (legalDecoder "completeregistration") "/content/completeregistration.md"

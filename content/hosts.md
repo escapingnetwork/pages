@@ -1,5 +1,5 @@
 ---
-title: Become A Partner
+title: Become A Host
 company: Tranquera LLC
 ---
 
