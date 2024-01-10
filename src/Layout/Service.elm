@@ -238,6 +238,10 @@ viewListItem metadata =
                         [ Html.text description ]
                 )
                 metadata.description
+            , Route.Services__Slug_ { slug = metadata.slug }
+                |> Route.link
+                    [ Attrs.class "text-right block mt-1 font-extrabold hover:text-primary-500" ]
+                    [ Html.text "Read More..." ]
             ]
         ]
 

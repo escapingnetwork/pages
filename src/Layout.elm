@@ -39,7 +39,8 @@ seoHeaders =
 
 menu : List { label : String, route : Route }
 menu =
-    [ { label = "Become a Host", route = Route.Host__SignUp }
+    [ { label = "Our Services", route = Route.Services }
+    , { label = "Become a Host", route = Route.Host__SignUp }
     , { label = "Become a Partner", route = Route.Partner__SignUp }
     , { label = "About Us", route = Route.About }
     ]
@@ -230,9 +231,16 @@ viewSideMainMenuItem onMenuToggle { label, route } =
         [ Attrs.class "px-12 py-4"
         ]
         [ Route.link
-            [ Attrs.class "text-2xl font-bold tracking-widest text-gray-900 dark:text-gray-100"
-            , Events.onClick onMenuToggle
-            ]
+            (if label == "Request Accomodation" then
+                [ Attrs.class "text-2xl font-bold tracking-widest text-primary-500 dark:text-gray-100"
+                , Events.onClick onMenuToggle
+                ]
+
+             else
+                [ Attrs.class "text-2xl font-bold tracking-widest text-gray-900 dark:text-gray-100"
+                , Events.onClick onMenuToggle
+                ]
+            )
             [ Html.text label ]
             route
         ]
@@ -288,6 +296,7 @@ viewMenu showMenu onMenuToggle =
 
         sideMenuItems =
             { label = "Home", route = Route.Index }
+                :: { label = "Request Accomodation", route = Route.Student__SignUp }
                 :: menu
                 |> List.map (viewSideMainMenuItem onMenuToggle)
     in
