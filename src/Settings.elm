@@ -27,7 +27,7 @@ title =
 
 subtitle : String
 subtitle =
-    "Accomodation Solutions for Students in Dublin"
+    "Accommodation Solutions for Students in Dublin"
 
 
 author : String

@@ -161,7 +161,7 @@ viewService { service, body, previousService, nextService } =
                 [ Attrs.href "/student/sign-up"
                 , Attrs.class "inline-flex justify-center py-5 px-10 text-base font-semibold text-center text-white rounded-lg bg-primary-500 hover:bg-primary-600 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-600"
                 ]
-                [ Html.text "Request Accomodation"
+                [ Html.text "Request Accommodation"
                 ]
             ]
         , Html.div

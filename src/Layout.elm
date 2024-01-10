@@ -231,7 +231,7 @@ viewSideMainMenuItem onMenuToggle { label, route } =
         [ Attrs.class "px-12 py-4"
         ]
         [ Route.link
-            (if label == "Request Accomodation" then
+            (if label == "Request Accommodation" then
                 [ Attrs.class "text-2xl font-bold tracking-widest text-primary-500 dark:text-gray-100"
                 , Events.onClick onMenuToggle
                 ]
@@ -296,7 +296,7 @@ viewMenu showMenu onMenuToggle =
 
         sideMenuItems =
             { label = "Home", route = Route.Index }
-                :: { label = "Request Accomodation", route = Route.Student__SignUp }
+                :: { label = "Request Accommodation", route = Route.Student__SignUp }
                 :: menu
                 |> List.map (viewSideMainMenuItem onMenuToggle)
     in
