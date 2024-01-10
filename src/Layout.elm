@@ -19,7 +19,7 @@ seoHeaders : List Tag
 seoHeaders =
     let
         imageUrl =
-            [ "media", "blog-image.png" ] |> UrlPath.join |> Pages.Url.fromPath
+            [ "media", "banner.png" ] |> UrlPath.join |> Pages.Url.fromPath
     in
     Seo.summaryLarge
         { canonicalUrlOverride = Nothing

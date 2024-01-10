@@ -15,7 +15,7 @@ seoHeaders : Legal -> List Head.Tag
 seoHeaders legal =
     let
         imageUrl =
-            [ "media", "blog-image.png" ] |> UrlPath.join |> Pages.Url.fromPath
+            [ "media", "banner.png" ] |> UrlPath.join |> Pages.Url.fromPath
     in
     Seo.summary
         { canonicalUrlOverride = Nothing

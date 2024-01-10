@@ -67,7 +67,7 @@ head app =
     let
         imagePath =
             app.data.blogpost.metadata.image
-                |> Maybe.withDefault "/media/blog-image.png"
+                |> Maybe.withDefault "/media/banner.png"
 
         authorsHeader =
             case app.data.blogpost.metadata.authors of

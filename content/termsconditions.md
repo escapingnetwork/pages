@@ -11,7 +11,7 @@ company: Tranquera LLC
 
 * A booking confirmation will only be issued when full payment has been received.
 
-* Payments can be made using: Flywire, Transfermate, credit/debit card or bank transfer
+* Payments can be made using: Credit/Debit Card via Stripe or Wire Transfer
 
 * Bank details are provided on the invoice.
 
