@@ -17,10 +17,7 @@ seoHeaders : Author -> List Head.Tag
 seoHeaders author =
     let
         imageUrl =
-            author.avatar
-                |> Maybe.map (\authorAvatar -> Pages.Url.fromPath <| UrlPath.fromString authorAvatar)
-                |> Maybe.withDefault
-                    ([ "media", "banner.png" ] |> UrlPath.join |> Pages.Url.fromPath)
+            [ "media", "banner.png" ] |> UrlPath.join |> Pages.Url.fromPath
     in
     Seo.summary
         { canonicalUrlOverride = Nothing
