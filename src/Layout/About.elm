@@ -95,7 +95,7 @@ socialsView socials =
 view : Author -> Html msg
 view author =
     Html.div
-        [ Attrs.class "divide-y divide-gray-200 dark:divide-gray-700"
+        [ Attrs.class "divide-y divide-gray-200 dark:divide-gray-700 mb-10"
         ]
         [ Html.div
             [ Attrs.class "space-y-2 pb-8 pt-6 md:space-y-5"

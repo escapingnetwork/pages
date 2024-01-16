@@ -5,8 +5,8 @@ import Head.Seo as Seo
 import Html exposing (Html, footer)
 import Html.Attributes as Attrs
 import Html.Events as Events
-import LanguageTag.Country as Country
 import LanguageTag.Language as Language
+import LanguageTag.Region as Region
 import Pages.Url
 import Route exposing (Route)
 import Settings
@@ -31,7 +31,7 @@ seoHeaders =
             , mimeType = Nothing
             }
         , description = Settings.subtitle
-        , locale = Just ( Language.en, Country.us )
+        , locale = Just ( Language.en, Region.us )
         , title = Settings.title
         }
         |> Seo.website
@@ -412,7 +412,7 @@ footer =
                         , Attrs.class "flex items-center"
                         ]
                         [ Html.span
-                            [ Attrs.class "self-center text-2xl font-semibold whitespace-nowrap dark:text-white"
+                            [ Attrs.class "self-center text-2xl font-semibold whitespace-nowrap text-primary-500 hover:text-primary-600 dark:text-white"
                             ]
                             [ Html.text "Capybara House" ]
                         ]

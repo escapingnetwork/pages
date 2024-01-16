@@ -45,7 +45,7 @@ title =
         }
 
 
-{-| locale: Maybe ( Language.Language, Country.Country ) -}
+{-| locale: Maybe ( Language.Language, Region.Region ) -}
 locale : Elm.Expression
 locale =
     Elm.value

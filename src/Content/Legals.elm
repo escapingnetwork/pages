@@ -40,34 +40,34 @@ legalDecoder slug body =
 
 privacyPolicy : BackendTask { fatal : FatalError, recoverable : File.FileReadError Decode.Error } Legal
 privacyPolicy =
-    File.bodyWithFrontmatter (legalDecoder "privacypolicy") "/content/privacypolicy.md"
+    File.bodyWithFrontmatter (legalDecoder "privacypolicy") "content/privacypolicy.md"
 
 
 termsAndConditions : BackendTask { fatal : FatalError, recoverable : File.FileReadError Decode.Error } Legal
 termsAndConditions =
-    File.bodyWithFrontmatter (legalDecoder "termsconditions") "/content/termsconditions.md"
+    File.bodyWithFrontmatter (legalDecoder "termsconditions") "content/termsconditions.md"
 
 
 partners : BackendTask { fatal : FatalError, recoverable : File.FileReadError Decode.Error } Legal
 partners =
-    File.bodyWithFrontmatter (legalDecoder "partners") "/content/partners.md"
+    File.bodyWithFrontmatter (legalDecoder "partners") "content/partners.md"
 
 
 hosts : BackendTask { fatal : FatalError, recoverable : File.FileReadError Decode.Error } Legal
 hosts =
-    File.bodyWithFrontmatter (legalDecoder "hosts") "/content/hosts.md"
+    File.bodyWithFrontmatter (legalDecoder "hosts") "content/hosts.md"
 
 
 support : BackendTask { fatal : FatalError, recoverable : File.FileReadError Decode.Error } Legal
 support =
-    File.bodyWithFrontmatter (legalDecoder "support") "/content/support.md"
+    File.bodyWithFrontmatter (legalDecoder "support") "content/support.md"
 
 
 accommodation : BackendTask { fatal : FatalError, recoverable : File.FileReadError Decode.Error } Legal
 accommodation =
-    File.bodyWithFrontmatter (legalDecoder "accommodation") "/content/accommodation.md"
+    File.bodyWithFrontmatter (legalDecoder "accommodation") "content/accommodation.md"
 
 
 completeRegistration : BackendTask { fatal : FatalError, recoverable : File.FileReadError Decode.Error } Legal
 completeRegistration =
-    File.bodyWithFrontmatter (legalDecoder "completeregistration") "/content/completeregistration.md"
+    File.bodyWithFrontmatter (legalDecoder "completeregistration") "content/completeregistration.md"
