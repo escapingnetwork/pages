@@ -28,7 +28,7 @@ seoHeaders author =
             , dimensions = Just { width = 300, height = 300 }
             , mimeType = Nothing
             }
-        , description = author.name ++ " - " ++ (author.occupation |> Maybe.withDefault ("Author of blogposts on " ++ Settings.title))
+        , description = author.name ++ " - " ++ (author.occupation |> Maybe.withDefault Settings.title)
         , locale = Settings.locale
         , title = author.name
         }
@@ -60,6 +60,9 @@ socialsView socials =
 
                 "tiktok" ->
                     Phosphor.tiktokLogo
+
+                "whatsapp" ->
+                    Phosphor.whatsappLogo
 
                 _ ->
                     Phosphor.link

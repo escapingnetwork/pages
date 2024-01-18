@@ -8,6 +8,7 @@ import Html.Events as Events
 import LanguageTag.Language as Language
 import LanguageTag.Region as Region
 import Pages.Url
+import Phosphor
 import Route exposing (Route)
 import Settings
 import Svg exposing (path, svg)
