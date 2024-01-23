@@ -64,6 +64,9 @@ socialsView socials =
                 "whatsapp" ->
                     Phosphor.whatsappLogo
 
+                "calendly" ->
+                    Phosphor.calendarPlus
+
                 _ ->
                     Phosphor.link
 

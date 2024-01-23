@@ -447,6 +447,17 @@ footer =
                                     ]
                                     [ Html.text "info@capybara.house" ]
                                 ]
+                            , Html.li
+                                [ Attrs.class "mb-4"
+                                ]
+                                [ Html.a
+                                    [ Attrs.href "https://calendly.com/capybarahouse"
+                                    , Attrs.class "hover:underline flex align-middle"
+                                    ]
+                                    [ Html.text "📅"
+                                    , Html.text "Schedule a meeting"
+                                    ]
+                                ]
                             , Html.li [ Attrs.class "mb-4" ]
                                 [ Html.a
                                     [ Attrs.href "tel:+35314434958"
@@ -454,7 +465,7 @@ footer =
                                     ]
                                     [ Html.text "🇮🇪 +353 1 443 4958" ]
                                 ]
-                            , Html.li []
+                            , Html.li [ Attrs.class "mb-4" ]
                                 [ Html.a
                                     [ Attrs.href "tel:+17207380798"
                                     , Attrs.class "hover:underline"

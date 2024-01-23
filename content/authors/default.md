@@ -6,6 +6,7 @@ socials:
   email: info@capybara.house
   linkedin: https://www.linkedin.com/company/tranquera-llc
   whatsapp: https://wa.me/+35314434958
+  calendly: https://calendly.com/capybarahouse
 ---
 
 ## Who are we?
