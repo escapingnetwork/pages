@@ -109,7 +109,7 @@ view =
                 [ Html.h1
                     [ Attrs.class "mb-4 text-4xl font-extrabold tracking-tight leading-none text-white md:text-5xl lg:text-6xl"
                     ]
-                    [ Html.text "Looking for accomodation in Dublin?" ]
+                    [ Html.text "Looking for accommodation in Dublin?" ]
                 , Html.p
                     [ Attrs.class "mb-8 text-lg font-bold text-gray-200 lg:text-xl sm:px-16 lg:px-48"
                     ]
