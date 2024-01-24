@@ -30,7 +30,7 @@ reason, we suggest contact your host to arrange a proper breakfast and
 dinner meal which will be suitable for you and your host
 
 **Additional Information:** There are no additional costs associated
-with our half-board service. The cost is inclusive of both breakfast and
+with our half-board service. The cost is includes both breakfast and
 dinner during your entire stay with us.
 
 We hope that our half-board service enhances your overall experience in
