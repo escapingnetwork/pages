@@ -24,7 +24,7 @@ morning or a late-night snack, the kitchen is at your disposal. You can
 experiment with local recipes or stick to familiar favorites---whatever
 suits your taste.
 
-**Local Dining Recommendations:** While you have the option to self-cater, we also understand the allure of exploring local restaurants and eateries. Feel free to ask us your host for recommendations, and they will be happy to share their favorite
+**Local Dining Recommendations:** While you have the option to self-cater, we also understand the allure of exploring local restaurants and eateries. Feel free to ask your host for recommendations, and they will be happy to share their favorite
 spots in the area.
 
 We hope the self-catering option adds a personal touch to your stay,
