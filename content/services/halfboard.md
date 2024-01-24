@@ -26,8 +26,8 @@ have any specific dietary restrictions or preferences.
 
 **Meal Times:** The meal times are flexible, and we prefer to not
 interfere between our student and our host family\'s freedom. For this
-reason, we suggest contact your host to arrange a proper breakfast and
-dinner meal which will be suitable for you and your host
+reason, we suggest you to contact your host to arrange a proper breakfast and
+dinner meal which best suits you and your host
 
 **Additional Information:** There are no additional costs associated
 with our half-board service. The cost is includes both breakfast and
