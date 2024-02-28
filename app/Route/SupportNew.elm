@@ -1,4 +1,4 @@
-module Route.Student.SignUpNew exposing (..)
+module Route.SupportNew exposing (..)
 
 {-|
 
@@ -60,7 +60,7 @@ type alias Data =
 
 
 type alias ActionData =
-    { student : Student
+    { contact : Contact
     , formResponse : Form.ServerResponse String
     }
 
@@ -77,94 +77,35 @@ head app =
     []
 
 
-type Sex
-    = Male
-    | Female
-    | Other
-
-
-sexToString : Sex -> String
-sexToString sex =
-    case sex of
-        Male ->
-            "Male"
-
-        Female ->
-            "Female"
-
-        Other ->
-            "Other"
-
-
-type Service
-    = HalfBoard
-    | SelfCatering
-    | Hostel
-
-
-serviceToString : Service -> String
-serviceToString service =
-    case service of
-        HalfBoard ->
-            "Half-Board"
-
-        SelfCatering ->
-            "Self-Catering"
-
-        Hostel ->
-            "Hostel"
-
-
-type alias Student =
+type alias Contact =
     { forename : String
     , surname : String
     , email : String
     , phoneNumber : String
-    , nationality : String
-    , age : Maybe Int
-    , sex : Maybe Sex
-    , institution : String
-    , service : Maybe Service
-    , from : Date
-    , to : Date
     , message : String
     }
 
 
-emptyForm : Student
+emptyForm : Contact
 emptyForm =
     { forename = ""
     , surname = ""
     , email = ""
     , phoneNumber = ""
-    , nationality = ""
-    , age = Nothing
-    , sex = Nothing
-    , institution = ""
-    , service = Nothing
-    , from = Date.fromCalendarDate 1969 Time.Jul 20
-    , to = Date.fromCalendarDate 1969 Time.Jul 20
     , message = ""
     }
 
 
-form : Form.HtmlForm String Student Student (PagesMsg Msg)
+form : Form.HtmlForm String Contact Contact (PagesMsg Msg)
 form =
     Form.form
-        (\forename surname email phoneNumber nationality age sex institution service from to message ->
+        (\forename surname email phoneNumber message ->
             { combine =
-                Validation.succeed Student
+                Validation.succeed Contact
                     |> Validation.andMap forename
                     |> Validation.andMap surname
                     |> Validation.andMap email
                     |> Validation.andMap phoneNumber
-                    |> Validation.andMap nationality
-                    |> Validation.andMap age
-                    |> Validation.andMap sex
-                    |> Validation.andMap institution
-                    |> Validation.andMap service
-                    |> Validation.andMap from
-                    |> Validation.andMap to
                     |> Validation.andMap message
             , view =
                 \formState ->
@@ -204,42 +145,11 @@ form =
                                     ]
                                 , errorsView field
                                 ]
-
-                        fieldViewSexSelect : String -> Validation.Field String parsed (Form.FieldView.Options Sex) -> Html msg
-                        fieldViewSexSelect label field =
-                            Html.div [ Attrs.class "mb-5" ]
-                                [ Html.label [ Attrs.class "block mb-2 text-lg font-semibold text-gray-900 dark:text-white" ]
-                                    [ Html.text (label ++ " ")
-                                    , field
-                                        |> Form.FieldView.select [ Attrs.class "bg-gray-50 mt-2 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" ]
-                                            (\entry -> ( [], sexToString entry ))
-                                    ]
-                                , errorsView field
-                                ]
-
-                        fieldViewServiceSelect : String -> Validation.Field String parsed (Form.FieldView.Options Service) -> Html msg
-                        fieldViewServiceSelect label field =
-                            Html.div [ Attrs.class "mb-5" ]
-                                [ Html.label [ Attrs.class "block mb-2 text-lg font-semibold text-gray-900 dark:text-white" ]
-                                    [ Html.text (label ++ " ")
-                                    , field
-                                        |> Form.FieldView.select [ Attrs.class "bg-gray-50 mt-2 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" ]
-                                            (\entry -> ( [], serviceToString entry ))
-                                    ]
-                                , errorsView field
-                                ]
                     in
                     [ fieldView "Forename" forename
                     , fieldView "Surname" surname
                     , fieldView "Email" email
                     , fieldView "Phone Number" phoneNumber
-                    , fieldView "Nationality" nationality
-                    , fieldView "Age" age
-                    , fieldViewSexSelect "Sex" sex
-                    , fieldView "Institution" institution
-                    , fieldViewServiceSelect "Service" service
-                    , fieldView "From" from
-                    , fieldView "To" to
                     , fieldView "Message" message
                     , Html.button [ Attrs.class "text-white bg-primary-500 hover:bg-primary-600 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800" ]
                         [ Html.text
@@ -282,48 +192,6 @@ form =
                 |> Field.required "Required"
                 |> Field.withInitialValue .phoneNumber
             )
-        |> Form.field "nationality"
-            (Field.text
-                |> Field.required "Required"
-                |> Field.withInitialValue .nationality
-            )
-        |> Form.field "age"
-            (Field.int
-                { invalid =
-                    \_ -> "Must be an integer"
-                }
-            )
-        |> Form.field "sex"
-            (Field.select
-                [ ( "Male", Male )
-                , ( "Female", Female )
-                , ( "Other", Other )
-                ]
-                (\_ -> "Invalid")
-            )
-        |> Form.field "institution"
-            (Field.text
-                |> Field.required "Required"
-                |> Field.withInitialValue .institution
-            )
-        |> Form.field "service"
-            (Field.select
-                [ ( "Self-Catering", SelfCatering )
-                , ( "Half-Board", HalfBoard )
-                , ( "Hostel", Hostel )
-                ]
-                (\_ -> "Invalid")
-            )
-        |> Form.field "from"
-            (Field.date
-                { invalid = \_ -> "Invalid" }
-                |> Field.required "Required"
-            )
-        |> Form.field "to"
-            (Field.date
-                { invalid = \_ -> "Invalid" }
-                |> Field.required "Required"
-            )
         |> Form.field "message"
             (Field.text
                 |> Field.textarea
@@ -356,18 +224,6 @@ view app shared =
                         |> Form.withServerResponse (app.action |> Maybe.map .formResponse)
                     )
                     app
-
-            -- , Html.iframe
-            --     [ Attrs.attribute "data-tally-src" "https://tally.so/embed/mOGP0g?alignLeft=0&hideTitle=1&transparentBackground=1&dynamicHeight=1"
-            --     , Attrs.attribute "loading" "lazy"
-            --     , Attrs.style "width" "100%"
-            --     , Attrs.height 1500
-            --     , Attrs.title "Request Accommodation"
-            --     , Attrs.class "mx-auto prose dark:prose-invert xl:max-w-5xl xl:px-0"
-            --     , Attrs.title "Request Accommodation"
-            --     , Attrs.src "https://tally.so/embed/mOGP0g?alignLeft=0&hideTitle=1&transparentBackground=1&dynamicHeight=1"
-            --     ]
-            --     []
             ]
         ]
     }

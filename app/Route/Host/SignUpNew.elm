@@ -1,4 +1,4 @@
-module Route.Student.SignUpNew exposing (..)
+module Route.Host.SignUpNew exposing (Model, Msg, RouteParams, route, Data, ActionData)
 
 {-|
 
@@ -8,7 +8,6 @@ module Route.Student.SignUpNew exposing (..)
 
 import BackendTask
 import Content.Legals
-import Date exposing (Date)
 import Effect
 import ErrorPage
 import FatalError exposing (FatalError)
@@ -22,13 +21,11 @@ import Html exposing (Html)
 import Html.Attributes as Attrs exposing (height)
 import Layout.Legals
 import Pages.Form
-import Pages.FormData
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
 import Server.Request as Request exposing (Request)
 import Server.Response
 import Shared
-import Time
 import UrlPath
 import View
 
@@ -60,14 +57,14 @@ type alias Data =
 
 
 type alias ActionData =
-    { student : Student
+    { host : Host
     , formResponse : Form.ServerResponse String
     }
 
 
 data : BackendTask.BackendTask FatalError Data
 data =
-    Content.Legals.accommodation
+    Content.Legals.hosts
         |> BackendTask.allowFatal
         |> BackendTask.map Data
 
@@ -77,23 +74,23 @@ head app =
     []
 
 
-type Sex
-    = Male
-    | Female
-    | Other
+type ContactMethod
+    = Email
+    | Phone
+    | WhatsApp
 
 
-sexToString : Sex -> String
-sexToString sex =
-    case sex of
-        Male ->
-            "Male"
+contactMethodToString : ContactMethod -> String
+contactMethodToString contactMethod =
+    case contactMethod of
+        Email ->
+            "Email"
 
-        Female ->
-            "Female"
+        Phone ->
+            "Phone"
 
-        Other ->
-            "Other"
+        WhatsApp ->
+            "WhatsApp"
 
 
 type Service
@@ -115,57 +112,39 @@ serviceToString service =
             "Hostel"
 
 
-type alias Student =
+type alias Host =
     { forename : String
     , surname : String
     , email : String
     , phoneNumber : String
-    , nationality : String
-    , age : Maybe Int
-    , sex : Maybe Sex
-    , institution : String
     , service : Maybe Service
-    , from : Date
-    , to : Date
-    , message : String
+    , contactMethod : Maybe ContactMethod
     }
 
 
-emptyForm : Student
+emptyForm : Host
 emptyForm =
     { forename = ""
     , surname = ""
     , email = ""
     , phoneNumber = ""
-    , nationality = ""
-    , age = Nothing
-    , sex = Nothing
-    , institution = ""
     , service = Nothing
-    , from = Date.fromCalendarDate 1969 Time.Jul 20
-    , to = Date.fromCalendarDate 1969 Time.Jul 20
-    , message = ""
+    , contactMethod = Nothing
     }
 
 
-form : Form.HtmlForm String Student Student (PagesMsg Msg)
+form : Form.HtmlForm String Host Host (PagesMsg Msg)
 form =
     Form.form
-        (\forename surname email phoneNumber nationality age sex institution service from to message ->
+        (\forename surname email phoneNumber service contactMethod ->
             { combine =
-                Validation.succeed Student
+                Validation.succeed Host
                     |> Validation.andMap forename
                     |> Validation.andMap surname
                     |> Validation.andMap email
                     |> Validation.andMap phoneNumber
-                    |> Validation.andMap nationality
-                    |> Validation.andMap age
-                    |> Validation.andMap sex
-                    |> Validation.andMap institution
                     |> Validation.andMap service
-                    |> Validation.andMap from
-                    |> Validation.andMap to
-                    |> Validation.andMap message
+                    |> Validation.andMap contactMethod
             , view =
                 \formState ->
                     let
@@ -200,19 +179,19 @@ form =
                             Html.div [ Attrs.class "mb-5" ]
                                 [ Html.label [ Attrs.class "block mb-2 text-lg font-semibold text-gray-900 dark:text-white" ]
                                     [ Html.text (label ++ " ")
-                                    , field |> Form.FieldView.input [ Attrs.class "bg-gray-50 mt-2 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" ]
+                                    , field |> Form.FieldView.input [ Attrs.class "bg-gray-50 mt-2 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-priring-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-priring-primary-500" ]
                                     ]
                                 , errorsView field
                                 ]
 
-                        fieldViewSexSelect : String -> Validation.Field String parsed (Form.FieldView.Options Sex) -> Html msg
-                        fieldViewSexSelect label field =
+                        fieldViewContactMethodSelect : String -> Validation.Field String parsed (Form.FieldView.Options ContactMethod) -> Html msg
+                        fieldViewContactMethodSelect label field =
                             Html.div [ Attrs.class "mb-5" ]
                                 [ Html.label [ Attrs.class "block mb-2 text-lg font-semibold text-gray-900 dark:text-white" ]
                                     [ Html.text (label ++ " ")
                                     , field
-                                        |> Form.FieldView.select [ Attrs.class "bg-gray-50 mt-2 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" ]
-                                            (\entry -> ( [], sexToString entry ))
+                                        |> Form.FieldView.select [ Attrs.class "bg-gray-50 mt-2 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-priring-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-priring-primary-500" ]
+                                            (\entry -> ( [], contactMethodToString entry ))
                                     ]
                                 , errorsView field
                                 ]
@@ -223,7 +202,7 @@ form =
                                 [ Html.label [ Attrs.class "block mb-2 text-lg font-semibold text-gray-900 dark:text-white" ]
                                     [ Html.text (label ++ " ")
                                     , field
-                                        |> Form.FieldView.select [ Attrs.class "bg-gray-50 mt-2 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" ]
+                                        |> Form.FieldView.select [ Attrs.class "bg-gray-50 mt-2 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-priring-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-priring-primary-500" ]
                                             (\entry -> ( [], serviceToString entry ))
                                     ]
                                 , errorsView field
@@ -233,14 +212,8 @@ form =
                     , fieldView "Surname" surname
                     , fieldView "Email" email
                     , fieldView "Phone Number" phoneNumber
-                    , fieldView "Nationality" nationality
-                    , fieldView "Age" age
-                    , fieldViewSexSelect "Sex" sex
-                    , fieldView "Institution" institution
                     , fieldViewServiceSelect "Service" service
-                    , fieldView "From" from
-                    , fieldView "To" to
-                    , fieldView "Message" message
+                    , fieldViewContactMethodSelect "Favorite Contact Method" contactMethod
                     , Html.button [ Attrs.class "text-white bg-primary-500 hover:bg-primary-600 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800" ]
                         [ Html.text
                             (if formState.submitting then
@@ -282,30 +255,6 @@ form =
                 |> Field.required "Required"
                 |> Field.withInitialValue .phoneNumber
             )
-        |> Form.field "nationality"
-            (Field.text
-                |> Field.required "Required"
-                |> Field.withInitialValue .nationality
-            )
-        |> Form.field "age"
-            (Field.int
-                { invalid =
-                    \_ -> "Must be an integer"
-                }
-            )
-        |> Form.field "sex"
-            (Field.select
-                [ ( "Male", Male )
-                , ( "Female", Female )
-                , ( "Other", Other )
-                ]
-                (\_ -> "Invalid")
-            )
-        |> Form.field "institution"
-            (Field.text
-                |> Field.required "Required"
-                |> Field.withInitialValue .institution
-            )
         |> Form.field "service"
             (Field.select
                 [ ( "Self-Catering", SelfCatering )
@@ -314,28 +263,14 @@ form =
                 ]
                 (\_ -> "Invalid")
             )
-        |> Form.field "from"
-            (Field.date
-                { invalid = \_ -> "Invalid" }
-                |> Field.required "Required"
+        |> Form.field "contactMethod"
+            (Field.select
+                [ ( "Email", Email )
+                , ( "Phone", Phone )
+                , ( "WhatsApp", WhatsApp )
+                ]
+                (\_ -> "Invalid")
             )
-        |> Form.field "to"
-            (Field.date
-                { invalid = \_ -> "Invalid" }
-                |> Field.required "Required"
-            )
-        |> Form.field "message"
-            (Field.text
-                |> Field.textarea
-                    { rows = Just 5
-                    , cols = Just 20
-                    }
-                |> Field.required "Required"
-            )
-
-
-
--- |> Form.field "checkbox" Field.checkbox
 
 
 view :
@@ -343,7 +278,7 @@ view :
     -> Shared.Model
     -> View.View (PagesMsg.PagesMsg Msg)
 view app shared =
-    { title = "Capybara House - Request Accommodation"
+    { title = "Capybara House - Become A Host"
     , body =
         [ Html.div [ Attrs.class "mx-auto prose max-w-none pb-8 pt-8 dark:prose-invert xl:col-span-2 xl:max-w-5xl xl:px-0" ]
             [ Layout.Legals.view app.data.legal
@@ -351,21 +286,20 @@ view app shared =
                 |> Pages.Form.renderHtml
                     [ Attrs.class "max-w-sm mx-auto"
                     ]
-                    (Form.options "student-form"
+                    (Form.options "host-form"
                         |> Form.withInput emptyForm
                         |> Form.withServerResponse (app.action |> Maybe.map .formResponse)
                     )
                     app
 
             -- , Html.iframe
-            --     [ Attrs.attribute "data-tally-src" "https://tally.so/embed/mOGP0g?alignLeft=0&hideTitle=1&transparentBackground=1&dynamicHeight=1"
-            --     , Attrs.attribute "loading" "lazy"
+            --     [ Attrs.attribute "data-tally-src" "https://tally.so/embed/nPz85x?hideTitle=1&transparentBackground=1&dynamicHeight=1"
+            --     , Attrs.attribute "frameborder" "0"
             --     , Attrs.style "width" "100%"
-            --     , Attrs.height 1500
-            --     , Attrs.title "Request Accommodation"
+            --     , Attrs.height 900
             --     , Attrs.class "mx-auto prose dark:prose-invert xl:max-w-5xl xl:px-0"
-            --     , Attrs.title "Request Accommodation"
-            --     , Attrs.src "https://tally.so/embed/mOGP0g?alignLeft=0&hideTitle=1&transparentBackground=1&dynamicHeight=1"
+            --     , Attrs.title "Contact us"
+            --     , Attrs.src "https://tally.so/embed/nPz85x?hideTitle=1&transparentBackground=1&dynamicHeight=1"
             --     ]
             --     []
             ]
@@ -393,7 +327,3 @@ action routeParams request =
                 formResponse
                 |> Server.Response.render
                 |> BackendTask.succeed
-
-
-
--- BackendTask.succeed (Server.Response.render {})
