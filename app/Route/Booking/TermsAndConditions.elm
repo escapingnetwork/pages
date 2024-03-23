@@ -7,13 +7,13 @@ module Route.Booking.TermsAndConditions exposing (Model, Msg, RouteParams, route
 -}
 
 import BackendTask
-import Content.Legals
+import Content.Minimal
 import Effect
 import ErrorPage
 import FatalError exposing (FatalError)
 import Head
 import Html
-import Layout.Legals
+import Layout.Minimal
 import PagesMsg
 import RouteBuilder exposing (App, StatelessRoute)
 import Server.Request
@@ -50,7 +50,7 @@ subscriptions routeParams path shared model =
 
 
 type alias Data =
-    { legal : Content.Legals.Legal }
+    { minimal : Content.Minimal.Minimal }
 
 
 type alias ActionData =
@@ -59,14 +59,14 @@ type alias ActionData =
 
 data : BackendTask.BackendTask FatalError Data
 data =
-    Content.Legals.termsAndConditions
+    Content.Minimal.termsAndConditions
         |> BackendTask.allowFatal
         |> BackendTask.map Data
 
 
 head : RouteBuilder.App Data ActionData RouteParams -> List Head.Tag
 head app =
-    Layout.Legals.seoHeaders app.data.legal
+    Layout.Minimal.seoHeaders app.data.minimal
 
 
 view :
@@ -74,7 +74,7 @@ view :
     -> Shared.Model
     -> View.View (PagesMsg.PagesMsg Msg)
 view app _ =
-    { title = "Capybara House - Privacy Policy", body = [ Layout.Legals.view app.data.legal ] }
+    { title = "Capybara House - Privacy Policy", body = [ Layout.Minimal.view app.data.minimal ] }
 
 
 action :

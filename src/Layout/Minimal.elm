@@ -1,6 +1,6 @@
-module Layout.Legals exposing (seoHeaders, view)
+module Layout.Minimal exposing (seoHeaders, view)
 
-import Content.Legals exposing (Legal)
+import Content.Minimal exposing (Minimal)
 import Head
 import Head.Seo as Seo
 import Html exposing (Html)
@@ -11,7 +11,7 @@ import Settings
 import UrlPath
 
 
-seoHeaders : Legal -> List Head.Tag
+seoHeaders : Minimal -> List Head.Tag
 seoHeaders legal =
     let
         imageUrl =
@@ -33,7 +33,7 @@ seoHeaders legal =
         |> Seo.website
 
 
-view : Legal -> Html msg
+view : Minimal -> Html msg
 view legal =
     Html.div
         [ Attrs.class "divide-y divide-gray-200 dark:divide-gray-700"

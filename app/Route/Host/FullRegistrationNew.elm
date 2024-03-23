@@ -7,7 +7,7 @@ module Route.Host.FullRegistrationNew exposing (Model, Msg, RouteParams, route, 
 -}
 
 import BackendTask
-import Content.Legals
+import Content.Minimal
 import Effect
 import ErrorPage
 import FatalError exposing (FatalError)
@@ -21,7 +21,7 @@ import Html exposing (Html, address)
 import Html.Attributes as Attrs exposing (height)
 import Html.Attributes.Autocomplete exposing (DetailedCompletion(..))
 import LanguageTag.Region exposing (ci)
-import Layout.Legals
+import Layout.Minimal
 import Pages.Form
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
@@ -54,7 +54,7 @@ route =
 
 
 type alias Data =
-    { legal : Content.Legals.Legal
+    { minimal : Content.Minimal.Minimal
     }
 
 
@@ -66,7 +66,7 @@ type alias ActionData =
 
 data : BackendTask.BackendTask FatalError Data
 data =
-    Content.Legals.hosts
+    Content.Minimal.hosts
         |> BackendTask.allowFatal
         |> BackendTask.map Data
 
@@ -357,7 +357,7 @@ view app shared =
     { title = "Capybara House - Become A Host"
     , body =
         [ Html.div [ Attrs.class "mx-auto prose max-w-none pb-8 pt-8 dark:prose-invert xl:col-span-2 xl:max-w-5xl xl:px-0" ]
-            [ Layout.Legals.view app.data.legal
+            [ Layout.Minimal.view app.data.minimal
             , form
                 |> Pages.Form.renderHtml
                     [ Attrs.class "max-w-sm mx-auto"

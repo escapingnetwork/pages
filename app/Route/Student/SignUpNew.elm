@@ -7,7 +7,7 @@ module Route.Student.SignUpNew exposing (..)
 -}
 
 import BackendTask
-import Content.Legals
+import Content.Minimal
 import Date exposing (Date)
 import Effect
 import ErrorPage
@@ -20,7 +20,7 @@ import Form.Validation as Validation
 import Head
 import Html exposing (Html)
 import Html.Attributes as Attrs exposing (height)
-import Layout.Legals
+import Layout.Minimal
 import Pages.Form
 import Pages.FormData
 import PagesMsg exposing (PagesMsg)
@@ -55,7 +55,7 @@ route =
 
 
 type alias Data =
-    { legal : Content.Legals.Legal
+    { minimal : Content.Minimal.Minimal
     }
 
 
@@ -67,7 +67,7 @@ type alias ActionData =
 
 data : BackendTask.BackendTask FatalError Data
 data =
-    Content.Legals.accommodation
+    Content.Minimal.accommodation
         |> BackendTask.allowFatal
         |> BackendTask.map Data
 
@@ -346,7 +346,7 @@ view app shared =
     { title = "Capybara House - Request Accommodation"
     , body =
         [ Html.div [ Attrs.class "mx-auto prose max-w-none pb-8 pt-8 dark:prose-invert xl:col-span-2 xl:max-w-5xl xl:px-0" ]
-            [ Layout.Legals.view app.data.legal
+            [ Layout.Minimal.view app.data.minimal
             , form
                 |> Pages.Form.renderHtml
                     [ Attrs.class "max-w-sm mx-auto"
