@@ -7,14 +7,14 @@ module Route.Host.CompleteRegistration exposing (Model, Msg, RouteParams, route,
 -}
 
 import BackendTask
-import Content.Legals
+import Content.Minimal
 import Effect
 import ErrorPage
 import FatalError exposing (FatalError)
 import Head
 import Html
 import Html.Attributes as Attrs exposing (height)
-import Layout.Legals
+import Layout.Minimal
 import PagesMsg
 import RouteBuilder exposing (App, StatelessRoute)
 import Server.Request
@@ -46,7 +46,7 @@ route =
 
 
 type alias Data =
-    { legal : Content.Legals.Legal }
+    { minimal : Content.Minimal.Minimal }
 
 
 type alias ActionData =
@@ -55,7 +55,7 @@ type alias ActionData =
 
 data : BackendTask.BackendTask FatalError Data
 data =
-    Content.Legals.completeRegistration
+    Content.Minimal.completeRegistration
         |> BackendTask.allowFatal
         |> BackendTask.map Data
 
@@ -73,7 +73,7 @@ view app shared =
     { title = "Capybara House - Complete Registration"
     , body =
         [ Html.div [ Attrs.class "mx-auto prose max-w-none pb-8 pt-8 dark:prose-invert xl:col-span-2 xl:max-w-5xl xl:px-0" ]
-            [ Layout.Legals.view app.data.legal
+            [ Layout.Minimal.view app.data.minimal
             , Html.iframe
                 [ Attrs.attribute "data-tally-src" "https://tally.so/embed/mB7G61?alignLeft=0&hideTitle=1&transparentBackground=1&dynamicHeight=1"
                 , Attrs.attribute "frameborder" "0"

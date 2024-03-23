@@ -7,14 +7,14 @@ module Route.Partner.SignUp exposing (Model, Msg, RouteParams, route, Data, Acti
 -}
 
 import BackendTask
-import Content.Legals
+import Content.Minimal
 import Effect
 import ErrorPage
 import FatalError exposing (FatalError)
 import Head
 import Html
 import Html.Attributes as Attrs exposing (height)
-import Layout.Legals
+import Layout.Minimal
 import PagesMsg
 import RouteBuilder exposing (App, StatelessRoute)
 import Server.Request
@@ -46,7 +46,7 @@ route =
 
 
 type alias Data =
-    { legal : Content.Legals.Legal }
+    { minimal : Content.Minimal.Minimal }
 
 
 type alias ActionData =
@@ -55,7 +55,7 @@ type alias ActionData =
 
 data : BackendTask.BackendTask FatalError Data
 data =
-    Content.Legals.partners
+    Content.Minimal.partners
         |> BackendTask.allowFatal
         |> BackendTask.map Data
 
@@ -73,7 +73,7 @@ view app shared =
     { title = "Capybara House - Become A Partner"
     , body =
         [ Html.div [ Attrs.class "mx-auto prose max-w-none pb-8 pt-8 dark:prose-invert xl:col-span-2 xl:max-w-5xl xl:px-0" ]
-            [ Layout.Legals.view app.data.legal ]
+            [ Layout.Minimal.view app.data.minimal ]
 
         -- [ Html.iframe
         --     [ Attrs.attribute "data-tally-src" "https://tally.so/embed/nPz85x?hideTitle=0&transparentBackground=1&dynamicHeight=1"
