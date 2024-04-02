@@ -12,7 +12,7 @@ import UrlPath
 
 
 seoHeaders : Minimal -> List Head.Tag
-seoHeaders legal =
+seoHeaders minimal =
     let
         imageUrl =
             [ "media", "banner.png" ] |> UrlPath.join |> Pages.Url.fromPath
@@ -22,19 +22,19 @@ seoHeaders legal =
         , siteName = Settings.title
         , image =
             { url = imageUrl
-            , alt = legal.title
+            , alt = minimal.title
             , dimensions = Just { width = 300, height = 300 }
             , mimeType = Nothing
             }
-        , description = legal.company ++ " - " ++ legal.title
+        , description = minimal.company ++ " - " ++ minimal.title
         , locale = Settings.locale
-        , title = legal.title
+        , title = minimal.title
         }
         |> Seo.website
 
 
 view : Minimal -> Html msg
-view legal =
+view minimal =
     Html.div
         [ Attrs.class "divide-y divide-gray-200 dark:divide-gray-700"
         ]
@@ -42,5 +42,5 @@ view legal =
             [ Attrs.class "mx-auto prose max-w-none pb-8 pt-8 dark:prose-invert xl:col-span-2 xl:max-w-5xl xl:px-0"
             ]
           <|
-            Markdown.toHtml legal.body
+            Markdown.toHtml minimal.body
         ]
