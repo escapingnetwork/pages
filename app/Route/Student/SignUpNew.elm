@@ -235,7 +235,8 @@ form =
                                 , errorsView field
                                 ]
                     in
-                    [ fieldView "Forename" forename
+                    [ Html.input [ Attrs.type_ "hidden", Attrs.attribute "name" "form-name", Attrs.attribute "value" "student-form" ] []
+                    , fieldView "Forename" forename
                     , fieldView "Surname" surname
                     , fieldView "Email" email
                     , fieldView "Phone Number" phoneNumber
@@ -355,7 +356,6 @@ view app shared =
             , form
                 |> Pages.Form.renderHtml
                     [ Attrs.class "max-w-sm mx-auto"
-                    , Attrs.attribute "data-netlify" "true"
                     , Attrs.attribute "name" "student-form"
                     ]
                     (Form.options "student-form"
