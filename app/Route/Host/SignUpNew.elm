@@ -53,11 +53,7 @@ route =
 
 
 type alias Data =
-    {}
-
-
-
--- { minimal : Content.Minimal.Minimal }
+    { minimal : Content.Minimal.Minimal }
 
 
 type alias ActionData =
@@ -66,24 +62,16 @@ type alias ActionData =
     }
 
 
-
---  BackendTask { fatal : FatalError, recoverable : File.FileReadError Decode.Error } Legal
--- data : RouteParams -> Request -> BackendTask.BackendTask FatalError (Server.Response.Response Data ErrorPage)
--- data routeParams request =
---     BackendTask.map2
---         (Content.Legals.hosts
---             |> BackendTask.allowFatal
---         )
---         (Server.Response.render
---             |> BackendTask.succeed
---         )
-
-
 data : RouteParams -> Request -> BackendTask.BackendTask FatalError (Server.Response.Response Data ErrorPage)
 data routeParams request =
-    Data
-        |> Server.Response.render
-        |> BackendTask.succeed
+    mdText |> BackendTask.map Server.Response.render
+
+
+mdText : BackendTask.BackendTask FatalError Data
+mdText =
+    Content.Minimal.hosts
+        |> BackendTask.allowFatal
+        |> BackendTask.map Data
 
 
 head : RouteBuilder.App Data ActionData RouteParams -> List Head.Tag
@@ -196,7 +184,11 @@ form =
                             Html.div [ Attrs.class "mb-5" ]
                                 [ Html.label [ Attrs.class "block mb-2 text-lg font-semibold text-gray-900 dark:text-white" ]
                                     [ Html.text (label ++ " ")
-                                    , field |> Form.FieldView.input [ Attrs.class "bg-gray-50 mt-2 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-priring-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-priring-primary-500" ]
+                                    , field
+                                        |> Form.FieldView.input
+                                            [ Attrs.class "bg-gray-50 mt-2 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-priring-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-priring-primary-500"
+                                            , Attrs.attribute "type" label
+                                            ]
                                     ]
                                 , errorsView field
                                 ]
@@ -231,7 +223,10 @@ form =
                     , fieldView "Phone Number" phoneNumber
                     , fieldViewServiceSelect "Service" service
                     , fieldViewContactMethodSelect "Favorite Contact Method" contactMethod
-                    , Html.button [ Attrs.class "text-white bg-primary-500 hover:bg-primary-600 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800" ]
+                    , Html.button
+                        [ Attrs.class "text-white bg-primary-500 hover:bg-primary-600 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                        , Attrs.attribute "type" "submit"
+                        ]
                         [ Html.text
                             (if formState.submitting then
                                 "Updating..."
@@ -298,27 +293,16 @@ view app shared =
     { title = "Capybara House - Become A Host"
     , body =
         [ Html.div [ Attrs.class "mx-auto prose max-w-none pb-8 pt-8 dark:prose-invert xl:col-span-2 xl:max-w-5xl xl:px-0" ]
-            [ form
+            [ Layout.Minimal.view app.data.minimal
+            , form
                 |> Pages.Form.renderHtml
                     [ Attrs.class "max-w-sm mx-auto"
-                    , Attrs.attribute "data-netlify" "true"
                     ]
                     (Form.options "host-form"
                         |> Form.withInput emptyForm
                         |> Form.withServerResponse (app.action |> Maybe.map .formResponse)
                     )
                     app
-
-            -- , Html.iframe
-            --     [ Attrs.attribute "data-tally-src" "https://tally.so/embed/nPz85x?hideTitle=1&transparentBackground=1&dynamicHeight=1"
-            --     , Attrs.attribute "frameborder" "0"
-            --     , Attrs.style "width" "100%"
-            --     , Attrs.height 900
-            --     , Attrs.class "mx-auto prose dark:prose-invert xl:max-w-5xl xl:px-0"
-            --     , Attrs.title "Contact us"
-            --     , Attrs.src "https://tally.so/embed/nPz85x?hideTitle=1&transparentBackground=1&dynamicHeight=1"
-            --     ]
-            --     []
             ]
         ]
     }

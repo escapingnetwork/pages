@@ -10,7 +10,7 @@ import BackendTask
 import Content.Minimal
 import Date exposing (Date)
 import Effect
-import ErrorPage
+import ErrorPage exposing (ErrorPage)
 import FatalError exposing (FatalError)
 import Form
 import Form.Field as Field
@@ -47,9 +47,10 @@ type alias RouteParams =
 
 route : StatelessRoute RouteParams Data ActionData
 route =
-    RouteBuilder.single
+    RouteBuilder.serverRender
         { head = head
         , data = data
+        , action = action
         }
         |> RouteBuilder.buildNoState { view = view }
 
@@ -65,9 +66,14 @@ type alias ActionData =
     }
 
 
-data : BackendTask.BackendTask FatalError Data
-data =
-    Content.Minimal.accommodation
+data : RouteParams -> Request -> BackendTask.BackendTask FatalError (Server.Response.Response Data ErrorPage)
+data routeParams request =
+    mdText |> BackendTask.map Server.Response.render
+
+
+mdText : BackendTask.BackendTask FatalError Data
+mdText =
+    Content.Minimal.hosts
         |> BackendTask.allowFatal
         |> BackendTask.map Data
 
@@ -200,10 +206,6 @@ form =
                     }
                 |> Field.required "Required"
             )
-
-
-
--- |> Form.field "checkbox" Field.checkbox
 
 
 view :

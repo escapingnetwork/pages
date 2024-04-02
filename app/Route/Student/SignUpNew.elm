@@ -10,7 +10,7 @@ import BackendTask
 import Content.Minimal
 import Date exposing (Date)
 import Effect
-import ErrorPage
+import ErrorPage exposing (ErrorPage)
 import FatalError exposing (FatalError)
 import Form
 import Form.Field as Field
@@ -47,9 +47,10 @@ type alias RouteParams =
 
 route : StatelessRoute RouteParams Data ActionData
 route =
-    RouteBuilder.single
+    RouteBuilder.serverRender
         { head = head
         , data = data
+        , action = action
         }
         |> RouteBuilder.buildNoState { view = view }
 
@@ -65,9 +66,14 @@ type alias ActionData =
     }
 
 
-data : BackendTask.BackendTask FatalError Data
-data =
-    Content.Minimal.accommodation
+data : RouteParams -> Request -> BackendTask.BackendTask FatalError (Server.Response.Response Data ErrorPage)
+data routeParams request =
+    mdText |> BackendTask.map Server.Response.render
+
+
+mdText : BackendTask.BackendTask FatalError Data
+mdText =
+    Content.Minimal.hosts
         |> BackendTask.allowFatal
         |> BackendTask.map Data
 
@@ -334,10 +340,6 @@ form =
             )
 
 
-
--- |> Form.field "checkbox" Field.checkbox
-
-
 view :
     App Data ActionData RouteParams
     -> Shared.Model
@@ -350,24 +352,14 @@ view app shared =
             , form
                 |> Pages.Form.renderHtml
                     [ Attrs.class "max-w-sm mx-auto"
+                    , Attrs.attribute "data-netlify" "true"
+                    , Attrs.attribute "name" "student-form"
                     ]
                     (Form.options "student-form"
                         |> Form.withInput emptyForm
                         |> Form.withServerResponse (app.action |> Maybe.map .formResponse)
                     )
                     app
-
-            -- , Html.iframe
-            --     [ Attrs.attribute "data-tally-src" "https://tally.so/embed/mOGP0g?alignLeft=0&hideTitle=1&transparentBackground=1&dynamicHeight=1"
-            --     , Attrs.attribute "loading" "lazy"
-            --     , Attrs.style "width" "100%"
-            --     , Attrs.height 1500
-            --     , Attrs.title "Request Accommodation"
-            --     , Attrs.class "mx-auto prose dark:prose-invert xl:max-w-5xl xl:px-0"
-            --     , Attrs.title "Request Accommodation"
-            --     , Attrs.src "https://tally.so/embed/mOGP0g?alignLeft=0&hideTitle=1&transparentBackground=1&dynamicHeight=1"
-            --     ]
-            --     []
             ]
         ]
     }
@@ -393,7 +385,3 @@ action routeParams request =
                 formResponse
                 |> Server.Response.render
                 |> BackendTask.succeed
-
-
-
--- BackendTask.succeed (Server.Response.render {})

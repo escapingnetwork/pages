@@ -5,3 +5,6 @@ dist/
 .elm-pages/
 functions/
 bun.lockb
+
+# Local Netlify folder
+.netlify
