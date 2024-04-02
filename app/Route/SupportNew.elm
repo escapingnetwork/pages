@@ -152,7 +152,8 @@ form =
                                 , errorsView field
                                 ]
                     in
-                    [ fieldView "Forename" forename
+                    [ Html.input [ Attrs.type_ "hidden", Attrs.attribute "name" "form-name", Attrs.attribute "value" "support-form-netlify" ] []
+                    , fieldView "Forename" forename
                     , fieldView "Surname" surname
                     , fieldView "Email" email
                     , fieldView "Phone Number" phoneNumber
@@ -213,15 +214,16 @@ view :
     -> Shared.Model
     -> View.View (PagesMsg.PagesMsg Msg)
 view app shared =
-    { title = "Capybara House - Request Accommodation"
+    { title = "Capybara House - Support"
     , body =
         [ Html.div [ Attrs.class "mx-auto prose max-w-none pb-8 pt-8 dark:prose-invert xl:col-span-2 xl:max-w-5xl xl:px-0" ]
             [ Layout.Minimal.view app.data.minimal
             , form
                 |> Pages.Form.renderHtml
                     [ Attrs.class "max-w-sm mx-auto"
+                    , Attrs.attribute "name" "support-form-netlify"
                     ]
-                    (Form.options "student-form"
+                    (Form.options "support-form-netlify"
                         |> Form.withInput emptyForm
                         |> Form.withServerResponse (app.action |> Maybe.map .formResponse)
                     )

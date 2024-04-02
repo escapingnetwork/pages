@@ -217,7 +217,8 @@ form =
                                 , errorsView field
                                 ]
                     in
-                    [ fieldView "Forename" forename
+                    [ Html.input [ Attrs.type_ "hidden", Attrs.attribute "name" "form-name", Attrs.attribute "value" "host-form-netlify" ] []
+                    , fieldView "Forename" forename
                     , fieldView "Surname" surname
                     , fieldView "Email" email
                     , fieldView "Phone Number" phoneNumber
@@ -297,8 +298,9 @@ view app shared =
             , form
                 |> Pages.Form.renderHtml
                     [ Attrs.class "max-w-sm mx-auto"
+                    , Attrs.attribute "name" "host-form-netlify"
                     ]
-                    (Form.options "host-form"
+                    (Form.options "host-form-netlify"
                         |> Form.withInput emptyForm
                         |> Form.withServerResponse (app.action |> Maybe.map .formResponse)
                     )

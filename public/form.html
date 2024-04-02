@@ -10,7 +10,7 @@
 
 <body>
     <!-- A little help for the Netlify post-processing bots -->
-    <form name="student-form" netlify hidden>
+    <form name="student-form-netlify" netlify hidden>
         <input required="" name="forename" type="text">
         <input required="" name="surname" type="text">
         <input required="" name="email" type="text">
@@ -33,6 +33,34 @@
         <textarea required="" rows="5" cols="20" name="message"></textarea>
         <button type="submit">Submit</button>
     </form>
+
+    <form name="support-form-netlify" netlify hidden>
+        <input required="" name="forename" type="text">
+        <input required="" name="surname" type="text">
+        <input required="" name="email" type="text">
+        <input required="" name="phoneNumber" type="tel">
+        <textarea required="" rows="5" cols="20" name="message"></textarea>
+        <button type="submit">Submit</button>
+    </form>
+
+    <form name="host-form-netlify" netlify hidden>
+        <input required="" name="forename" type="text">
+        <input required="" name="surname" type="text">
+        <input required="" name="email" type="text">
+        <input required="" name="phoneNumber" type="tel">
+        <select name="service">
+            <option value="Self-Catering">Self-Catering</option>
+            <option value="Half-Board">Half-Board</option>
+            <option value="Hostel">Hostel</option>
+        </select>
+        <select name="contactMethod">
+            <option value="Email">Email</option>
+            <option value="Phone">Phone</option>
+            <option value="WhatsApp">WhatsApp</option>
+        </select>
+        <button type="submit">Submit</button>
+    </form>
+
 </body>
 
 </html>
