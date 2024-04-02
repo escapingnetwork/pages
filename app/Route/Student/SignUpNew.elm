@@ -73,7 +73,7 @@ data routeParams request =
 
 mdText : BackendTask.BackendTask FatalError Data
 mdText =
-    Content.Minimal.hosts
+    Content.Minimal.accommodation
         |> BackendTask.allowFatal
         |> BackendTask.map Data
 
