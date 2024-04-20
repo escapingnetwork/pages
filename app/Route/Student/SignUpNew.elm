@@ -438,7 +438,7 @@ accommodationRequestToJSON accommodationRequest =
         , ( "email", Encode.string accommodationRequest.email )
         , ( "phone", Encode.string accommodationRequest.phoneNumber )
         , ( "nationality", Encode.string accommodationRequest.nationality )
-        , ( "age", Encode.string (String.fromInt (Maybe.withDefault 0 accommodationRequest.age)) )
+        , ( "age", EncodeExtra.maybe Encode.int accommodationRequest.age )
         , ( "sex", EncodeExtra.maybe Encode.string (maybeSexToMaybeString accommodationRequest.sex) )
         , ( "institution", Encode.string accommodationRequest.institution )
         , ( "service", EncodeExtra.maybe Encode.string (maybeServiceToMaybeString accommodationRequest.service) )
