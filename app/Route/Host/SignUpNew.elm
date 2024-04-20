@@ -7,6 +7,8 @@ module Route.Host.SignUpNew exposing (Model, Msg, RouteParams, route, Data, Acti
 -}
 
 import BackendTask
+import BackendTask.Env as Env
+import BackendTask.Http exposing (emptyBody, jsonBody)
 import Content.Minimal
 import Effect
 import ErrorPage exposing (ErrorPage)
@@ -19,6 +21,8 @@ import Form.Validation as Validation
 import Head
 import Html exposing (Html)
 import Html.Attributes as Attrs exposing (height)
+import Json.Encode as Encode
+import Json.Encode.Extra as EncodeExtra
 import Layout.Minimal
 import Pages.Form
 import PagesMsg exposing (PagesMsg)
@@ -40,6 +44,12 @@ type alias Msg =
 
 type alias RouteParams =
     {}
+
+
+type alias EnvVariables =
+    { supabaseKey : String
+    , siteUrl : String
+    }
 
 
 route : StatelessRoute RouteParams Data ActionData
@@ -98,6 +108,22 @@ contactMethodToString contactMethod =
             "WhatsApp"
 
 
+maybeContactMethodToString : Maybe ContactMethod -> String
+maybeContactMethodToString contactMethod =
+    case contactMethod of
+        Just Email ->
+            "Email"
+
+        Just Phone ->
+            "Phone"
+
+        Just WhatsApp ->
+            "WhatsApp"
+
+        _ ->
+            ""
+
+
 type Service
     = HalfBoard
     | SelfCatering
@@ -115,6 +141,22 @@ serviceToString service =
 
         Hostel ->
             "Hostel"
+
+
+maybeServiceToString : Maybe Service -> String
+maybeServiceToString service =
+    case service of
+        Just HalfBoard ->
+            "Half-Board"
+
+        Just SelfCatering ->
+            "Self-Catering"
+
+        Just Hostel ->
+            "Hostel"
+
+        _ ->
+            ""
 
 
 type alias Host =
@@ -317,16 +359,86 @@ action :
 action routeParams request =
     case request |> Request.formData (form |> Form.Handler.init identity) of
         Nothing ->
-            "Expected form submission." |> FatalError.fromString |> BackendTask.fail
+            "Expected form submission."
+                |> FatalError.fromString
+                |> BackendTask.fail
 
         Just ( formResponse, userResult ) ->
-            ActionData
+            BackendTask.map2 EnvVariables
+                (Env.expect "SUPABASE_KEY" |> BackendTask.allowFatal)
+                (Env.get "BASE_URL"
+                    |> BackendTask.map (Maybe.withDefault "http://localhost:1234")
+                )
+                |> BackendTask.andThen (sendRequest formResponse userResult)
+
+
+hostRequestToJSON : Host -> Encode.Value
+hostRequestToJSON hostRequest =
+    Encode.object
+        [ ( "forename", Encode.string hostRequest.forename )
+        , ( "surname", Encode.string hostRequest.surname )
+        , ( "email", Encode.string hostRequest.email )
+        , ( "phone", Encode.string hostRequest.phoneNumber )
+        , ( "service", Encode.string (maybeServiceToString hostRequest.service) )
+        , ( "method", Encode.string (maybeContactMethodToString hostRequest.contactMethod) )
+        ]
+
+
+sendRequest : Form.ServerResponse String -> Form.Validated String Host -> EnvVariables -> BackendTask.BackendTask FatalError.FatalError (Server.Response.Response ActionData ErrorPage.ErrorPage)
+sendRequest formResponse userResult envVariables =
+    let
+        requestBody =
+            hostRequestToJSON
                 (userResult
                     |> Form.toResult
-                    -- TODO nicer error handling
-                    -- TODO wire up BackendTask server-side validation errors
                     |> Result.withDefault emptyForm
                 )
+                |> jsonBody
+    in
+    (BackendTask.Http.request
+        { method = "POST"
+        , headers =
+            [ ( "Content-Type", "application/json" )
+            , ( "Prefer", "return=minimal" )
+            , ( "apikey", envVariables.supabaseKey )
+            , ( "Authorization", "Bearer " ++ envVariables.supabaseKey )
+            ]
+        , url = envVariables.siteUrl ++ "/rest/v1/host_form"
+        , body = requestBody
+        , retries = Nothing
+        , timeoutInMs = Nothing
+        }
+        (BackendTask.Http.expectWhatever
+            (ActionData
+                emptyForm
                 formResponse
-                |> Server.Response.render
-                |> BackendTask.succeed
+            )
+        )
+        |> BackendTask.onError
+            (\{ recoverable } ->
+                case recoverable of
+                    BackendTask.Http.BadStatus metadata string ->
+                        if metadata.statusCode == 401 || metadata.statusCode == 403 || metadata.statusCode == 404 then
+                            BackendTask.succeed
+                                (ActionData
+                                    emptyForm
+                                    formResponse
+                                )
+
+                        else
+                            BackendTask.succeed
+                                (ActionData
+                                    emptyForm
+                                    formResponse
+                                )
+
+                    _ ->
+                        BackendTask.succeed
+                            (ActionData
+                                emptyForm
+                                formResponse
+                            )
+            )
+    )
+        |> BackendTask.map
+            Server.Response.render

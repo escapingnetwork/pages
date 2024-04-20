@@ -7,6 +7,8 @@ module Route.Student.SignUpNew exposing (..)
 -}
 
 import BackendTask
+import BackendTask.Env as Env
+import BackendTask.Http exposing (emptyBody, jsonBody)
 import Content.Minimal
 import Date exposing (Date)
 import Effect
@@ -20,6 +22,8 @@ import Form.Validation as Validation
 import Head
 import Html exposing (Html)
 import Html.Attributes as Attrs exposing (height)
+import Json.Encode as Encode
+import Json.Encode.Extra as EncodeExtra
 import Layout.Minimal
 import Pages.Form
 import Pages.FormData
@@ -45,6 +49,12 @@ type alias RouteParams =
     {}
 
 
+type alias EnvVariables =
+    { supabaseKey : String
+    , siteUrl : String
+    }
+
+
 route : StatelessRoute RouteParams Data ActionData
 route =
     RouteBuilder.serverRender
@@ -61,7 +71,7 @@ type alias Data =
 
 
 type alias ActionData =
-    { student : Student
+    { student : Accommodation
     , formResponse : Form.ServerResponse String
     }
 
@@ -102,6 +112,22 @@ sexToString sex =
             "Other"
 
 
+maybeSexToMaybeString : Maybe Sex -> Maybe String
+maybeSexToMaybeString sex =
+    case sex of
+        Just Male ->
+            Just "Male"
+
+        Just Female ->
+            Just "Female"
+
+        Just Other ->
+            Just "Other"
+
+        _ ->
+            Nothing
+
+
 type Service
     = HalfBoard
     | SelfCatering
@@ -121,7 +147,23 @@ serviceToString service =
             "Hostel"
 
 
-type alias Student =
+maybeServiceToMaybeString : Maybe Service -> Maybe String
+maybeServiceToMaybeString service =
+    case service of
+        Just HalfBoard ->
+            Just "Half-Board"
+
+        Just SelfCatering ->
+            Just "Self-Catering"
+
+        Just Hostel ->
+            Just "Hostel"
+
+        _ ->
+            Nothing
+
+
+type alias Accommodation =
     { forename : String
     , surname : String
     , email : String
@@ -137,7 +179,7 @@ type alias Student =
     }
 
 
-emptyForm : Student
+emptyForm : Accommodation
 emptyForm =
     { forename = ""
     , surname = ""
@@ -154,12 +196,12 @@ emptyForm =
     }
 
 
-form : Form.HtmlForm String Student Student (PagesMsg Msg)
+form : Form.HtmlForm String Accommodation Accommodation (PagesMsg Msg)
 form =
     Form.form
         (\forename surname email phoneNumber nationality age sex institution service from to message ->
             { combine =
-                Validation.succeed Student
+                Validation.succeed Accommodation
                     |> Validation.andMap forename
                     |> Validation.andMap surname
                     |> Validation.andMap email
@@ -375,16 +417,92 @@ action :
 action routeParams request =
     case request |> Request.formData (form |> Form.Handler.init identity) of
         Nothing ->
-            "Expected form submission." |> FatalError.fromString |> BackendTask.fail
+            "Expected form submission."
+                |> FatalError.fromString
+                |> BackendTask.fail
 
         Just ( formResponse, userResult ) ->
-            ActionData
+            BackendTask.map2 EnvVariables
+                (Env.expect "SUPABASE_KEY" |> BackendTask.allowFatal)
+                (Env.get "BASE_URL"
+                    |> BackendTask.map (Maybe.withDefault "http://localhost:1234")
+                )
+                |> BackendTask.andThen (sendRequest formResponse userResult)
+
+
+accommodationRequestToJSON : Accommodation -> Encode.Value
+accommodationRequestToJSON accommodationRequest =
+    Encode.object
+        [ ( "forename", Encode.string accommodationRequest.forename )
+        , ( "surname", Encode.string accommodationRequest.surname )
+        , ( "email", Encode.string accommodationRequest.email )
+        , ( "phone", Encode.string accommodationRequest.phoneNumber )
+        , ( "nationality", Encode.string accommodationRequest.nationality )
+        , ( "age", Encode.string (String.fromInt (Maybe.withDefault 0 accommodationRequest.age)) )
+        , ( "sex", EncodeExtra.maybe Encode.string (maybeSexToMaybeString accommodationRequest.sex) )
+        , ( "institution", Encode.string accommodationRequest.institution )
+        , ( "service", EncodeExtra.maybe Encode.string (maybeServiceToMaybeString accommodationRequest.service) )
+        , ( "from", Encode.string (Date.toIsoString accommodationRequest.from) )
+        , ( "to", Encode.string (Date.toIsoString accommodationRequest.to) )
+        , ( "message", Encode.string accommodationRequest.message )
+        ]
+
+
+sendRequest : Form.ServerResponse String -> Form.Validated String Accommodation -> EnvVariables -> BackendTask.BackendTask FatalError.FatalError (Server.Response.Response ActionData ErrorPage.ErrorPage)
+sendRequest formResponse userResult envVariables =
+    let
+        requestBody =
+            accommodationRequestToJSON
                 (userResult
                     |> Form.toResult
-                    -- TODO nicer error handling
-                    -- TODO wire up BackendTask server-side validation errors
                     |> Result.withDefault emptyForm
                 )
+                |> jsonBody
+    in
+    (BackendTask.Http.request
+        { method = "POST"
+        , headers =
+            [ ( "Content-Type", "application/json" )
+            , ( "Prefer", "return=minimal" )
+            , ( "apikey", envVariables.supabaseKey )
+            , ( "Authorization", "Bearer " ++ envVariables.supabaseKey )
+            ]
+        , url = envVariables.siteUrl ++ "/rest/v1/accommodation_request_form"
+        , body = requestBody
+        , retries = Nothing
+        , timeoutInMs = Nothing
+        }
+        (BackendTask.Http.expectWhatever
+            (ActionData
+                emptyForm
                 formResponse
-                |> Server.Response.render
-                |> BackendTask.succeed
+            )
+        )
+        |> BackendTask.onError
+            (\{ recoverable } ->
+                case recoverable of
+                    BackendTask.Http.BadStatus metadata string ->
+                        if metadata.statusCode == 401 || metadata.statusCode == 403 || metadata.statusCode == 404 then
+                            BackendTask.succeed
+                                (ActionData
+                                    emptyForm
+                                    formResponse
+                                )
+
+                        else
+                            BackendTask.succeed
+                                (ActionData
+                                    emptyForm
+                                    formResponse
+                                )
+
+                    _ ->
+                        BackendTask.succeed
+                            (ActionData
+                                emptyForm
+                                formResponse
+                            )
+            )
+    )
+        |> BackendTask.map
+            Server.Response.render
