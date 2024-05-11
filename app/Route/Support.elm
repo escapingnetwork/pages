@@ -80,13 +80,6 @@ type alias ActionData =
 
 data : RouteParams -> Request -> BackendTask.BackendTask FatalError (Server.Response.Response Data ErrorPage)
 data routeParams request =
-    let
-        routes =
-            Debug.log "data-routes" routeParams
-
-        req =
-            Debug.log "data-request" request
-    in
     mdText
         |> BackendTask.map Server.Response.render
 
@@ -294,13 +287,6 @@ action :
     -> Request.Request
     -> BackendTask.BackendTask FatalError.FatalError (Server.Response.Response ActionData ErrorPage.ErrorPage)
 action routeParams request =
-    let
-        routes =
-            Debug.log "action-route" routeParams
-
-        req =
-            Debug.log "action-request" request
-    in
     case request |> Request.formData (form |> Form.Handler.init identity) of
         Nothing ->
             "Expected form submission."
