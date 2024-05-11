@@ -7,7 +7,10 @@ module Route.Host.FullRegistrationNew exposing (Model, Msg, RouteParams, route, 
 -}
 
 import BackendTask
+import BackendTask.Env as Env
+import BackendTask.Http exposing (emptyBody, jsonBody)
 import Content.Minimal
+import Dict
 import Effect
 import ErrorPage
 import FatalError exposing (FatalError)
@@ -20,10 +23,13 @@ import Head
 import Html exposing (Html, address)
 import Html.Attributes as Attrs exposing (height)
 import Html.Attributes.Autocomplete exposing (DetailedCompletion(..))
+import Json.Encode as Encode
+import Json.Encode.Extra as EncodeExtra
 import LanguageTag.Region exposing (ci)
 import Layout.Minimal
 import Pages.Form
 import PagesMsg exposing (PagesMsg)
+import Route
 import RouteBuilder exposing (App, StatelessRoute)
 import Server.Request as Request exposing (Request)
 import Server.Response
@@ -42,6 +48,12 @@ type alias Msg =
 
 type alias RouteParams =
     {}
+
+
+type alias EnvVariables =
+    { supabaseKey : String
+    , siteUrl : String
+    }
 
 
 route : StatelessRoute RouteParams Data ActionData
@@ -95,6 +107,22 @@ contactMethodToString contactMethod =
             "WhatsApp"
 
 
+maybeContactMethodToString : Maybe ContactMethod -> String
+maybeContactMethodToString contactMethod =
+    case contactMethod of
+        Just Email ->
+            "Email"
+
+        Just Phone ->
+            "Phone"
+
+        Just WhatsApp ->
+            "WhatsApp"
+
+        _ ->
+            ""
+
+
 type Service
     = HalfBoard
     | SelfCatering
@@ -112,6 +140,22 @@ serviceToString service =
 
         Hostel ->
             "Hostel"
+
+
+maybeServiceToString : Maybe Service -> String
+maybeServiceToString service =
+    case service of
+        Just HalfBoard ->
+            "Half-Board"
+
+        Just SelfCatering ->
+            "Self-Catering"
+
+        Just Hostel ->
+            "Hostel"
+
+        _ ->
+            ""
 
 
 type alias Host =
@@ -251,7 +295,7 @@ form =
                     , Html.button [ Attrs.class "text-white bg-primary-500 hover:bg-primary-600 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800" ]
                         [ Html.text
                             (if formState.submitting then
-                                "Updating..."
+                                "Sending..."
 
                              else
                                 "Submit"
@@ -362,22 +406,35 @@ view app shared =
                 |> Pages.Form.renderHtml
                     [ Attrs.class "max-w-sm mx-auto"
                     ]
-                    (Form.options "host-form"
+                    (Form.options "full-host-form"
                         |> Form.withInput emptyForm
                         |> Form.withServerResponse (app.action |> Maybe.map .formResponse)
                     )
                     app
+            , if Dict.isEmpty <| Maybe.withDefault Dict.empty ((app.action |> Maybe.map .formResponse) |> Maybe.map .serverSideErrors) then
+                Html.text ""
 
-            -- , Html.iframe
-            --     [ Attrs.attribute "data-tally-src" "https://tally.so/embed/nPz85x?hideTitle=1&transparentBackground=1&dynamicHeight=1"
-            --     , Attrs.attribute "frameborder" "0"
-            --     , Attrs.style "width" "100%"
-            --     , Attrs.height 900
-            --     , Attrs.class "mx-auto prose dark:prose-invert xl:max-w-5xl xl:px-0"
-            --     , Attrs.title "Contact us"
-            --     , Attrs.src "https://tally.so/embed/nPz85x?hideTitle=1&transparentBackground=1&dynamicHeight=1"
-            --     ]
-            --     []
+              else
+                Html.div
+                    [ Attrs.class "max-w-sm mx-auto p-4 mb-4 mt-4 border border-red-300 text-center text-md text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+                    , Attrs.attribute "role" "alert"
+                    ]
+                    [ Html.span
+                        [ Attrs.class "font-semibold"
+                        ]
+                        [ Html.text "There was an error sending your request!" ]
+                    , Html.span
+                        [ Attrs.class "font-medium"
+                        ]
+                        [ Html.br [] []
+                        , Html.text "Please contact "
+                        , Html.a
+                            [ Attrs.href "mailto:info@capybara.house"
+                            , Attrs.class "hover:underline "
+                            ]
+                            [ Html.text "info@capybara.house" ]
+                        ]
+                    ]
             ]
         ]
     }
@@ -390,16 +447,92 @@ action :
 action routeParams request =
     case request |> Request.formData (form |> Form.Handler.init identity) of
         Nothing ->
-            "Expected form submission." |> FatalError.fromString |> BackendTask.fail
+            "Expected form submission."
+                |> FatalError.fromString
+                |> BackendTask.fail
 
         Just ( formResponse, userResult ) ->
-            ActionData
+            BackendTask.map2 EnvVariables
+                (Env.expect "SUPABASE_KEY" |> BackendTask.allowFatal)
+                (Env.get "BASE_URL"
+                    |> BackendTask.map (Maybe.withDefault "http://localhost:1234")
+                )
+                |> BackendTask.andThen (sendRequest formResponse userResult)
+
+
+hostRequestToJSON : Host -> Encode.Value
+hostRequestToJSON hostRequest =
+    Encode.object
+        [ ( "forename", Encode.string hostRequest.forename )
+        , ( "surname", Encode.string hostRequest.surname )
+        , ( "email", Encode.string hostRequest.email )
+        , ( "phone", Encode.string hostRequest.phoneNumber )
+        , ( "service", Encode.string (maybeServiceToString hostRequest.service) )
+        , ( "method", Encode.string (maybeContactMethodToString hostRequest.contactMethod) )
+        , ( "address1", Encode.string hostRequest.address1 )
+        , ( "address2", Encode.string hostRequest.address2 )
+        , ( "emacityil", Encode.string hostRequest.city )
+        , ( "country", Encode.string hostRequest.country )
+        , ( "eircode", Encode.string hostRequest.eircode )
+        , ( "facilities", Encode.string hostRequest.facilities )
+        , ( "singleRooms", EncodeExtra.maybe Encode.int hostRequest.singleRooms )
+        , ( "twinRooms", EncodeExtra.maybe Encode.int hostRequest.twinRooms )
+        ]
+
+
+sendRequest : Form.ServerResponse String -> Form.Validated String Host -> EnvVariables -> BackendTask.BackendTask FatalError.FatalError (Server.Response.Response ActionData ErrorPage.ErrorPage)
+sendRequest formResponse userResult envVariables =
+    let
+        requestBody =
+            hostRequestToJSON
                 (userResult
                     |> Form.toResult
-                    -- TODO nicer error handling
-                    -- TODO wire up BackendTask server-side validation errors
                     |> Result.withDefault emptyForm
                 )
+                |> jsonBody
+    in
+    BackendTask.Http.request
+        { method = "POST"
+        , headers =
+            [ ( "Content-Type", "application/json" )
+            , ( "Prefer", "return=minimal" )
+            , ( "apikey", envVariables.supabaseKey )
+            , ( "Authorization", "Bearer " ++ envVariables.supabaseKey )
+            ]
+        , url = envVariables.siteUrl ++ "/rest/v1/host_form"
+        , body = requestBody
+        , retries = Nothing
+        , timeoutInMs = Nothing
+        }
+        (BackendTask.Http.expectWhatever
+            (ActionData
+                emptyForm
                 formResponse
-                |> Server.Response.render
-                |> BackendTask.succeed
+            )
+        )
+        |> BackendTask.onError
+            (\{ recoverable } ->
+                case recoverable of
+                    _ ->
+                        BackendTask.succeed
+                            (ActionData
+                                emptyForm
+                                { formResponse | serverSideErrors = Dict.singleton "ERROR" [ "ERROR" ] }
+                            )
+            )
+        |> BackendTask.map
+            (\response ->
+                let
+                    contact =
+                        userResult
+                            |> Form.toResult
+                            |> Result.withDefault emptyForm
+                in
+                if Dict.isEmpty response.formResponse.serverSideErrors then
+                    Route.Support_
+                        { support = contact.forename }
+                        |> Route.redirectTo
+
+                else
+                    Server.Response.render response
+            )

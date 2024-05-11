@@ -28,7 +28,8 @@
             "justinmimbs/date": "4.0.1",
             "kuon/elm-string-normalize": "1.0.5",
             "pablohirafuji/elm-syntax-highlight": "3.5.0",
-            "phosphor-icons/phosphor-elm": "2.0.0"
+            "phosphor-icons/phosphor-elm": "2.0.0",
+            "supermario/elm-countries": "1.1.1"
         },
         "indirect": {
             "Chadtech/elm-bool-extra": "2.4.2",
