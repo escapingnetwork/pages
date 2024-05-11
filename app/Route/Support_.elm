@@ -102,7 +102,7 @@ view app shared model =
         [ Html.div [ Attrs.class "mx-auto prose max-w-none pb-8 pt-8 dark:prose-invert xl:col-span-2 xl:max-w-5xl xl:px-0" ]
             [ Layout.Minimal.view app.data.minimal
             , Html.h1
-                [ Attrs.class "text-5xl font-extrabold mt-2"
+                [ Attrs.class "text-5xl font-extrabold mt-2 text-center"
                 ]
                 [ Html.text <| "Thank You " ++ app.routeParams.support ++ " !"
                 , Html.small
