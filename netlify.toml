@@ -14,6 +14,22 @@ node_bundler = "esbuild"
 # Includes all Markdown files inside the "files/" directory.
 included_files = [
   "content/accommodation.md",
+  "content/en/accommodation.md",
+  "content/es/accommodation.md",
+  "content/de/accommodation.md",
+  "content/pt/accommodation.md",
   "content/hosts.md",
+  "content/en/hosts.md",
+  "content/es/hosts.md",
+  "content/de/hosts.md",
+  "content/pt/hosts.md",
   "content/support.md",
+  "content/en/support.md",
+  "content/es/support.md",
+  "content/de/support.md",
+  "content/pt/support.md",
+  "content/en/support.md",
+  "content/es/support.md",
+  "content/de/support.md",
+  "content/pt/support.md",
 ]
