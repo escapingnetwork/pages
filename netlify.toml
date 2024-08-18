@@ -1,15 +1,19 @@
 [build]
-  functions = "functions/"
-  publish = "dist/"
-  command = "export ELM_HOME=\"$NETLIFY_BUILD_BASE/cache/elm\" && npm install &&  npx travelm-agency --elm_path=src/I18n.elm --json_path=public/i18n translations && npm run build"
+functions = "functions/"
+publish = "dist/"
+command = "export ELM_HOME=\"$NETLIFY_BUILD_BASE/cache/elm\" && npm install &&  npm travelm-agency --elm_path=src/I18n.elm --json_path=public/i18n translations && npm run build"
 
 [dev]
-  command = "npm start"
-  targetPort = 1234
-  autoLaunch = true
-  framework = "#custom"
+command = "npm start"
+targetPort = 1234
+autoLaunch = true
+framework = "#custom"
 
 [functions]
-  node_bundler = "esbuild"
-  # Includes all Markdown files inside the "files/" directory.
-  included_files = ["content/accommodation.md","content/hosts.md","content/support.md"]
+node_bundler = "esbuild"
+# Includes all Markdown files inside the "files/" directory.
+included_files = [
+  "content/accommodation.md",
+  "content/hosts.md",
+  "content/support.md",
+]
