@@ -22,6 +22,7 @@ import Form.Validation as Validation
 import Head
 import Html exposing (Html)
 import Html.Attributes as Attrs exposing (height)
+import I18n as Translations
 import Json.Encode as Encode
 import Json.Encode.Extra as EncodeExtra
 import Layout.Minimal
@@ -182,8 +183,8 @@ emptyForm =
     }
 
 
-form : Form.HtmlForm String Host Host (PagesMsg Msg)
-form =
+form : Translations.I18n -> Form.HtmlForm String Host Host (PagesMsg Msg)
+form t =
     Form.form
         (\forename surname email phoneNumber service contactMethod ->
             { combine =
@@ -262,12 +263,12 @@ form =
                                 ]
                     in
                     [ Html.input [ Attrs.type_ "hidden", Attrs.attribute "name" "form-name", Attrs.attribute "value" "host-form" ] []
-                    , fieldView "Forename" forename
-                    , fieldView "Surname" surname
-                    , fieldView "Email" email
-                    , fieldView "Phone Number" phoneNumber
-                    , fieldViewServiceSelect "Service" service
-                    , fieldViewContactMethodSelect "Favorite Contact Method" contactMethod
+                    , fieldView (Translations.formsForename t) forename
+                    , fieldView (Translations.formsSurname t) surname
+                    , fieldView (Translations.formsEmail t) email
+                    , fieldView (Translations.formsPhone t) phoneNumber
+                    , fieldViewServiceSelect (Translations.formsService t) service
+                    , fieldViewContactMethodSelect (Translations.formsContact t) contactMethod
                     , Html.button
                         [ Attrs.class "text-white bg-primary-500 hover:bg-primary-600 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
                         , Attrs.attribute "type" "submit"
@@ -339,7 +340,7 @@ view app shared =
     , body =
         [ Html.div [ Attrs.class "mx-auto prose max-w-none pb-8 pt-8 dark:prose-invert xl:col-span-2 xl:max-w-5xl xl:px-0" ]
             [ Layout.Minimal.view app.data.minimal
-            , form
+            , form shared.i18n
                 |> Pages.Form.renderHtml
                     [ Attrs.class "max-w-sm mx-auto"
                     ]
@@ -382,7 +383,7 @@ action :
     -> Request.Request
     -> BackendTask.BackendTask FatalError.FatalError (Server.Response.Response ActionData ErrorPage.ErrorPage)
 action routeParams request =
-    case request |> Request.formData (form |> Form.Handler.init identity) of
+    case request |> Request.formData (form (Translations.init { lang = Translations.En, path = "https://capybara.house/" ++ "/i18n" }) |> Form.Handler.init identity) of
         Nothing ->
             "Expected form submission."
                 |> FatalError.fromString
