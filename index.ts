@@ -1,3 +1,5 @@
+import intl_proxy from "intl-proxy";
+
 type ElmPagesInit = {
   load: (elmLoaded: Promise<unknown>) => Promise<void>;
   flags: unknown;
@@ -8,7 +10,9 @@ const config: ElmPagesInit = {
     await elmLoaded;
   },
   flags: function () {
-    return "You can decode this in Shared.elm using Json.Decode.string!";
+    return {
+      language: "en"
+    };
   },
 };
 

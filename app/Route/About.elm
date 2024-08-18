@@ -5,11 +5,12 @@ import Content.About exposing (Author)
 import FatalError exposing (FatalError)
 import Head
 import Head.Seo as Seo
+import I18n exposing (I18n)
 import Layout.About
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
-import Shared
+import Shared exposing (Msg(..))
 import UrlPath
 import View exposing (View)
 
@@ -45,7 +46,7 @@ route =
 
 data : BackendTask.BackendTask FatalError Data
 data =
-    Content.About.defaultAuthor
+    Content.About.defaultAuthor ""
         |> BackendTask.allowFatal
         |> BackendTask.map Data
 
@@ -61,8 +62,16 @@ view :
     App Data ActionData RouteParams
     -> Shared.Model
     -> View (PagesMsg Msg)
-view app _ =
+view app model =
     { title = "Capybara House - About"
     , body =
-        [ Layout.About.view app.data.author ]
+        [ Layout.About.view model.i18n
+            (case model.language of
+                I18n.En ->
+                    app.data.author
+
+                _ ->
+                    app.data.author
+            )
+        ]
     }

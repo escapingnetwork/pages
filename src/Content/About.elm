@@ -19,16 +19,19 @@ type alias Author =
     }
 
 
-authorFiles : BackendTask error (List { filePath : String, slug : String })
+authorFiles : BackendTask error (List { filePath : String, language : String, slug : String })
 authorFiles =
     Glob.succeed
-        (\filePath fileName ->
+        (\filePath language fileName ->
             { filePath = filePath
+            , language = language
             , slug = fileName
             }
         )
         |> Glob.captureFilePath
-        |> Glob.match (Glob.literal "content/authors/")
+        |> Glob.match (Glob.literal "content/")
+        |> Glob.capture Glob.wildcard
+        |> Glob.match (Glob.literal "/authors/")
         |> Glob.capture Glob.wildcard
         |> Glob.match (Glob.literal ".md")
         |> Glob.toBackendTask
@@ -61,6 +64,14 @@ authorDecoder slug body =
         (Decode.succeed slug)
 
 
-defaultAuthor : BackendTask { fatal : FatalError, recoverable : File.FileReadError Decode.Error } Author
-defaultAuthor =
-    File.bodyWithFrontmatter (authorDecoder "default") "content/authors/default.md"
+defaultAuthor : String -> BackendTask { fatal : FatalError, recoverable : File.FileReadError Decode.Error } Author
+defaultAuthor lang =
+    let
+        path =
+            if lang == "" then
+                "content/en/authors/default.md"
+
+            else
+                "content/" ++ lang ++ "/authors/default.md"
+    in
+    File.bodyWithFrontmatter (authorDecoder "default") path

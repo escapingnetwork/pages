@@ -6,6 +6,7 @@ import Head.Seo as Seo
 import Html exposing (Html)
 import Html.Attributes as Attrs
 import Html.Extra
+import I18n as Translations exposing (..)
 import Layout.Markdown as Markdown
 import Pages.Url
 import Phosphor
@@ -98,8 +99,8 @@ socialsView socials =
             ]
 
 
-view : Author -> Html msg
-view author =
+view : I18n -> Author -> Html msg
+view translation author =
     Html.div
         [ Attrs.class "divide-y divide-gray-200 dark:divide-gray-700 mb-10"
         ]
@@ -109,7 +110,7 @@ view author =
             [ Html.h1
                 [ Attrs.class "text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14 text-center"
                 ]
-                [ Html.text "About Us" ]
+                [ Html.text <| Translations.aboutTitle translation ]
             ]
         , Html.div
             [ Attrs.class "items-start space-y-2 xl:grid xl:grid-cols-3 xl:gap-x-8 xl:space-y-0"

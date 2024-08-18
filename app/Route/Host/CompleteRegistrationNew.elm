@@ -78,7 +78,7 @@ type alias ActionData =
 
 data : BackendTask.BackendTask FatalError Data
 data =
-    Content.Minimal.hosts
+    Content.Minimal.hosts ""
         |> BackendTask.allowFatal
         |> BackendTask.map Data
 
@@ -379,7 +379,7 @@ action routeParams request =
             BackendTask.map2 EnvVariables
                 (Env.expect "SUPABASE_KEY" |> BackendTask.allowFatal)
                 (Env.get "BASE_URL"
-                    |> BackendTask.map (Maybe.withDefault "http://localhost:1234")
+                    |> BackendTask.map (Maybe.withDefault "https://capybara.house/")
                 )
                 |> BackendTask.andThen (sendRequest formResponse userResult)
 

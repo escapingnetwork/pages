@@ -4,9 +4,13 @@ import BackendTask exposing (BackendTask)
 import Effect exposing (Effect)
 import FatalError exposing (FatalError)
 import Html exposing (Html)
+import Http
+import I18n as Translations exposing (..)
 import Layout
+import List.Extra
 import Pages.Flags
 import Pages.PageUrl exposing (PageUrl)
+import Pages.Url
 import Route exposing (Route)
 import SharedTemplate exposing (SharedTemplate)
 import UrlPath exposing (UrlPath)
@@ -26,6 +30,8 @@ template =
 
 type Msg
     = MenuClicked
+    | ChangeLanguage Language
+    | LoadedTranslations (Result Http.Error (I18n -> I18n))
 
 
 type alias Data =
@@ -38,6 +44,8 @@ type SharedMsg
 
 type alias Model =
     { showMenu : Bool
+    , i18n : I18n
+    , language : Language
     }
 
 
@@ -54,10 +62,50 @@ init :
             , pageUrl : Maybe PageUrl
             }
     -> ( Model, Effect Msg )
-init _ _ =
-    ( { showMenu = False }
-    , Effect.none
+init _ pageData =
+    let
+        currentPath =
+            Maybe.map
+                .path
+                pageData
+                |> Maybe.map .path
+
+        lang =
+            languageFromUrlPath currentPath
+
+        model =
+            { showMenu = False
+            , i18n = Translations.init { lang = lang, path = "https://capybara.house/" ++ "/i18n" }
+            , language = lang
+            }
+    in
+    ( model
+    , Effect.Cmd <| Translations.loadHome LoadedTranslations model.i18n
     )
+
+
+languageFromUrlPath : Maybe UrlPath.UrlPath -> Language
+languageFromUrlPath path =
+    case path of
+        Just p ->
+            let
+                segments =
+                    UrlPath.toSegments <| Pages.Url.toString <| Pages.Url.fromPath p
+            in
+            case List.head segments of
+                Just h ->
+                    case List.Extra.find (\lang -> lang == Maybe.withDefault Translations.En (Translations.languageFromString h)) Translations.languages of
+                        Just l ->
+                            l
+
+                        _ ->
+                            Translations.En
+
+                Nothing ->
+                    Translations.En
+
+        Nothing ->
+            Translations.En
 
 
 update : Msg -> Model -> ( Model, Effect Msg )
@@ -65,6 +113,19 @@ update msg model =
     case msg of
         MenuClicked ->
             ( { model | showMenu = not model.showMenu }, Effect.none )
+
+        ChangeLanguage language ->
+            let
+                ( newI18n, cmds ) =
+                    Translations.switchLanguage language LoadedTranslations model.i18n
+            in
+            ( { model | i18n = newI18n }, Effect.Cmd cmds )
+
+        LoadedTranslations (Ok addTranslations) ->
+            ( { model | i18n = addTranslations model.i18n }, Effect.none )
+
+        LoadedTranslations (Err _) ->
+            ( model, Effect.none )
 
 
 subscriptions : UrlPath -> Model -> Sub Msg
@@ -87,7 +148,7 @@ view :
     -> (Msg -> msg)
     -> View msg
     -> { body : List (Html msg), title : String }
-view _ _ model toMsg pageView =
-    { body = Layout.view model.showMenu (toMsg MenuClicked) pageView.body
+view _ { path, route } model toMsg pageView =
+    { body = Layout.view path model.i18n model.showMenu (toMsg MenuClicked) (\lang -> toMsg (ChangeLanguage lang)) pageView.body
     , title = pageView.title
     }

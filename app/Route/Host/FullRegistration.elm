@@ -55,7 +55,7 @@ type alias ActionData =
 
 data : BackendTask.BackendTask FatalError Data
 data =
-    Content.Minimal.hosts
+    Content.Minimal.hosts ""
         |> BackendTask.allowFatal
         |> BackendTask.map Data
 

@@ -1,17 +1,23 @@
 module Layout exposing (seoHeaders, view)
 
+-- import Pages.PageUrl
+-- import Pages.Url as Url
+-- import Phosphor
+
 import Head exposing (Tag)
 import Head.Seo as Seo
 import Html exposing (Html, footer)
 import Html.Attributes as Attrs
 import Html.Events as Events
+import I18n as Translations exposing (..)
 import LanguageTag.Language as Language
 import LanguageTag.Region as Region
-import Pages.Url
-import Phosphor
+import List exposing (length)
+import List.Extra
+import Pages.Url exposing (fromPath, toString)
 import Route exposing (Route)
 import Settings
-import Svg exposing (path, svg)
+import Svg exposing (path)
 import Svg.Attributes as SvgAttr
 import UrlPath
 
@@ -20,7 +26,7 @@ seoHeaders : List Tag
 seoHeaders =
     let
         imageUrl =
-            [ "media", "banner.png" ] |> UrlPath.join |> Pages.Url.fromPath
+            [ "media", "banner.png" ] |> UrlPath.join |> fromPath
     in
     Seo.summaryLarge
         { canonicalUrlOverride = Nothing
@@ -38,12 +44,12 @@ seoHeaders =
         |> Seo.website
 
 
-menu : List { label : String, route : Route }
-menu =
-    [ { label = "Our Services", route = Route.Services }
-    , { label = "Become a Host", route = Route.Host__SignUp }
-    , { label = "Become a Partner", route = Route.Partner__SignUp }
-    , { label = "About Us", route = Route.About }
+menu : I18n -> List { label : String, route : Route }
+menu translation =
+    [ { label = navbarServices translation, route = Route.Lang___Services { lang = Translations.languageToString <| Translations.currentLanguage translation } }
+    , { label = navbarHost translation, route = Route.Lang___Host__SignUp { lang = Translations.languageToString <| Translations.currentLanguage translation } }
+    , { label = navbarPartner translation, route = Route.Lang___Partner__SignUp { lang = Translations.languageToString <| Translations.currentLanguage translation } }
+    , { label = navbarAbout translation, route = Route.Lang___About { lang = Translations.languageToString <| Translations.currentLanguage translation } }
     ]
 
 
@@ -261,13 +267,13 @@ viewMainMenuItem { label, route } =
         route
 
 
-viewSideMainMenuItem : msg -> { label : String, route : Route } -> Html msg
-viewSideMainMenuItem onMenuToggle { label, route } =
+viewSideMainMenuItem : msg -> I18n -> { label : String, route : Route } -> Html msg
+viewSideMainMenuItem onMenuToggle translation { label, route } =
     Html.div
         [ Attrs.class "px-12 py-4"
         ]
         [ Route.link
-            (if label == "Request Accommodation" then
+            (if label == Translations.buttonRequestAccommodation translation then
                 [ Attrs.class "text-2xl font-bold tracking-widest text-primary-500 dark:text-gray-100"
                 , Events.onClick onMenuToggle
                 ]
@@ -324,17 +330,96 @@ background =
         ]
 
 
-viewMenu : Bool -> msg -> Html msg
-viewMenu showMenu onMenuToggle =
+viewMenu : UrlPath.UrlPath -> I18n -> Bool -> msg -> (Language -> msg) -> Html msg
+viewMenu path translation showMenu onMenuToggle onLanguageChange =
     let
         mainMenuItems =
-            List.map viewMainMenuItem menu
+            List.map viewMainMenuItem (menu translation)
 
         sideMenuItems =
             { label = "Home", route = Route.Index }
-                :: { label = "Request Accommodation", route = Route.Student__SignUp }
-                :: menu
-                |> List.map (viewSideMainMenuItem onMenuToggle)
+                :: { label = Translations.buttonRequestAccommodation translation, route = Route.Lang___Student__SignUp { lang = Translations.languageToString <| Translations.currentLanguage translation } }
+                :: menu translation
+                |> List.map (viewSideMainMenuItem onMenuToggle translation)
+
+        sidebarLanguages =
+            Html.div [ Attrs.class "px-12 py-4 bottom-2 fixed" ]
+                [ Html.h2
+                    [ Attrs.class "text-2xl font-bold tracking-widest text-gray-900 dark:text-gray-100 mb-2"
+                    ]
+                    [ Html.text <| Translations.footerLanguage translation ]
+                , Html.div [ Attrs.class "grid grid-flow-col gap-2 text-lg font-bold tracking-widest text-gray-900 dark:text-gray-100" ]
+                    [ Html.div
+                        []
+                        [ Html.button
+                            [ Attrs.class "hover:underline"
+                            , Events.onClick (onLanguageChange Translations.En)
+                            ]
+                            [ Html.a
+                                [ Attrs.href <| changeLanguageUrlPath path Translations.En
+                                , Attrs.hreflang <| Translations.languageToString Translations.En
+                                , if Translations.currentLanguage translation == Translations.En then
+                                    Attrs.class "text-primary-500"
+
+                                  else
+                                    Attrs.class "text-gray-500"
+                                ]
+                                [ Html.text "EN" ]
+                            ]
+                        ]
+                    , Html.div []
+                        [ Html.button
+                            [ Attrs.class "hover:underline"
+                            , Events.onClick (onLanguageChange Translations.Es)
+                            ]
+                            [ Html.a
+                                [ Attrs.href <| changeLanguageUrlPath path Translations.Es
+                                , Attrs.hreflang <| Translations.languageToString Translations.Es
+                                , if Translations.currentLanguage translation == Translations.Es then
+                                    Attrs.class "text-primary-500"
+
+                                  else
+                                    Attrs.class "text-gray-500"
+                                ]
+                                [ Html.text "ES" ]
+                            ]
+                        ]
+                    , Html.div []
+                        [ Html.button
+                            [ Attrs.class "hover:underline"
+                            , Events.onClick (onLanguageChange Translations.Pt)
+                            ]
+                            [ Html.a
+                                [ Attrs.href <| changeLanguageUrlPath path Translations.Pt
+                                , Attrs.hreflang <| Translations.languageToString Translations.Pt
+                                , if Translations.currentLanguage translation == Translations.Pt then
+                                    Attrs.class "text-primary-500"
+
+                                  else
+                                    Attrs.class "text-gray-500"
+                                ]
+                                [ Html.text "PT" ]
+                            ]
+                        ]
+                    , Html.div []
+                        [ Html.button
+                            [ Attrs.class "hover:underline"
+                            , Events.onClick (onLanguageChange Translations.De)
+                            ]
+                            [ Html.a
+                                [ Attrs.href <| changeLanguageUrlPath path Translations.De
+                                , Attrs.hreflang <| Translations.languageToString Translations.De
+                                , if Translations.currentLanguage translation == Translations.De then
+                                    Attrs.class "text-primary-500"
+
+                                  else
+                                    Attrs.class "text-gray-500"
+                                ]
+                                [ Html.text "DE" ]
+                            ]
+                        ]
+                    ]
+                ]
     in
     Html.nav
         [ Attrs.class "flex items-center leading-5 space-x-4 sm:space-x-6"
@@ -390,14 +475,14 @@ viewMenu showMenu onMenuToggle =
                     , Html.div
                         [ Attrs.class "fixed mt-8 h-full"
                         ]
-                        sideMenuItems
+                        (List.reverse <| sidebarLanguages :: List.reverse sideMenuItems)
                     ]
                ]
         )
 
 
-view : Bool -> msg -> List (Html msg) -> List (Html msg)
-view showMenu onMenuToggle body =
+view : UrlPath.UrlPath -> I18n -> Bool -> msg -> (Language -> msg) -> List (Html msg) -> List (Html msg)
+view path translation showMenu onMenuToggle onLanguageChange body =
     [ Html.div [ Attrs.class "mx-auto  px-4 sm:px-6 xl:px-10" ]
         -- Attrs.class "mx-auto max-w-3xl px-4 sm:px-6 xl:max-w-5xl xl:px-0"
         [ Html.div [ Attrs.class "flex h-screen flex-col justify-between font-sans" ]
@@ -420,17 +505,17 @@ view showMenu onMenuToggle body =
                             ]
                         ]
                     ]
-                , viewMenu showMenu onMenuToggle
+                , viewMenu path translation showMenu onMenuToggle onLanguageChange
                 ]
             , Html.main_ [ Attrs.class "w-full mb-auto" ] body
-            , footer
+            , footer path translation onLanguageChange
             ]
         ]
     ]
 
 
-footer : Html msg
-footer =
+footer : UrlPath.UrlPath -> I18n -> (Language -> msg) -> Html msg
+footer path translation onLanguageChange =
     Html.footer
         [ Attrs.class "bg-white dark:bg-gray-900"
         ]
@@ -460,18 +545,20 @@ footer =
                         [ Html.h2
                             [ Attrs.class "mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white"
                             ]
-                            [ Html.text "Contact us" ]
+                            [ Html.text <| Translations.footerContact translation ]
                         , Html.ul
                             [ Attrs.class "text-gray-500 dark:text-gray-400 font-medium"
                             ]
                             [ Html.li
                                 [ Attrs.class "mb-4"
                                 ]
-                                [ Html.a
-                                    [ Attrs.href "/support"
-                                    , Attrs.class "hover:underline "
+                                [ Route.link
+                                    [ Attrs.class "hover:underline "
                                     ]
-                                    [ Html.text "Support" ]
+                                    [ Html.text <| Translations.footerSupport translation ]
+                                    (Route.Lang___Support
+                                        { lang = Translations.languageToString <| Translations.currentLanguage translation }
+                                    )
                                 ]
                             , Html.li
                                 [ Attrs.class "mb-4"
@@ -490,7 +577,7 @@ footer =
                                     , Attrs.class "hover:underline flex align-middle"
                                     ]
                                     [ Html.text "📅"
-                                    , Html.text "Schedule a meeting"
+                                    , Html.text <| Translations.footerMeeting translation
                                     ]
                                 ]
                             , Html.li [ Attrs.class "mb-4" ]
@@ -513,25 +600,106 @@ footer =
                         [ Html.h2
                             [ Attrs.class "mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white"
                             ]
-                            [ Html.text "Legal" ]
+                            [ Html.text <| Translations.footerLegal translation ]
                         , Html.ul
                             [ Attrs.class "text-gray-500 dark:text-gray-400 font-medium"
                             ]
                             [ Html.li
                                 [ Attrs.class "mb-4"
                                 ]
-                                [ Html.a
-                                    [ Attrs.href "/privacy-policy"
-                                    , Attrs.class "hover:underline"
+                                [ Route.link
+                                    [ Attrs.class "hover:underline"
                                     ]
-                                    [ Html.text "Privacy Policy" ]
+                                    [ Html.text <| Translations.footerPrivacyPolicy translation ]
+                                    (Route.Lang___PrivacyPolicy
+                                        { lang = Translations.languageToString <| Translations.currentLanguage translation }
+                                    )
                                 ]
                             , Html.li []
-                                [ Html.a
-                                    [ Attrs.href "/booking/terms-and-conditions"
-                                    , Attrs.class "hover:underline"
+                                [ Route.link
+                                    [ Attrs.class "hover:underline"
                                     ]
-                                    [ Html.text "Terms & Conditions" ]
+                                    [ Html.text <| Translations.footerTermsConditions translation ]
+                                    (Route.Lang___Booking__TermsAndConditions
+                                        { lang = Translations.languageToString <| Translations.currentLanguage translation }
+                                    )
+                                ]
+                            ]
+                        , Html.div [ Attrs.class "mt-6" ]
+                            [ Html.h2
+                                [ Attrs.class "mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white"
+                                ]
+                                [ Html.text <| Translations.footerLanguage translation ]
+                            , Html.div [ Attrs.class "grid grid-flow-col align-baseline font-normal" ]
+                                [ Html.div
+                                    []
+                                    [ Html.button
+                                        [ Attrs.class "hover:underline"
+                                        , Events.onClick (onLanguageChange Translations.En)
+                                        ]
+                                        [ Html.a
+                                            [ Attrs.href <| changeLanguageUrlPath path Translations.En
+                                            , Attrs.hreflang <| Translations.languageToString Translations.En
+                                            , if Translations.currentLanguage translation == Translations.En then
+                                                Attrs.class "text-primary-500"
+
+                                              else
+                                                Attrs.class "text-gray-500"
+                                            ]
+                                            [ Html.text "EN" ]
+                                        ]
+                                    ]
+                                , Html.div []
+                                    [ Html.button
+                                        [ Attrs.class "hover:underline"
+                                        , Events.onClick (onLanguageChange Translations.Es)
+                                        ]
+                                        [ Html.a
+                                            [ Attrs.href <| changeLanguageUrlPath path Translations.Es
+                                            , Attrs.hreflang <| Translations.languageToString Translations.Es
+                                            , if Translations.currentLanguage translation == Translations.Es then
+                                                Attrs.class "text-primary-500"
+
+                                              else
+                                                Attrs.class "text-gray-500"
+                                            ]
+                                            [ Html.text "ES" ]
+                                        ]
+                                    ]
+                                , Html.div []
+                                    [ Html.button
+                                        [ Attrs.class "hover:underline"
+                                        , Events.onClick (onLanguageChange Translations.Pt)
+                                        ]
+                                        [ Html.a
+                                            [ Attrs.href <| changeLanguageUrlPath path Translations.Pt
+                                            , Attrs.hreflang <| Translations.languageToString Translations.Pt
+                                            , if Translations.currentLanguage translation == Translations.Pt then
+                                                Attrs.class "text-primary-500"
+
+                                              else
+                                                Attrs.class "text-gray-500"
+                                            ]
+                                            [ Html.text "PT" ]
+                                        ]
+                                    ]
+                                , Html.div []
+                                    [ Html.button
+                                        [ Attrs.class "hover:underline"
+                                        , Events.onClick (onLanguageChange Translations.De)
+                                        ]
+                                        [ Html.a
+                                            [ Attrs.href <| changeLanguageUrlPath path Translations.De
+                                            , Attrs.hreflang <| Translations.languageToString Translations.De
+                                            , if Translations.currentLanguage translation == Translations.De then
+                                                Attrs.class "text-primary-500"
+
+                                              else
+                                                Attrs.class "text-gray-500"
+                                            ]
+                                            [ Html.text "DE" ]
+                                        ]
+                                    ]
                                 ]
                             ]
                         ]
@@ -547,13 +715,13 @@ footer =
                 [ Html.span
                     [ Attrs.class "text-sm text-gray-500 sm:text-center dark:text-gray-400"
                     ]
-                    [ Html.text "© 2023"
+                    [ Html.text "© 2024"
                     , Html.a
                         [ Attrs.href "https://tranquera.co/"
                         , Attrs.class "hover:underline"
                         ]
                         [ Html.text "Tranquera LLC" ]
-                    , Html.text ". All Rights Reserved."
+                    , Html.text <| ". " ++ Translations.footerCopyright translation
                     ]
                 , Html.div
                     [ Attrs.class "flex mt-4 sm:justify-center sm:mt-0"
@@ -562,3 +730,21 @@ footer =
                 ]
             ]
         ]
+
+
+changeLanguageUrlPath : UrlPath.UrlPath -> Language -> String
+changeLanguageUrlPath path lang =
+    let
+        segments =
+            UrlPath.toSegments <| toString <| Pages.Url.fromPath path
+    in
+    case List.head segments of
+        Just h ->
+            if String.length h == 2 then
+                toString <| Pages.Url.fromPath <| Translations.languageToString lang :: List.drop 1 segments
+
+            else
+                toString <| Pages.Url.fromPath <| Translations.languageToString lang :: segments
+
+        _ ->
+            toString <| Pages.Url.fromPath path

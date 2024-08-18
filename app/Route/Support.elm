@@ -23,6 +23,7 @@ import Form.Validation as Validation
 import Head
 import Html exposing (Html, u)
 import Html.Attributes as Attrs exposing (height)
+import I18n as Translations exposing (..)
 import Json.Encode as Encode
 import Layout.Minimal
 import Pages.Form
@@ -86,7 +87,7 @@ data routeParams request =
 
 mdText : BackendTask.BackendTask FatalError Data
 mdText =
-    Content.Minimal.support
+    Content.Minimal.support ""
         |> BackendTask.allowFatal
         |> BackendTask.map Data
 
@@ -115,8 +116,12 @@ emptyForm =
     }
 
 
-form : Form.HtmlForm String Contact Contact (PagesMsg Msg)
-form =
+form : Maybe I18n -> Form.HtmlForm String Contact Contact (PagesMsg Msg)
+form translation =
+    let
+        t =
+            Maybe.withDefault (Translations.init { lang = Translations.En, path = "https://capybara.house/" ++ "/i18n" }) translation
+    in
     Form.form
         (\forename surname email phoneNumber message ->
             { combine =
@@ -166,18 +171,18 @@ form =
                                 ]
                     in
                     [ Html.input [ Attrs.type_ "hidden", Attrs.attribute "name" "form-name", Attrs.attribute "value" "support-form" ] []
-                    , fieldView "Forename" forename
-                    , fieldView "Surname" surname
-                    , fieldView "Email" email
-                    , fieldView "Phone Number" phoneNumber
-                    , fieldView "Message" message
+                    , fieldView (Translations.formsForename t) forename
+                    , fieldView (Translations.formsSurname t) surname
+                    , fieldView (Translations.formsEmail t) email
+                    , fieldView (Translations.formsPhone t) phoneNumber
+                    , fieldView (Translations.formsMessage t) message
                     , Html.button [ Attrs.class "text-white bg-primary-500 hover:bg-primary-600 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800" ]
                         [ Html.text
                             (if formState.submitting then
-                                "Sending..."
+                                Translations.formsSubmitting t
 
                              else
-                                "Submit"
+                                Translations.formsSubmit t
                             )
                         ]
                     ]
@@ -243,7 +248,7 @@ view app shared =
     , body =
         [ Html.div [ Attrs.class "mx-auto prose max-w-none pb-8 pt-8 dark:prose-invert xl:col-span-2 xl:max-w-5xl xl:px-0" ]
             [ Layout.Minimal.view app.data.minimal
-            , form
+            , form (Just shared.i18n)
                 |> Pages.Form.renderHtml
                     [ Attrs.class "max-w-sm mx-auto"
                     ]
@@ -264,12 +269,12 @@ view app shared =
                     [ Html.span
                         [ Attrs.class "font-semibold"
                         ]
-                        [ Html.text "There was an error sending your request!" ]
+                        [ Html.text <| Translations.formsError shared.i18n ]
                     , Html.span
                         [ Attrs.class "font-medium"
                         ]
                         [ Html.br [] []
-                        , Html.text "Please contact "
+                        , Html.text <| Translations.formsErrorContact shared.i18n ++ " "
                         , Html.a
                             [ Attrs.href "mailto:info@capybara.house"
                             , Attrs.class "hover:underline "
@@ -287,7 +292,7 @@ action :
     -> Request.Request
     -> BackendTask.BackendTask FatalError.FatalError (Server.Response.Response ActionData ErrorPage.ErrorPage)
 action routeParams request =
-    case request |> Request.formData (form |> Form.Handler.init identity) of
+    case request |> Request.formData (form Nothing |> Form.Handler.init identity) of
         Nothing ->
             "Expected form submission."
                 |> FatalError.fromString
@@ -297,7 +302,7 @@ action routeParams request =
             BackendTask.map2 EnvVariables
                 (Env.expect "SUPABASE_KEY" |> BackendTask.allowFatal)
                 (Env.get "BASE_URL"
-                    |> BackendTask.map (Maybe.withDefault "http://localhost:1234")
+                    |> BackendTask.map (Maybe.withDefault "https://capybara.house/")
                 )
                 |> BackendTask.andThen (sendRequest formResponse userResult)
 
@@ -362,7 +367,7 @@ sendRequest formResponse userResult envVariables =
                             |> Result.withDefault emptyForm
                 in
                 if Dict.isEmpty response.formResponse.serverSideErrors then
-                    Route.Support_
+                    Route.Support__Support_
                         { support = contact.forename }
                         |> Route.redirectTo
 

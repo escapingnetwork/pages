@@ -55,7 +55,7 @@ type alias ActionData =
 
 data : BackendTask.BackendTask FatalError Data
 data =
-    Content.Minimal.completeRegistration
+    Content.Minimal.completeRegistration ""
         |> BackendTask.allowFatal
         |> BackendTask.map Data
 

@@ -13,6 +13,7 @@ import Head
 import Head.Seo as Seo
 import Html
 import Html.Attributes as Attrs
+import I18n as Translations exposing (..)
 import LanguageTag.Language as Language
 import LanguageTag.Region as Country
 import Layout
@@ -60,7 +61,7 @@ route =
 data : BackendTask FatalError Data
 data =
     Content.Services.allServices
-        |> BackendTask.map (\allServices -> List.map .service allServices |> (\allMetadata -> { serviceMetadata = allMetadata }))
+        |> BackendTask.map (\allServices -> List.map .metadata allServices |> (\allMetadata -> { serviceMetadata = allMetadata }))
 
 
 head :
@@ -83,11 +84,11 @@ view app model =
             [ Html.h1
                 [ Attrs.class "text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14 text-center"
                 ]
-                [ Html.text "Our Services" ]
+                [ Html.text <| Translations.buttonServices model.i18n ]
             ]
         , Html.div
             [ Attrs.class "mx-auto max-w-none dark:prose-invert xl:col-span-2 xl:max-w-5xl xl:px-0  overflow-hidden " ]
           <|
-            List.map Layout.Service.viewListItem app.data.serviceMetadata
+            List.map (Layout.Service.viewListItem model.i18n) app.data.serviceMetadata
         ]
     }

@@ -15,16 +15,19 @@ type alias Minimal =
     }
 
 
-minimalFiles : BackendTask error (List { filePath : String, slug : String })
+minimalFiles : BackendTask error (List { filePath : String, language : String, slug : String })
 minimalFiles =
     Glob.succeed
-        (\filePath fileName ->
+        (\filePath language fileName ->
             { filePath = filePath
+            , language = language
             , slug = fileName
             }
         )
         |> Glob.captureFilePath
         |> Glob.match (Glob.literal "content/")
+        |> Glob.capture Glob.wildcard
+        |> Glob.match (Glob.literal "/")
         |> Glob.capture Glob.wildcard
         |> Glob.match (Glob.literal ".md")
         |> Glob.toBackendTask
@@ -38,36 +41,92 @@ minimalDecoder slug body =
         (Decode.succeed slug)
 
 
-privacyPolicy : BackendTask { fatal : FatalError, recoverable : File.FileReadError Decode.Error } Minimal
-privacyPolicy =
-    File.bodyWithFrontmatter (minimalDecoder "privacypolicy") "content/privacypolicy.md"
+privacyPolicy : String -> BackendTask { fatal : FatalError, recoverable : File.FileReadError Decode.Error } Minimal
+privacyPolicy lang =
+    let
+        path =
+            if lang == "" then
+                "content/en/privacypolicy.md"
+
+            else
+                "content/" ++ lang ++ "/privacypolicy.md"
+    in
+    File.bodyWithFrontmatter (minimalDecoder "privacypolicy") path
 
 
-termsAndConditions : BackendTask { fatal : FatalError, recoverable : File.FileReadError Decode.Error } Minimal
-termsAndConditions =
-    File.bodyWithFrontmatter (minimalDecoder "termsconditions") "content/termsconditions.md"
+termsAndConditions : String -> BackendTask { fatal : FatalError, recoverable : File.FileReadError Decode.Error } Minimal
+termsAndConditions lang =
+    let
+        path =
+            if lang == "" then
+                "content/en/termsconditions.md"
+
+            else
+                "content/" ++ lang ++ "/termsconditions.md"
+    in
+    File.bodyWithFrontmatter (minimalDecoder "termsconditions") path
 
 
-partners : BackendTask { fatal : FatalError, recoverable : File.FileReadError Decode.Error } Minimal
-partners =
-    File.bodyWithFrontmatter (minimalDecoder "partners") "content/partners.md"
+partners : String -> BackendTask { fatal : FatalError, recoverable : File.FileReadError Decode.Error } Minimal
+partners lang =
+    let
+        path =
+            if lang == "" then
+                "content/en/partners.md"
+
+            else
+                "content/" ++ lang ++ "/partners.md"
+    in
+    File.bodyWithFrontmatter (minimalDecoder "partners") path
 
 
-hosts : BackendTask { fatal : FatalError, recoverable : File.FileReadError Decode.Error } Minimal
-hosts =
-    File.bodyWithFrontmatter (minimalDecoder "hosts") "content/hosts.md"
+hosts : String -> BackendTask { fatal : FatalError, recoverable : File.FileReadError Decode.Error } Minimal
+hosts lang =
+    let
+        path =
+            if lang == "" then
+                "content/en/hosts.md"
+
+            else
+                "content/" ++ lang ++ "/hosts.md"
+    in
+    File.bodyWithFrontmatter (minimalDecoder "hosts") path
 
 
-support : BackendTask { fatal : FatalError, recoverable : File.FileReadError Decode.Error } Minimal
-support =
-    File.bodyWithFrontmatter (minimalDecoder "support") "content/support.md"
+support : String -> BackendTask { fatal : FatalError, recoverable : File.FileReadError Decode.Error } Minimal
+support lang =
+    let
+        path =
+            if lang == "" then
+                "content/en/support.md"
+
+            else
+                "content/" ++ lang ++ "/support.md"
+    in
+    File.bodyWithFrontmatter (minimalDecoder "support") path
 
 
-accommodation : BackendTask { fatal : FatalError, recoverable : File.FileReadError Decode.Error } Minimal
-accommodation =
-    File.bodyWithFrontmatter (minimalDecoder "accommodation") "content/accommodation.md"
+accommodation : String -> BackendTask { fatal : FatalError, recoverable : File.FileReadError Decode.Error } Minimal
+accommodation lang =
+    let
+        path =
+            if lang == "" then
+                "content/en/accommodation.md"
+
+            else
+                "content/" ++ lang ++ "/accommodation.md"
+    in
+    File.bodyWithFrontmatter (minimalDecoder "accommodation") path
 
 
-completeRegistration : BackendTask { fatal : FatalError, recoverable : File.FileReadError Decode.Error } Minimal
-completeRegistration =
-    File.bodyWithFrontmatter (minimalDecoder "completeregistration") "content/completeregistration.md"
+completeRegistration : String -> BackendTask { fatal : FatalError, recoverable : File.FileReadError Decode.Error } Minimal
+completeRegistration lang =
+    let
+        path =
+            if lang == "" then
+                "content/en/completeregistration.md"
+
+            else
+                "content/" ++ lang ++ "/completeregistration.md"
+    in
+    File.bodyWithFrontmatter (minimalDecoder "completeregistration") path

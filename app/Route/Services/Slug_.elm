@@ -49,7 +49,7 @@ pages =
     Content.Services.allServices
         |> BackendTask.map
             (\services ->
-                List.map (\{ service } -> { slug = service.slug }) services
+                List.map (\service -> { slug = service.metadata.slug }) services
             )
 
 
@@ -90,9 +90,9 @@ view :
     App Data ActionData RouteParams
     -> Shared.Model
     -> View (PagesMsg Msg)
-view app _ =
-    { title = "Capybara House - " ++ app.data.service.service.title
-    , body = [ Layout.Service.viewService app.data.service ]
+view app model =
+    { title = "Capybara House - " ++ app.data.service.metadata.title
+    , body = [ Layout.Service.viewService model.i18n app.data.service ]
     }
 
 

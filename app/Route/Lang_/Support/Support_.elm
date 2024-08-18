@@ -1,4 +1,4 @@
-module Route.Support_ exposing (Model, Msg, RouteParams, route, Data, ActionData)
+module Route.Lang_.Support.Support_ exposing (Model, Msg, RouteParams, route, Data, ActionData)
 
 {-|
 
@@ -33,7 +33,7 @@ type alias Msg =
 
 
 type alias RouteParams =
-    { support : String }
+    { lang : String, support : String }
 
 
 route : StatefulRoute RouteParams Data ActionData Model Msg
@@ -80,7 +80,7 @@ type alias ActionData =
 
 data : RouteParams -> Server.Request.Request -> BackendTask.BackendTask FatalError.FatalError (Server.Response.Response Data ErrorPage.ErrorPage)
 data routeParams request =
-    Content.Minimal.support
+    Content.Minimal.support routeParams.lang
         |> BackendTask.allowFatal
         |> BackendTask.map Data
         |> BackendTask.map Server.Response.render

@@ -1,4 +1,4 @@
-module Route.Student.SignUpOld exposing (Model, Msg, RouteParams, route, Data, ActionData)
+module Route.Lang_.Booking.TermsAndConditions exposing (Model, Msg, RouteParams, route, Data, ActionData)
 
 {-|
 
@@ -13,7 +13,7 @@ import ErrorPage
 import FatalError exposing (FatalError)
 import Head
 import Html
-import Html.Attributes as Attrs exposing (height)
+import I18n
 import Layout.Minimal
 import PagesMsg
 import RouteBuilder exposing (App, StatelessRoute)
@@ -33,16 +33,27 @@ type alias Msg =
 
 
 type alias RouteParams =
-    {}
+    { lang : String }
 
 
 route : StatelessRoute RouteParams Data ActionData
 route =
-    RouteBuilder.single
+    RouteBuilder.preRender
         { head = head
         , data = data
+        , pages = pages
         }
         |> RouteBuilder.buildNoState { view = view }
+
+
+pages : BackendTask.BackendTask FatalError (List RouteParams)
+pages =
+    BackendTask.succeed <| List.map (\lang -> I18n.languageToString lang |> RouteParams) I18n.languages
+
+
+subscriptions : RouteParams -> UrlPath.UrlPath -> Shared.Model -> Model -> Sub Msg
+subscriptions routeParams path shared model =
+    Sub.none
 
 
 type alias Data =
@@ -53,41 +64,24 @@ type alias ActionData =
     {}
 
 
-data : BackendTask.BackendTask FatalError Data
-data =
-    Content.Minimal.accommodation
+data : RouteParams -> BackendTask.BackendTask FatalError Data
+data r =
+    Content.Minimal.termsAndConditions r.lang
         |> BackendTask.allowFatal
         |> BackendTask.map Data
 
 
 head : RouteBuilder.App Data ActionData RouteParams -> List Head.Tag
 head app =
-    []
+    Layout.Minimal.seoHeaders app.data.minimal
 
 
 view :
     App Data ActionData RouteParams
     -> Shared.Model
     -> View.View (PagesMsg.PagesMsg Msg)
-view app shared =
-    { title = "Capybara House - Request Accommodation"
-    , body =
-        [ Html.div [ Attrs.class "mx-auto prose max-w-none pb-8 pt-8 dark:prose-invert xl:col-span-2 xl:max-w-5xl xl:px-0" ]
-            [ Layout.Minimal.view app.data.minimal
-            , Html.iframe
-                [ Attrs.attribute "data-tally-src" "https://tally.so/embed/mOGP0g?alignLeft=0&hideTitle=1&transparentBackground=1&dynamicHeight=1"
-                , Attrs.attribute "loading" "lazy"
-                , Attrs.style "width" "100%"
-                , Attrs.height 1500
-                , Attrs.title "Request Accommodation"
-                , Attrs.class "mx-auto prose dark:prose-invert xl:max-w-5xl xl:px-0"
-                , Attrs.title "Request Accommodation"
-                , Attrs.src "https://tally.so/embed/mOGP0g?alignLeft=0&hideTitle=1&transparentBackground=1&dynamicHeight=1"
-                ]
-                []
-            ]
-        ]
-    }
+view app _ =
+    { title = "Capybara House - Privacy Policy", body = [ Layout.Minimal.view app.data.minimal ] }
 
 
 action :

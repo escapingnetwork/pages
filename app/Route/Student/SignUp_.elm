@@ -80,7 +80,7 @@ type alias ActionData =
 
 data : RouteParams -> Server.Request.Request -> BackendTask.BackendTask FatalError.FatalError (Server.Response.Response Data ErrorPage.ErrorPage)
 data routeParams request =
-    Content.Minimal.accommodation
+    Content.Minimal.accommodation ""
         |> BackendTask.allowFatal
         |> BackendTask.map Data
         |> BackendTask.map Server.Response.render

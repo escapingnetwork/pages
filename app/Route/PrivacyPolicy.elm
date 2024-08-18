@@ -53,7 +53,7 @@ type alias ActionData =
 
 data : BackendTask.BackendTask FatalError Data
 data =
-    Content.Minimal.privacyPolicy
+    Content.Minimal.privacyPolicy ""
         |> BackendTask.allowFatal
         |> BackendTask.map Data
 

@@ -6,9 +6,11 @@ import Head.Seo as Seo
 import Html exposing (Html)
 import Html.Attributes as Attrs
 import Html.Extra
+import I18n as Translations exposing (..)
 import Layout.Markdown as Markdown
 import Pages.Url
 import Phosphor
+import Route exposing (Route)
 import Settings
 import Svg exposing (path, svg)
 import UrlPath
@@ -96,8 +98,8 @@ socialsView socials =
             ]
 
 
-view : Html msg
-view =
+view : I18n -> Html msg
+view translation =
     Html.div
         [ Attrs.class "divide-y divide-gray-200 dark:divide-gray-700"
         ]
@@ -109,25 +111,29 @@ view =
                 [ Html.h1
                     [ Attrs.class "mb-4 text-4xl font-extrabold tracking-tight leading-none text-white md:text-5xl lg:text-6xl"
                     ]
-                    [ Html.text "Looking for accommodation in Dublin?" ]
+                    [ Html.text <| Translations.homeHeadline translation ]
                 , Html.p
                     [ Attrs.class "mb-8 text-lg font-bold text-gray-200 lg:text-xl sm:px-16 lg:px-48"
                     ]
-                    [ Html.text "Here at Capybara House we focus on providing the best options for lodging in Ireland." ]
+                    [ Html.text <| Translations.homeSubline translation ]
                 , Html.div
                     [ Attrs.class "flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0"
                     ]
-                    [ Html.a
-                        [ Attrs.href "/student/sign-up"
-                        , Attrs.class "inline-flex justify-center items-center py-3 px-5 text-base font-semibold text-center text-white rounded-lg bg-primary-500 hover:bg-primary-600 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-600"
+                    [ Route.link
+                        [ Attrs.class "inline-flex justify-center items-center py-3 px-5 text-base font-semibold text-center text-white rounded-lg bg-primary-500 hover:bg-primary-600 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-600"
                         ]
-                        [ Html.text "Request Accommodation"
+                        [ Html.text <| Translations.buttonRequestAccommodation translation
                         ]
-                    , Html.a
-                        [ Attrs.href "/services"
-                        , Attrs.class "inline-flex justify-center hover:text-gray-900 items-center py-3 px-5 sm:ms-4 text-base font-semibold text-center text-white rounded-lg border border-white hover:bg-gray-100 focus:ring-4 focus:ring-gray-400"
+                        (Route.Lang___Student__SignUp
+                            { lang = Translations.languageToString <| Translations.currentLanguage translation }
+                        )
+                    , Route.link
+                        [ Attrs.class "inline-flex justify-center hover:text-gray-900 items-center py-3 px-5 sm:ms-4 text-base font-semibold text-center text-white rounded-lg border border-white hover:bg-gray-100 focus:ring-4 focus:ring-gray-400"
                         ]
-                        [ Html.text "Our Services" ]
+                        [ Html.text <| Translations.buttonServices translation ]
+                        (Route.Lang___Services
+                            { lang = Translations.languageToString <| Translations.currentLanguage translation }
+                        )
                     ]
                 ]
             , Html.video
@@ -145,51 +151,4 @@ view =
                     []
                 ]
             ]
-
-        -- -- , Html.div
-        -- --     [ Attrs.class "items-start space-y-2 xl:grid xl:grid-cols-2 xl:gap-x-8 xl:space-y-0"
-        -- --     ]
-        -- --     [ Html.div
-        -- --         [ Attrs.class "flex flex-col items-center space-x-2 pt-8"
-        -- --         ]
-        -- --         [ Html.img
-        -- --             [ Attrs.alt "avatar"
-        -- --             , Attrs.attribute "loading" "lazy"
-        -- --             , Attrs.width 192
-        -- --             , Attrs.height 192
-        -- --             , Attrs.attribute "decoding" "async"
-        -- --             , Attrs.attribute "data-nimg" "1"
-        -- --             , Attrs.class "h-48 w-48"
-        -- --             , Attrs.src "/images/services/half-board.jpg"
-        -- --             , Attrs.style "color" "transparent"
-        -- --             ]
-        -- --             []
-        -- --         , Html.h3
-        -- --             [ Attrs.class "pb-2 pt-4 text-2xl font-bold leading-8 tracking-tight"
-        -- --             ]
-        -- --             [ Html.text "TEST" ]
-        -- --         , Html.Extra.viewMaybe
-        -- --             (\occupation ->
-        -- --                 Html.div
-        -- --                     [ Attrs.class "text-gray-500 dark:text-gray-400"
-        -- --                     ]
-        -- --                     [ Html.text occupation ]
-        -- --             )
-        -- --             (Just "")
-        -- --         , Html.Extra.viewMaybe
-        -- --             (\company ->
-        -- --                 Html.div
-        -- --                     [ Attrs.class "text-gray-500 dark:text-gray-400"
-        -- --                     ]
-        -- --                     [ Html.text company ]
-        -- --             )
-        -- --             (Just "")
-        -- --         , socialsView [ ( "", "" ) ]
-        -- --         ]
-        --     , Html.div
-        --         [ Attrs.class "prose max-w-none pb-8 pt-8 dark:prose-invert xl:col-span-2"
-        --         ]
-        --       <|
-        --         Markdown.toHtml ""
-        --     ]
         ]

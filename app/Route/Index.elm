@@ -68,7 +68,7 @@ view :
     App Data ActionData RouteParams
     -> Shared.Model
     -> View (PagesMsg Msg)
-view app _ =
+view app model =
     { title = Settings.title
     , body =
         --TODO move to layout part
@@ -76,6 +76,6 @@ view app _ =
           --     [ Html.h1 [ Attrs.class "text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14" ] [ Html.text "Latest" ]
           --     , Html.p [ Attrs.class "text-lg leading-7 text-gray-500 dark:text-gray-400" ] [ Html.text Settings.subtitle ]
           --     ]
-          Html.div [ Attrs.class "mx-auto" ] <| [ Layout.Home.view ] -- List.map Layout.Blogpost.viewListItem app.data.blogpostMetadata
+          Html.div [ Attrs.class "mx-auto" ] <| [ Layout.Home.view model.i18n ] -- List.map Layout.Blogpost.viewListItem app.data.blogpostMetadata
         ]
     }
