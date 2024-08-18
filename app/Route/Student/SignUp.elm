@@ -459,7 +459,7 @@ action :
     -> Request.Request
     -> BackendTask.BackendTask FatalError.FatalError (Server.Response.Response ActionData ErrorPage.ErrorPage)
 action routeParams request =
-    case request |> Request.formData (form (Translations.init { lang = Translations.En, path = "https://capybara.house/" ++ "/i18n" }) |> Form.Handler.init identity) of
+    case request |> Request.formData (form (Translations.init { lang = Translations.En, path = "https://capybara.house" ++ "/i18n" }) |> Form.Handler.init identity) of
         Nothing ->
             "Expected form submission."
                 |> FatalError.fromString
@@ -468,8 +468,8 @@ action routeParams request =
         Just ( formResponse, userResult ) ->
             BackendTask.map2 EnvVariables
                 (Env.expect "SUPABASE_KEY" |> BackendTask.allowFatal)
-                (Env.get "BASE_URL"
-                    |> BackendTask.map (Maybe.withDefault "https://capybara.house/")
+                (Env.get "SUPABASE_URL"
+                    |> BackendTask.map (Maybe.withDefault "http://localhost:1234")
                 )
                 |> BackendTask.andThen (sendRequest formResponse userResult)
 

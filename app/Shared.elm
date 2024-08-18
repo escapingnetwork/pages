@@ -1,6 +1,7 @@
 module Shared exposing (Data, Model, Msg(..), SharedMsg(..), template)
 
 import BackendTask exposing (BackendTask)
+import BackendTask.Env as Env
 import Effect exposing (Effect)
 import FatalError exposing (FatalError)
 import Html exposing (Html)
@@ -35,7 +36,7 @@ type Msg
 
 
 type alias Data =
-    ()
+    { baseUrl : String }
 
 
 type SharedMsg
@@ -75,7 +76,7 @@ init _ pageData =
 
         model =
             { showMenu = False
-            , i18n = Translations.init { lang = lang, path = "https://capybara.house/" ++ "/i18n" }
+            , i18n = Translations.init { lang = lang, path = "https://capybara.house" ++ "/i18n" }
             , language = lang
             }
     in
@@ -135,7 +136,9 @@ subscriptions _ _ =
 
 data : BackendTask FatalError Data
 data =
-    BackendTask.succeed ()
+    Env.get "BASE_URL"
+        |> BackendTask.map (Maybe.withDefault "http://localhost:1234")
+        |> BackendTask.map Data
 
 
 view :

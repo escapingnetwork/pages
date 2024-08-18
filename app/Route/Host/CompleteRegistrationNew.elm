@@ -378,8 +378,8 @@ action routeParams request =
         Just ( formResponse, userResult ) ->
             BackendTask.map2 EnvVariables
                 (Env.expect "SUPABASE_KEY" |> BackendTask.allowFatal)
-                (Env.get "BASE_URL"
-                    |> BackendTask.map (Maybe.withDefault "https://capybara.house/")
+                (Env.get "SUPABASE_URL"
+                    |> BackendTask.map (Maybe.withDefault "http://localhost:1234")
                 )
                 |> BackendTask.andThen (sendRequest formResponse userResult)
 

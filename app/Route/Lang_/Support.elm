@@ -120,7 +120,7 @@ form : Maybe I18n -> Form.HtmlForm String Contact Contact (PagesMsg Msg)
 form translation =
     let
         t =
-            Maybe.withDefault (Translations.init { lang = Translations.En, path = "https://capybara.house/" ++ "/i18n" }) translation
+            Maybe.withDefault (Translations.init { lang = Translations.En, path = "https://capybara.house" ++ "/i18n" }) translation
     in
     Form.form
         (\forename surname email phoneNumber message ->
@@ -301,8 +301,8 @@ action routeParams request =
         Just ( formResponse, userResult ) ->
             BackendTask.map2 EnvVariables
                 (Env.expect "SUPABASE_KEY" |> BackendTask.allowFatal)
-                (Env.get "BASE_URL"
-                    |> BackendTask.map (Maybe.withDefault "https://capybara.house/")
+                (Env.get "SUPABASE_URL"
+                    |> BackendTask.map (Maybe.withDefault "http://localhost:1234")
                 )
                 |> BackendTask.andThen (sendRequest formResponse userResult)
 
