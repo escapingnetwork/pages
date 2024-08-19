@@ -1,7 +1,7 @@
 module Gen.Pages exposing (builtAt, moduleName_, values_)
 
 {-| 
-@docs values_, builtAt, moduleName_
+@docs moduleName_, builtAt, values_
 -}
 
 
@@ -34,5 +34,3 @@ values_ =
             , annotation = Just (Type.namedWith [ "Time" ] "Posix" [])
             }
     }
-
-

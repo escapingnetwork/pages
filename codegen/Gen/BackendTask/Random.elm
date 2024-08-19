@@ -1,7 +1,7 @@
 module Gen.BackendTask.Random exposing (call_, generate, int32, moduleName_, values_)
 
 {-| 
-@docs values_, call_, int32, generate, moduleName_
+@docs moduleName_, generate, int32, call_, values_
 -}
 
 
@@ -160,5 +160,3 @@ values_ =
                     )
             }
     }
-
-

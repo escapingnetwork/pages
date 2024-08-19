@@ -1,7 +1,7 @@
 module Gen.Content.About exposing (allAuthors, annotation_, defaultAuthor, make_, moduleName_, values_)
 
 {-| 
-@docs values_, make_, annotation_, allAuthors, defaultAuthor, moduleName_
+@docs moduleName_, defaultAuthor, allAuthors, annotation_, make_, values_
 -}
 
 
@@ -16,9 +16,9 @@ moduleName_ =
 
 
 {-| defaultAuthor: 
-    BackendTask { fatal : FatalError
-    , recoverable : File.FileReadError Decode.Error
-    } Author
+    BackendTask.BackendTask { fatal : FatalError.FatalError
+    , recoverable : BackendTask.File.FileReadError Json.Decode.Error
+    } Content.About.Author
 -}
 defaultAuthor : Elm.Expression
 defaultAuthor =
@@ -28,24 +28,27 @@ defaultAuthor =
         , annotation =
             Just
                 (Type.namedWith
-                    []
+                    [ "BackendTask" ]
                     "BackendTask"
                     [ Type.record
-                        [ ( "fatal", Type.namedWith [] "FatalError" [] )
+                        [ ( "fatal"
+                          , Type.namedWith [ "FatalError" ] "FatalError" []
+                          )
                         , ( "recoverable"
                           , Type.namedWith
-                                [ "File" ]
+                                [ "BackendTask", "File" ]
                                 "FileReadError"
-                                [ Type.namedWith [ "Decode" ] "Error" [] ]
+                                [ Type.namedWith [ "Json", "Decode" ] "Error" []
+                                ]
                           )
                         ]
-                    , Type.namedWith [] "Author" []
+                    , Type.namedWith [ "Content", "About" ] "Author" []
                     ]
                 )
         }
 
 
-{-| allAuthors: BackendTask FatalError (Dict String Author) -}
+{-| allAuthors: BackendTask.BackendTask FatalError.FatalError (Dict.Dict String Content.About.Author) -}
 allAuthors : Elm.Expression
 allAuthors =
     Elm.value
@@ -54,13 +57,15 @@ allAuthors =
         , annotation =
             Just
                 (Type.namedWith
-                    []
+                    [ "BackendTask" ]
                     "BackendTask"
-                    [ Type.namedWith [] "FatalError" []
+                    [ Type.namedWith [ "FatalError" ] "FatalError" []
                     , Type.namedWith
-                        []
+                        [ "Dict" ]
                         "Dict"
-                        [ Type.string, Type.namedWith [] "Author" [] ]
+                        [ Type.string
+                        , Type.namedWith [ "Content", "About" ] "Author" []
+                        ]
                     ]
                 )
         }
@@ -76,10 +81,10 @@ annotation_ =
             (Type.record
                 [ ( "body", Type.string )
                 , ( "name", Type.string )
-                , ( "avatar", Type.namedWith [] "Maybe" [ Type.string ] )
+                , ( "avatar", Type.maybe Type.string )
                 , ( "socials", Type.list (Type.tuple Type.string Type.string) )
-                , ( "occupation", Type.namedWith [] "Maybe" [ Type.string ] )
-                , ( "company", Type.namedWith [] "Maybe" [ Type.string ] )
+                , ( "occupation", Type.maybe Type.string )
+                , ( "company", Type.maybe Type.string )
                 , ( "slug", Type.string )
                 ]
             )
@@ -109,18 +114,12 @@ make_ =
                     (Type.record
                         [ ( "body", Type.string )
                         , ( "name", Type.string )
-                        , ( "avatar"
-                          , Type.namedWith [] "Maybe" [ Type.string ]
-                          )
+                        , ( "avatar", Type.maybe Type.string )
                         , ( "socials"
                           , Type.list (Type.tuple Type.string Type.string)
                           )
-                        , ( "occupation"
-                          , Type.namedWith [] "Maybe" [ Type.string ]
-                          )
-                        , ( "company"
-                          , Type.namedWith [] "Maybe" [ Type.string ]
-                          )
+                        , ( "occupation", Type.maybe Type.string )
+                        , ( "company", Type.maybe Type.string )
                         , ( "slug", Type.string )
                         ]
                     )
@@ -147,18 +146,24 @@ values_ =
             , annotation =
                 Just
                     (Type.namedWith
-                        []
+                        [ "BackendTask" ]
                         "BackendTask"
                         [ Type.record
-                            [ ( "fatal", Type.namedWith [] "FatalError" [] )
+                            [ ( "fatal"
+                              , Type.namedWith [ "FatalError" ] "FatalError" []
+                              )
                             , ( "recoverable"
                               , Type.namedWith
-                                    [ "File" ]
+                                    [ "BackendTask", "File" ]
                                     "FileReadError"
-                                    [ Type.namedWith [ "Decode" ] "Error" [] ]
+                                    [ Type.namedWith
+                                        [ "Json", "Decode" ]
+                                        "Error"
+                                        []
+                                    ]
                               )
                             ]
-                        , Type.namedWith [] "Author" []
+                        , Type.namedWith [ "Content", "About" ] "Author" []
                         ]
                     )
             }
@@ -169,16 +174,16 @@ values_ =
             , annotation =
                 Just
                     (Type.namedWith
-                        []
+                        [ "BackendTask" ]
                         "BackendTask"
-                        [ Type.namedWith [] "FatalError" []
+                        [ Type.namedWith [ "FatalError" ] "FatalError" []
                         , Type.namedWith
-                            []
+                            [ "Dict" ]
                             "Dict"
-                            [ Type.string, Type.namedWith [] "Author" [] ]
+                            [ Type.string
+                            , Type.namedWith [ "Content", "About" ] "Author" []
+                            ]
                         ]
                     )
             }
     }
-
-

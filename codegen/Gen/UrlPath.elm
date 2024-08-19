@@ -1,7 +1,7 @@
 module Gen.UrlPath exposing (annotation_, call_, fromString, join, moduleName_, toAbsolute, toRelative, toSegments, values_)
 
 {-| 
-@docs values_, call_, annotation_, toSegments, toRelative, toAbsolute, fromString, join, moduleName_
+@docs moduleName_, join, fromString, toAbsolute, toRelative, toSegments, annotation_, call_, values_
 -}
 
 
@@ -268,5 +268,3 @@ values_ =
                 Just (Type.function [ Type.string ] (Type.list Type.string))
             }
     }
-
-

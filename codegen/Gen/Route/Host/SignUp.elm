@@ -1,7 +1,7 @@
 module Gen.Route.Host.SignUp exposing (annotation_, make_, moduleName_, route, values_)
 
 {-| 
-@docs values_, make_, annotation_, route, moduleName_
+@docs moduleName_, route, annotation_, make_, values_
 -}
 
 
@@ -15,7 +15,7 @@ moduleName_ =
     [ "Route", "Host", "SignUp" ]
 
 
-{-| route: RouteBuilder.StatefulRoute RouteParams Data ActionData Model Msg -}
+{-| route: RouteBuilder.StatelessRoute Route.Host.SignUp.RouteParams Route.Host.SignUp.Data Route.Host.SignUp.ActionData -}
 route : Elm.Expression
 route =
     Elm.value
@@ -25,12 +25,16 @@ route =
             Just
                 (Type.namedWith
                     [ "RouteBuilder" ]
-                    "StatefulRoute"
-                    [ Type.namedWith [] "RouteParams" []
-                    , Type.namedWith [] "Data" []
-                    , Type.namedWith [] "ActionData" []
-                    , Type.namedWith [] "Model" []
-                    , Type.namedWith [] "Msg" []
+                    "StatelessRoute"
+                    [ Type.namedWith
+                        [ "Route", "Host", "SignUp" ]
+                        "RouteParams"
+                        []
+                    , Type.namedWith [ "Route", "Host", "SignUp" ] "Data" []
+                    , Type.namedWith
+                        [ "Route", "Host", "SignUp" ]
+                        "ActionData"
+                        []
                     ]
                 )
         }
@@ -40,21 +44,46 @@ annotation_ :
     { actionData : Type.Annotation
     , data : Type.Annotation
     , routeParams : Type.Annotation
-    , model : Type.Annotation
     , msg : Type.Annotation
+    , model : Type.Annotation
     }
 annotation_ =
-    { actionData = Type.alias moduleName_ "ActionData" [] (Type.record [])
-    , data = Type.alias moduleName_ "Data" [] (Type.record [])
+    { actionData =
+        Type.alias
+            moduleName_
+            "ActionData"
+            []
+            (Type.record
+                [ ( "host"
+                  , Type.namedWith [ "Route", "Host", "SignUp" ] "Host" []
+                  )
+                , ( "formResponse"
+                  , Type.namedWith [ "Form" ] "ServerResponse" [ Type.string ]
+                  )
+                ]
+            )
+    , data =
+        Type.alias
+            moduleName_
+            "Data"
+            []
+            (Type.record
+                [ ( "minimal"
+                  , Type.namedWith [ "Content", "Minimal" ] "Minimal" []
+                  )
+                ]
+            )
     , routeParams = Type.alias moduleName_ "RouteParams" [] (Type.record [])
+    , msg = Type.alias moduleName_ "Msg" [] Type.unit
     , model = Type.alias moduleName_ "Model" [] (Type.record [])
-    , msg = Type.namedWith [ "Route", "Host", "SignUp" ] "Msg" []
     }
 
 
 make_ :
-    { actionData : actionData -> Elm.Expression
-    , data : data -> Elm.Expression
+    { actionData :
+        { host : Elm.Expression, formResponse : Elm.Expression }
+        -> Elm.Expression
+    , data : { minimal : Elm.Expression } -> Elm.Expression
     , routeParams : routeParams -> Elm.Expression
     , model : model -> Elm.Expression
     }
@@ -66,9 +95,27 @@ make_ =
                     [ "Route", "Host", "SignUp" ]
                     "ActionData"
                     []
-                    (Type.record [])
+                    (Type.record
+                        [ ( "host"
+                          , Type.namedWith
+                                [ "Route", "Host", "SignUp" ]
+                                "Host"
+                                []
+                          )
+                        , ( "formResponse"
+                          , Type.namedWith
+                                [ "Form" ]
+                                "ServerResponse"
+                                [ Type.string ]
+                          )
+                        ]
+                    )
                 )
-                (Elm.record [])
+                (Elm.record
+                    [ Tuple.pair "host" actionData_args.host
+                    , Tuple.pair "formResponse" actionData_args.formResponse
+                    ]
+                )
     , data =
         \data_args ->
             Elm.withType
@@ -76,9 +123,14 @@ make_ =
                     [ "Route", "Host", "SignUp" ]
                     "Data"
                     []
-                    (Type.record [])
+                    (Type.record
+                        [ ( "minimal"
+                          , Type.namedWith [ "Content", "Minimal" ] "Minimal" []
+                          )
+                        ]
+                    )
                 )
-                (Elm.record [])
+                (Elm.record [ Tuple.pair "minimal" data_args.minimal ])
     , routeParams =
         \routeParams_args ->
             Elm.withType
@@ -112,15 +164,17 @@ values_ =
                 Just
                     (Type.namedWith
                         [ "RouteBuilder" ]
-                        "StatefulRoute"
-                        [ Type.namedWith [] "RouteParams" []
-                        , Type.namedWith [] "Data" []
-                        , Type.namedWith [] "ActionData" []
-                        , Type.namedWith [] "Model" []
-                        , Type.namedWith [] "Msg" []
+                        "StatelessRoute"
+                        [ Type.namedWith
+                            [ "Route", "Host", "SignUp" ]
+                            "RouteParams"
+                            []
+                        , Type.namedWith [ "Route", "Host", "SignUp" ] "Data" []
+                        , Type.namedWith
+                            [ "Route", "Host", "SignUp" ]
+                            "ActionData"
+                            []
                         ]
                     )
             }
     }
-
-

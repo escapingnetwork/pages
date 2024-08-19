@@ -1,7 +1,7 @@
 module Gen.Route.Blog.Slug_ exposing (annotation_, make_, moduleName_, route, values_)
 
 {-| 
-@docs values_, make_, annotation_, route, moduleName_
+@docs moduleName_, route, annotation_, make_, values_
 -}
 
 
@@ -15,7 +15,7 @@ moduleName_ =
     [ "Route", "Blog", "Slug_" ]
 
 
-{-| route: StatelessRoute RouteParams Data ActionData -}
+{-| route: RouteBuilder.StatelessRoute Route.Blog.Slug_.RouteParams Route.Blog.Slug_.Data Route.Blog.Slug_.ActionData -}
 route : Elm.Expression
 route =
     Elm.value
@@ -24,11 +24,17 @@ route =
         , annotation =
             Just
                 (Type.namedWith
-                    []
+                    [ "RouteBuilder" ]
                     "StatelessRoute"
-                    [ Type.namedWith [] "RouteParams" []
-                    , Type.namedWith [] "Data" []
-                    , Type.namedWith [] "ActionData" []
+                    [ Type.namedWith
+                        [ "Route", "Blog", "Slug_" ]
+                        "RouteParams"
+                        []
+                    , Type.namedWith [ "Route", "Blog", "Slug_" ] "Data" []
+                    , Type.namedWith
+                        [ "Route", "Blog", "Slug_" ]
+                        "ActionData"
+                        []
                     ]
                 )
         }
@@ -48,7 +54,12 @@ annotation_ =
             moduleName_
             "Data"
             []
-            (Type.record [ ( "blogpost", Type.namedWith [] "Blogpost" [] ) ])
+            (Type.record
+                [ ( "blogpost"
+                  , Type.namedWith [ "Content", "Blogpost" ] "Blogpost" []
+                  )
+                ]
+            )
     , routeParams =
         Type.alias
             moduleName_
@@ -85,7 +96,13 @@ make_ =
                     "Data"
                     []
                     (Type.record
-                        [ ( "blogpost", Type.namedWith [] "Blogpost" [] ) ]
+                        [ ( "blogpost"
+                          , Type.namedWith
+                                [ "Content", "Blogpost" ]
+                                "Blogpost"
+                                []
+                          )
+                        ]
                     )
                 )
                 (Elm.record [ Tuple.pair "blogpost" data_args.blogpost ])
@@ -121,14 +138,18 @@ values_ =
             , annotation =
                 Just
                     (Type.namedWith
-                        []
+                        [ "RouteBuilder" ]
                         "StatelessRoute"
-                        [ Type.namedWith [] "RouteParams" []
-                        , Type.namedWith [] "Data" []
-                        , Type.namedWith [] "ActionData" []
+                        [ Type.namedWith
+                            [ "Route", "Blog", "Slug_" ]
+                            "RouteParams"
+                            []
+                        , Type.namedWith [ "Route", "Blog", "Slug_" ] "Data" []
+                        , Type.namedWith
+                            [ "Route", "Blog", "Slug_" ]
+                            "ActionData"
+                            []
                         ]
                     )
             }
     }
-
-

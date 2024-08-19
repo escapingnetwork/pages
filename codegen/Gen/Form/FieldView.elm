@@ -1,7 +1,7 @@
 module Gen.Form.FieldView exposing (annotation_, call_, input, inputStyled, moduleName_, radio, radioStyled, select, selectStyled, valueButton, valueButtonStyled, values_)
 
 {-| 
-@docs values_, call_, annotation_, valueButtonStyled, inputStyled, selectStyled, radioStyled, valueButton, select, radio, input, moduleName_
+@docs moduleName_, input, radio, select, valueButton, radioStyled, selectStyled, inputStyled, valueButtonStyled, annotation_, call_, values_
 -}
 
 
@@ -1306,5 +1306,3 @@ values_ =
                     )
             }
     }
-
-

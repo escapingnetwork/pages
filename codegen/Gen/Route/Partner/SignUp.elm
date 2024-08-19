@@ -1,7 +1,7 @@
 module Gen.Route.Partner.SignUp exposing (annotation_, make_, moduleName_, route, values_)
 
 {-| 
-@docs values_, make_, annotation_, route, moduleName_
+@docs moduleName_, route, annotation_, make_, values_
 -}
 
 
@@ -15,7 +15,7 @@ moduleName_ =
     [ "Route", "Partner", "SignUp" ]
 
 
-{-| route: RouteBuilder.StatefulRoute RouteParams Data ActionData Model Msg -}
+{-| route: RouteBuilder.StatelessRoute Route.Partner.SignUp.RouteParams Route.Partner.SignUp.Data Route.Partner.SignUp.ActionData -}
 route : Elm.Expression
 route =
     Elm.value
@@ -25,12 +25,16 @@ route =
             Just
                 (Type.namedWith
                     [ "RouteBuilder" ]
-                    "StatefulRoute"
-                    [ Type.namedWith [] "RouteParams" []
-                    , Type.namedWith [] "Data" []
-                    , Type.namedWith [] "ActionData" []
-                    , Type.namedWith [] "Model" []
-                    , Type.namedWith [] "Msg" []
+                    "StatelessRoute"
+                    [ Type.namedWith
+                        [ "Route", "Partner", "SignUp" ]
+                        "RouteParams"
+                        []
+                    , Type.namedWith [ "Route", "Partner", "SignUp" ] "Data" []
+                    , Type.namedWith
+                        [ "Route", "Partner", "SignUp" ]
+                        "ActionData"
+                        []
                     ]
                 )
         }
@@ -40,21 +44,31 @@ annotation_ :
     { actionData : Type.Annotation
     , data : Type.Annotation
     , routeParams : Type.Annotation
-    , model : Type.Annotation
     , msg : Type.Annotation
+    , model : Type.Annotation
     }
 annotation_ =
     { actionData = Type.alias moduleName_ "ActionData" [] (Type.record [])
-    , data = Type.alias moduleName_ "Data" [] (Type.record [])
+    , data =
+        Type.alias
+            moduleName_
+            "Data"
+            []
+            (Type.record
+                [ ( "minimal"
+                  , Type.namedWith [ "Content", "Minimal" ] "Minimal" []
+                  )
+                ]
+            )
     , routeParams = Type.alias moduleName_ "RouteParams" [] (Type.record [])
+    , msg = Type.alias moduleName_ "Msg" [] Type.unit
     , model = Type.alias moduleName_ "Model" [] (Type.record [])
-    , msg = Type.namedWith [ "Route", "Partner", "SignUp" ] "Msg" []
     }
 
 
 make_ :
     { actionData : actionData -> Elm.Expression
-    , data : data -> Elm.Expression
+    , data : { minimal : Elm.Expression } -> Elm.Expression
     , routeParams : routeParams -> Elm.Expression
     , model : model -> Elm.Expression
     }
@@ -76,9 +90,14 @@ make_ =
                     [ "Route", "Partner", "SignUp" ]
                     "Data"
                     []
-                    (Type.record [])
+                    (Type.record
+                        [ ( "minimal"
+                          , Type.namedWith [ "Content", "Minimal" ] "Minimal" []
+                          )
+                        ]
+                    )
                 )
-                (Elm.record [])
+                (Elm.record [ Tuple.pair "minimal" data_args.minimal ])
     , routeParams =
         \routeParams_args ->
             Elm.withType
@@ -112,15 +131,20 @@ values_ =
                 Just
                     (Type.namedWith
                         [ "RouteBuilder" ]
-                        "StatefulRoute"
-                        [ Type.namedWith [] "RouteParams" []
-                        , Type.namedWith [] "Data" []
-                        , Type.namedWith [] "ActionData" []
-                        , Type.namedWith [] "Model" []
-                        , Type.namedWith [] "Msg" []
+                        "StatelessRoute"
+                        [ Type.namedWith
+                            [ "Route", "Partner", "SignUp" ]
+                            "RouteParams"
+                            []
+                        , Type.namedWith
+                            [ "Route", "Partner", "SignUp" ]
+                            "Data"
+                            []
+                        , Type.namedWith
+                            [ "Route", "Partner", "SignUp" ]
+                            "ActionData"
+                            []
                         ]
                     )
             }
     }
-
-

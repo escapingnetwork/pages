@@ -1,7 +1,7 @@
 module Gen.BackendTask.Glob exposing (annotation_, atLeastOne, call_, capture, captureFilePath, caseOf_, defaultOptions, digits, expectUniqueMatch, expectUniqueMatchFromList, int, literal, make_, map, match, moduleName_, oneOf, recursiveWildcard, succeed, toBackendTask, toBackendTaskWithOptions, values_, wildcard, zeroOrMore)
 
 {-| 
-@docs values_, call_, caseOf_, make_, annotation_, defaultOptions, toBackendTaskWithOptions, toBackendTask, atLeastOne, zeroOrMore, oneOf, succeed, map, literal, expectUniqueMatchFromList, expectUniqueMatch, digits, int, recursiveWildcard, wildcard, captureFilePath, match, capture, moduleName_
+@docs moduleName_, capture, match, captureFilePath, wildcard, recursiveWildcard, int, digits, expectUniqueMatch, expectUniqueMatchFromList, literal, map, succeed, oneOf, zeroOrMore, atLeastOne, toBackendTask, toBackendTaskWithOptions, defaultOptions, annotation_, make_, caseOf_, call_, values_
 -}
 
 
@@ -1745,5 +1745,3 @@ values_ =
                 Just (Type.namedWith [ "BackendTask", "Glob" ] "Options" [])
             }
     }
-
-

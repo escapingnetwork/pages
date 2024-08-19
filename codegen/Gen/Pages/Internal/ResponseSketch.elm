@@ -1,7 +1,7 @@
 module Gen.Pages.Internal.ResponseSketch exposing (annotation_, caseOf_, make_, moduleName_)
 
 {-| 
-@docs caseOf_, make_, annotation_, moduleName_
+@docs moduleName_, annotation_, make_, caseOf_
 -}
 
 
@@ -166,17 +166,17 @@ caseOf_ =
                 [ Elm.Case.branch2
                     "RenderPage"
                     ( "data", Type.var "data" )
-                    ( "maybe.Maybe", Type.maybe (Type.var "action") )
+                    ( "maybeMaybe", Type.maybe (Type.var "action") )
                     responseSketchTags.renderPage
                 , Elm.Case.branch3
                     "HotUpdate"
                     ( "data", Type.var "data" )
                     ( "shared", Type.var "shared" )
-                    ( "maybe.Maybe", Type.maybe (Type.var "action") )
+                    ( "maybeMaybe", Type.maybe (Type.var "action") )
                     responseSketchTags.hotUpdate
                 , Elm.Case.branch1
                     "Redirect"
-                    ( "string.String", Type.string )
+                    ( "stringString", Type.string )
                     responseSketchTags.redirect
                 , Elm.Case.branch1
                     "NotFound"
@@ -198,5 +198,3 @@ caseOf_ =
                     responseSketchTags.action
                 ]
     }
-
-

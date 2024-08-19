@@ -1,7 +1,7 @@
 module Gen.Route.Blog exposing (annotation_, make_, moduleName_, route, values_)
 
 {-| 
-@docs values_, make_, annotation_, route, moduleName_
+@docs moduleName_, route, annotation_, make_, values_
 -}
 
 
@@ -15,7 +15,7 @@ moduleName_ =
     [ "Route", "Blog" ]
 
 
-{-| route: StatelessRoute RouteParams Data ActionData -}
+{-| route: RouteBuilder.StatelessRoute Route.Blog.RouteParams Route.Blog.Data Route.Blog.ActionData -}
 route : Elm.Expression
 route =
     Elm.value
@@ -24,11 +24,11 @@ route =
         , annotation =
             Just
                 (Type.namedWith
-                    []
+                    [ "RouteBuilder" ]
                     "StatelessRoute"
-                    [ Type.namedWith [] "RouteParams" []
-                    , Type.namedWith [] "Data" []
-                    , Type.namedWith [] "ActionData" []
+                    [ Type.namedWith [ "Route", "Blog" ] "RouteParams" []
+                    , Type.namedWith [ "Route", "Blog" ] "Data" []
+                    , Type.namedWith [ "Route", "Blog" ] "ActionData" []
                     ]
                 )
         }
@@ -49,8 +49,18 @@ annotation_ =
             "Data"
             []
             (Type.record
-                [ ( "blogposts", Type.list (Type.namedWith [] "Metadata" []) )
-                , ( "tags", Type.list (Type.namedWith [] "TagWithCount" []) )
+                [ ( "blogposts"
+                  , Type.list
+                        (Type.namedWith [ "Content", "Blogpost" ] "Metadata" [])
+                  )
+                , ( "tags"
+                  , Type.list
+                        (Type.namedWith
+                            [ "Content", "Blogpost" ]
+                            "TagWithCount"
+                            []
+                        )
+                  )
                 ]
             )
     , routeParams = Type.alias moduleName_ "RouteParams" [] (Type.record [])
@@ -82,10 +92,20 @@ make_ =
                     []
                     (Type.record
                         [ ( "blogposts"
-                          , Type.list (Type.namedWith [] "Metadata" [])
+                          , Type.list
+                                (Type.namedWith
+                                    [ "Content", "Blogpost" ]
+                                    "Metadata"
+                                    []
+                                )
                           )
                         , ( "tags"
-                          , Type.list (Type.namedWith [] "TagWithCount" [])
+                          , Type.list
+                                (Type.namedWith
+                                    [ "Content", "Blogpost" ]
+                                    "TagWithCount"
+                                    []
+                                )
                           )
                         ]
                     )
@@ -122,14 +142,12 @@ values_ =
             , annotation =
                 Just
                     (Type.namedWith
-                        []
+                        [ "RouteBuilder" ]
                         "StatelessRoute"
-                        [ Type.namedWith [] "RouteParams" []
-                        , Type.namedWith [] "Data" []
-                        , Type.namedWith [] "ActionData" []
+                        [ Type.namedWith [ "Route", "Blog" ] "RouteParams" []
+                        , Type.namedWith [ "Route", "Blog" ] "Data" []
+                        , Type.namedWith [ "Route", "Blog" ] "ActionData" []
                         ]
                     )
             }
     }
-
-

@@ -1,7 +1,7 @@
 module Gen.Svg.Styled.Keyed exposing (call_, lazyNode, lazyNode2, lazyNode3, lazyNode4, lazyNode5, lazyNode6, moduleName_, node, values_)
 
 {-| 
-@docs values_, call_, lazyNode6, lazyNode5, lazyNode4, lazyNode3, lazyNode2, lazyNode, node, moduleName_
+@docs moduleName_, node, lazyNode, lazyNode2, lazyNode3, lazyNode4, lazyNode5, lazyNode6, call_, values_
 -}
 
 
@@ -1193,5 +1193,3 @@ values_ =
                     )
             }
     }
-
-

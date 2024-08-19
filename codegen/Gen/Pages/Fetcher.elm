@@ -1,7 +1,7 @@
 module Gen.Pages.Fetcher exposing (annotation_, call_, caseOf_, make_, map, moduleName_, submit, values_)
 
 {-| 
-@docs values_, call_, caseOf_, make_, annotation_, map, submit, moduleName_
+@docs moduleName_, submit, map, annotation_, make_, caseOf_, call_, values_
 -}
 
 
@@ -213,7 +213,7 @@ caseOf_ =
                 )
                 [ Elm.Case.branch1
                     "Fetcher"
-                    ( "pages.Fetcher.FetcherInfo"
+                    ( "pagesFetcherFetcherInfo"
                     , Type.namedWith
                         [ "Pages", "Fetcher" ]
                         "FetcherInfo"
@@ -351,5 +351,3 @@ values_ =
                     )
             }
     }
-
-

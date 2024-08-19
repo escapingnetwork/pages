@@ -1,7 +1,7 @@
 module Gen.Pages.Manifest.Category exposing (annotation_, books, business, call_, custom, education, entertainment, finance, fitness, food, games, government, health, kids, lifestyle, magazines, medical, moduleName_, music, navigation, news, personalization, photo, politics, productivity, security, shopping, social, sports, toString, travel, utilities, values_, weather)
 
 {-| 
-@docs values_, call_, annotation_, custom, weather, utilities, travel, sports, social, shopping, security, productivity, politics, photo, personalization, news, navigation, music, medical, magazines, lifestyle, kids, health, government, games, food, fitness, finance, entertainment, education, business, books, toString, moduleName_
+@docs moduleName_, toString, books, business, education, entertainment, finance, fitness, food, games, government, health, kids, lifestyle, magazines, medical, music, navigation, news, personalization, photo, politics, productivity, security, shopping, social, sports, travel, utilities, weather, custom, annotation_, call_, values_
 -}
 
 
@@ -1053,5 +1053,3 @@ values_ =
                     )
             }
     }
-
-

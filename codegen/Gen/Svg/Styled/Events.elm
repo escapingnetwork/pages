@@ -1,7 +1,7 @@
 module Gen.Svg.Styled.Events exposing (call_, custom, moduleName_, on, onClick, onMouseDown, onMouseOut, onMouseOver, onMouseUp, preventDefaultOn, stopPropagationOn, values_)
 
 {-| 
-@docs values_, call_, custom, preventDefaultOn, stopPropagationOn, on, onMouseOut, onMouseOver, onMouseUp, onMouseDown, onClick, moduleName_
+@docs moduleName_, onClick, onMouseDown, onMouseUp, onMouseOver, onMouseOut, on, stopPropagationOn, preventDefaultOn, custom, call_, values_
 -}
 
 
@@ -698,5 +698,3 @@ values_ =
                     )
             }
     }
-
-

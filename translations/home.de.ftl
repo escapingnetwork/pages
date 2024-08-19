@@ -52,3 +52,5 @@ forms-submit = Absenden
 forms-submitting = Senden...
 forms-error = Beim Senden Ihrer Anfrage ist ein Fehler aufgetreten!
 forms-error-contact = Bitte kontaktieren Sie
+forms-success = Danke
+forms-success-contact = Wir melden uns bald bei Ihnen zurück!

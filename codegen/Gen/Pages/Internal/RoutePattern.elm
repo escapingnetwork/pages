@@ -1,7 +1,7 @@
 module Gen.Pages.Internal.RoutePattern exposing (annotation_, call_, caseOf_, fromModuleName, hasRouteParams, make_, moduleName_, repeatWithoutOptionalEnding, routeToBranch, toModuleName, toRouteParamTypes, toRouteParamsRecord, toVariant, toVariantName, values_, view)
 
 {-| 
-@docs values_, call_, caseOf_, make_, annotation_, toVariantName, toRouteParamsRecord, toRouteParamTypes, toModuleName, repeatWithoutOptionalEnding, hasRouteParams, fromModuleName, routeToBranch, toVariant, view, moduleName_
+@docs moduleName_, view, toVariant, routeToBranch, fromModuleName, hasRouteParams, repeatWithoutOptionalEnding, toModuleName, toRouteParamTypes, toRouteParamsRecord, toVariantName, annotation_, make_, caseOf_, call_, values_
 -}
 
 
@@ -559,7 +559,7 @@ caseOf_ =
                 )
                 [ Elm.Case.branch1
                     "Optional"
-                    ( "string.String", Type.string )
+                    ( "stringString", Type.string )
                     endingTags.optional
                 , Elm.Case.branch0 "RequiredSplat" endingTags.requiredSplat
                 , Elm.Case.branch0 "OptionalSplat" endingTags.optionalSplat
@@ -575,11 +575,11 @@ caseOf_ =
                 )
                 [ Elm.Case.branch1
                     "StaticSegment"
-                    ( "string.String", Type.string )
+                    ( "stringString", Type.string )
                     segmentTags.staticSegment
                 , Elm.Case.branch1
                     "DynamicSegment"
-                    ( "string.String", Type.string )
+                    ( "stringString", Type.string )
                     segmentTags.dynamicSegment
                 ]
     , param =
@@ -611,15 +611,15 @@ caseOf_ =
                 )
                 [ Elm.Case.branch1
                     "StaticParam"
-                    ( "string.String", Type.string )
+                    ( "stringString", Type.string )
                     routeParamTags.staticParam
                 , Elm.Case.branch1
                     "DynamicParam"
-                    ( "string.String", Type.string )
+                    ( "stringString", Type.string )
                     routeParamTags.dynamicParam
                 , Elm.Case.branch1
                     "OptionalParam2"
-                    ( "string.String", Type.string )
+                    ( "stringString", Type.string )
                     routeParamTags.optionalParam2
                 , Elm.Case.branch0
                     "RequiredSplatParam2"
@@ -1122,5 +1122,3 @@ values_ =
                     )
             }
     }
-
-

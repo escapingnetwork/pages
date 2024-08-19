@@ -1,7 +1,7 @@
 module Gen.Layout.About exposing (call_, moduleName_, seoHeaders, values_, view)
 
 {-| 
-@docs values_, call_, seoHeaders, view, moduleName_
+@docs moduleName_, view, seoHeaders, call_, values_
 -}
 
 
@@ -15,9 +15,9 @@ moduleName_ =
     [ "Layout", "About" ]
 
 
-{-| view: Author -> Html msg -}
-view : Elm.Expression -> Elm.Expression
-view viewArg =
+{-| view: Layout.About.I18n -> Content.About.Author -> Html.Html msg -}
+view : Elm.Expression -> Elm.Expression -> Elm.Expression
+view viewArg viewArg0 =
     Elm.apply
         (Elm.value
             { importFrom = [ "Layout", "About" ]
@@ -25,15 +25,17 @@ view viewArg =
             , annotation =
                 Just
                     (Type.function
-                        [ Type.namedWith [] "Author" [] ]
-                        (Type.namedWith [] "Html" [ Type.var "msg" ])
+                        [ Type.namedWith [ "Layout", "About" ] "I18n" []
+                        , Type.namedWith [ "Content", "About" ] "Author" []
+                        ]
+                        (Type.namedWith [ "Html" ] "Html" [ Type.var "msg" ])
                     )
             }
         )
-        [ viewArg ]
+        [ viewArg, viewArg0 ]
 
 
-{-| seoHeaders: Author -> List Head.Tag -}
+{-| seoHeaders: Content.About.Author -> List Head.Tag -}
 seoHeaders : Elm.Expression -> Elm.Expression
 seoHeaders seoHeadersArg =
     Elm.apply
@@ -43,7 +45,7 @@ seoHeaders seoHeadersArg =
             , annotation =
                 Just
                     (Type.function
-                        [ Type.namedWith [] "Author" [] ]
+                        [ Type.namedWith [ "Content", "About" ] "Author" [] ]
                         (Type.list (Type.namedWith [ "Head" ] "Tag" []))
                     )
             }
@@ -52,12 +54,12 @@ seoHeaders seoHeadersArg =
 
 
 call_ :
-    { view : Elm.Expression -> Elm.Expression
+    { view : Elm.Expression -> Elm.Expression -> Elm.Expression
     , seoHeaders : Elm.Expression -> Elm.Expression
     }
 call_ =
     { view =
-        \viewArg ->
+        \viewArg viewArg0 ->
             Elm.apply
                 (Elm.value
                     { importFrom = [ "Layout", "About" ]
@@ -65,12 +67,21 @@ call_ =
                     , annotation =
                         Just
                             (Type.function
-                                [ Type.namedWith [] "Author" [] ]
-                                (Type.namedWith [] "Html" [ Type.var "msg" ])
+                                [ Type.namedWith [ "Layout", "About" ] "I18n" []
+                                , Type.namedWith
+                                    [ "Content", "About" ]
+                                    "Author"
+                                    []
+                                ]
+                                (Type.namedWith
+                                    [ "Html" ]
+                                    "Html"
+                                    [ Type.var "msg" ]
+                                )
                             )
                     }
                 )
-                [ viewArg ]
+                [ viewArg, viewArg0 ]
     , seoHeaders =
         \seoHeadersArg ->
             Elm.apply
@@ -80,7 +91,11 @@ call_ =
                     , annotation =
                         Just
                             (Type.function
-                                [ Type.namedWith [] "Author" [] ]
+                                [ Type.namedWith
+                                    [ "Content", "About" ]
+                                    "Author"
+                                    []
+                                ]
                                 (Type.list (Type.namedWith [ "Head" ] "Tag" []))
                             )
                     }
@@ -98,8 +113,10 @@ values_ =
             , annotation =
                 Just
                     (Type.function
-                        [ Type.namedWith [] "Author" [] ]
-                        (Type.namedWith [] "Html" [ Type.var "msg" ])
+                        [ Type.namedWith [ "Layout", "About" ] "I18n" []
+                        , Type.namedWith [ "Content", "About" ] "Author" []
+                        ]
+                        (Type.namedWith [ "Html" ] "Html" [ Type.var "msg" ])
                     )
             }
     , seoHeaders =
@@ -109,10 +126,8 @@ values_ =
             , annotation =
                 Just
                     (Type.function
-                        [ Type.namedWith [] "Author" [] ]
+                        [ Type.namedWith [ "Content", "About" ] "Author" [] ]
                         (Type.list (Type.namedWith [ "Head" ] "Tag" []))
                     )
             }
     }
-
-

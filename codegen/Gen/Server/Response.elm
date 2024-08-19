@@ -1,7 +1,7 @@
 module Gen.Server.Response exposing (annotation_, base64Body, body, bytesBody, call_, emptyBody, errorPage, json, map, mapError, moduleName_, permanentRedirect, plainText, render, temporaryRedirect, toJson, values_, withHeader, withHeaders, withSetCookieHeader, withStatusCode)
 
 {-| 
-@docs values_, call_, annotation_, toJson, withSetCookieHeader, withStatusCode, withHeaders, withHeader, base64Body, bytesBody, body, emptyBody, plainText, json, permanentRedirect, temporaryRedirect, mapError, errorPage, map, render, moduleName_
+@docs moduleName_, render, map, errorPage, mapError, temporaryRedirect, permanentRedirect, json, plainText, emptyBody, body, bytesBody, base64Body, withHeader, withHeaders, withStatusCode, withSetCookieHeader, toJson, annotation_, call_, values_
 -}
 
 
@@ -1250,5 +1250,3 @@ values_ =
                     )
             }
     }
-
-

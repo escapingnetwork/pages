@@ -1,7 +1,7 @@
 module Gen.Css.Animations exposing (all, annotation_, backgroundColor, backgroundSize, backgroundSize2, border, border2, border3, borderBottom, borderBottom2, borderBottom3, call_, custom, keyframes, moduleName_, opacity, property, transform, values_)
 
 {-| 
-@docs values_, call_, annotation_, custom, borderBottom3, borderBottom2, borderBottom, border3, border2, backgroundColor, property, border, backgroundSize2, backgroundSize, all, transform, opacity, keyframes, moduleName_
+@docs moduleName_, keyframes, opacity, transform, all, backgroundSize, backgroundSize2, border, property, backgroundColor, border2, border3, borderBottom, borderBottom2, borderBottom3, custom, annotation_, call_, values_
 -}
 
 
@@ -1251,5 +1251,3 @@ values_ =
                     )
             }
     }
-
-

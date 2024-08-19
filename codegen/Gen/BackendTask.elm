@@ -1,7 +1,7 @@
 module Gen.BackendTask exposing (allowFatal, andMap, andThen, annotation_, call_, combine, fail, fromResult, map, map2, map3, map4, map5, map6, map7, map8, map9, mapError, moduleName_, onError, resolve, succeed, toResult, values_)
 
 {-| 
-@docs values_, call_, annotation_, toResult, onError, mapError, allowFatal, map9, map8, map7, map6, map5, map4, map3, map2, andMap, combine, resolve, andThen, fromResult, fail, succeed, map, moduleName_
+@docs moduleName_, map, succeed, fail, fromResult, andThen, resolve, combine, andMap, map2, map3, map4, map5, map6, map7, map8, map9, allowFatal, mapError, onError, toResult, annotation_, call_, values_
 -}
 
 
@@ -2906,5 +2906,3 @@ values_ =
                     )
             }
     }
-
-

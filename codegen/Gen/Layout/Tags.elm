@@ -1,7 +1,7 @@
 module Gen.Layout.Tags exposing (call_, moduleName_, values_, view, viewTag)
 
 {-| 
-@docs values_, call_, viewTag, view, moduleName_
+@docs moduleName_, view, viewTag, call_, values_
 -}
 
 
@@ -15,7 +15,7 @@ moduleName_ =
     [ "Layout", "Tags" ]
 
 
-{-| view: List TagWithCount -> Html msg -}
+{-| view: List Content.Blogpost.TagWithCount -> Html.Html msg -}
 view : List Elm.Expression -> Elm.Expression
 view viewArg =
     Elm.apply
@@ -25,15 +25,21 @@ view viewArg =
             , annotation =
                 Just
                     (Type.function
-                        [ Type.list (Type.namedWith [] "TagWithCount" []) ]
-                        (Type.namedWith [] "Html" [ Type.var "msg" ])
+                        [ Type.list
+                            (Type.namedWith
+                                [ "Content", "Blogpost" ]
+                                "TagWithCount"
+                                []
+                            )
+                        ]
+                        (Type.namedWith [ "Html" ] "Html" [ Type.var "msg" ])
                     )
             }
         )
         [ Elm.list viewArg ]
 
 
-{-| viewTag: String -> Html msg -}
+{-| viewTag: String -> Html.Html msg -}
 viewTag : String -> Elm.Expression
 viewTag viewTagArg =
     Elm.apply
@@ -44,7 +50,7 @@ viewTag viewTagArg =
                 Just
                     (Type.function
                         [ Type.string ]
-                        (Type.namedWith [] "Html" [ Type.var "msg" ])
+                        (Type.namedWith [ "Html" ] "Html" [ Type.var "msg" ])
                     )
             }
         )
@@ -66,9 +72,17 @@ call_ =
                         Just
                             (Type.function
                                 [ Type.list
-                                    (Type.namedWith [] "TagWithCount" [])
+                                    (Type.namedWith
+                                        [ "Content", "Blogpost" ]
+                                        "TagWithCount"
+                                        []
+                                    )
                                 ]
-                                (Type.namedWith [] "Html" [ Type.var "msg" ])
+                                (Type.namedWith
+                                    [ "Html" ]
+                                    "Html"
+                                    [ Type.var "msg" ]
+                                )
                             )
                     }
                 )
@@ -83,7 +97,11 @@ call_ =
                         Just
                             (Type.function
                                 [ Type.string ]
-                                (Type.namedWith [] "Html" [ Type.var "msg" ])
+                                (Type.namedWith
+                                    [ "Html" ]
+                                    "Html"
+                                    [ Type.var "msg" ]
+                                )
                             )
                     }
                 )
@@ -100,8 +118,14 @@ values_ =
             , annotation =
                 Just
                     (Type.function
-                        [ Type.list (Type.namedWith [] "TagWithCount" []) ]
-                        (Type.namedWith [] "Html" [ Type.var "msg" ])
+                        [ Type.list
+                            (Type.namedWith
+                                [ "Content", "Blogpost" ]
+                                "TagWithCount"
+                                []
+                            )
+                        ]
+                        (Type.namedWith [ "Html" ] "Html" [ Type.var "msg" ])
                     )
             }
     , viewTag =
@@ -112,9 +136,7 @@ values_ =
                 Just
                     (Type.function
                         [ Type.string ]
-                        (Type.namedWith [] "Html" [ Type.var "msg" ])
+                        (Type.namedWith [ "Html" ] "Html" [ Type.var "msg" ])
                     )
             }
     }
-
-

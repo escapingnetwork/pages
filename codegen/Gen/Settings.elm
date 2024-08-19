@@ -1,7 +1,7 @@
 module Gen.Settings exposing (author, canonicalUrl, locale, moduleName_, subtitle, title, values_)
 
 {-| 
-@docs values_, canonicalUrl, locale, title, subtitle, author, moduleName_
+@docs moduleName_, author, subtitle, title, locale, canonicalUrl, values_
 -}
 
 
@@ -45,7 +45,7 @@ title =
         }
 
 
-{-| locale: Maybe ( Language.Language, Region.Region ) -}
+{-| locale: Maybe ( LanguageTag.Language.Language, LanguageTag.Region.Region ) -}
 locale : Elm.Expression
 locale =
     Elm.value
@@ -53,13 +53,15 @@ locale =
         , name = "locale"
         , annotation =
             Just
-                (Type.namedWith
-                    []
-                    "Maybe"
-                    [ Type.tuple
-                        (Type.namedWith [ "Language" ] "Language" [])
-                        (Type.namedWith [ "Country" ] "Country" [])
-                    ]
+                (Type.maybe
+                    (Type.tuple
+                        (Type.namedWith
+                            [ "LanguageTag", "Language" ]
+                            "Language"
+                            []
+                        )
+                        (Type.namedWith [ "LanguageTag", "Region" ] "Region" [])
+                    )
                 )
         }
 
@@ -106,13 +108,19 @@ values_ =
             , name = "locale"
             , annotation =
                 Just
-                    (Type.namedWith
-                        []
-                        "Maybe"
-                        [ Type.tuple
-                            (Type.namedWith [ "Language" ] "Language" [])
-                            (Type.namedWith [ "Country" ] "Country" [])
-                        ]
+                    (Type.maybe
+                        (Type.tuple
+                            (Type.namedWith
+                                [ "LanguageTag", "Language" ]
+                                "Language"
+                                []
+                            )
+                            (Type.namedWith
+                                [ "LanguageTag", "Region" ]
+                                "Region"
+                                []
+                            )
+                        )
                     )
             }
     , canonicalUrl =
@@ -122,5 +130,3 @@ values_ =
             , annotation = Just Type.string
             }
     }
-
-

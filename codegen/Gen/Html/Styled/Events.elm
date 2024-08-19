@@ -1,7 +1,7 @@
 module Gen.Html.Styled.Events exposing (call_, custom, keyCode, moduleName_, on, onBlur, onCheck, onClick, onDoubleClick, onFocus, onInput, onMouseDown, onMouseEnter, onMouseLeave, onMouseOut, onMouseOver, onMouseUp, onSubmit, preventDefaultOn, stopPropagationOn, targetChecked, targetValue, values_)
 
 {-| 
-@docs values_, call_, keyCode, targetChecked, targetValue, custom, preventDefaultOn, stopPropagationOn, on, onFocus, onBlur, onSubmit, onCheck, onInput, onMouseOut, onMouseOver, onMouseLeave, onMouseEnter, onMouseUp, onMouseDown, onDoubleClick, onClick, moduleName_
+@docs moduleName_, onClick, onDoubleClick, onMouseDown, onMouseUp, onMouseEnter, onMouseLeave, onMouseOver, onMouseOut, onInput, onCheck, onSubmit, onBlur, onFocus, on, stopPropagationOn, preventDefaultOn, custom, targetValue, targetChecked, keyCode, call_, values_
 -}
 
 
@@ -1300,5 +1300,3 @@ values_ =
                     (Type.namedWith [ "Json", "Decode" ] "Decoder" [ Type.int ])
             }
     }
-
-

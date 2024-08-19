@@ -1,7 +1,7 @@
 module Gen.RouteBuilder exposing (annotation_, buildNoState, buildWithLocalState, buildWithSharedState, call_, caseOf_, make_, moduleName_, preRender, preRenderWithFallback, serverRender, single, values_, withOnAction)
 
 {-| 
-@docs values_, call_, caseOf_, make_, annotation_, buildNoState, withOnAction, buildWithLocalState, buildWithSharedState, single, preRender, preRenderWithFallback, serverRender, moduleName_
+@docs moduleName_, serverRender, preRenderWithFallback, preRender, single, buildWithSharedState, buildWithLocalState, withOnAction, buildNoState, annotation_, make_, caseOf_, call_, values_
 -}
 
 
@@ -22,14 +22,14 @@ serverRender:
     { data :
         routeParams
         -> Server.Request.Request
-        -> BackendTask FatalError (Server.Response.Response data ErrorPage)
+        -> BackendTask.BackendTask FatalError.FatalError (Server.Response.Response data ErrorPage.ErrorPage)
     , action :
         routeParams
         -> Server.Request.Request
-        -> BackendTask FatalError (Server.Response.Response action ErrorPage)
-    , head : App data action routeParams -> List Head.Tag
+        -> BackendTask.BackendTask FatalError.FatalError (Server.Response.Response action ErrorPage.ErrorPage)
+    , head : RouteBuilder.App data action routeParams -> List Head.Tag
     }
-    -> Builder routeParams data action
+    -> RouteBuilder.Builder routeParams data action
 -}
 serverRender :
     { data : Elm.Expression -> Elm.Expression -> Elm.Expression
@@ -55,14 +55,20 @@ serverRender serverRenderArg =
                                         []
                                     ]
                                     (Type.namedWith
-                                        []
+                                        [ "BackendTask" ]
                                         "BackendTask"
-                                        [ Type.namedWith [] "FatalError" []
+                                        [ Type.namedWith
+                                            [ "FatalError" ]
+                                            "FatalError"
+                                            []
                                         , Type.namedWith
                                             [ "Server", "Response" ]
                                             "Response"
                                             [ Type.var "data"
-                                            , Type.namedWith [] "ErrorPage" []
+                                            , Type.namedWith
+                                                [ "ErrorPage" ]
+                                                "ErrorPage"
+                                                []
                                             ]
                                         ]
                                     )
@@ -76,14 +82,20 @@ serverRender serverRenderArg =
                                         []
                                     ]
                                     (Type.namedWith
-                                        []
+                                        [ "BackendTask" ]
                                         "BackendTask"
-                                        [ Type.namedWith [] "FatalError" []
+                                        [ Type.namedWith
+                                            [ "FatalError" ]
+                                            "FatalError"
+                                            []
                                         , Type.namedWith
                                             [ "Server", "Response" ]
                                             "Response"
                                             [ Type.var "action"
-                                            , Type.namedWith [] "ErrorPage" []
+                                            , Type.namedWith
+                                                [ "ErrorPage" ]
+                                                "ErrorPage"
+                                                []
                                             ]
                                         ]
                                     )
@@ -91,7 +103,7 @@ serverRender serverRenderArg =
                             , ( "head"
                               , Type.function
                                     [ Type.namedWith
-                                        []
+                                        [ "RouteBuilder" ]
                                         "App"
                                         [ Type.var "data"
                                         , Type.var "action"
@@ -105,7 +117,7 @@ serverRender serverRenderArg =
                             ]
                         ]
                         (Type.namedWith
-                            []
+                            [ "RouteBuilder" ]
                             "Builder"
                             [ Type.var "routeParams"
                             , Type.var "data"
@@ -148,11 +160,11 @@ serverRender serverRenderArg =
 preRenderWithFallback: 
     { data :
         routeParams
-        -> BackendTask FatalError (Server.Response.Response data ErrorPage)
-    , pages : BackendTask FatalError (List routeParams)
-    , head : App data action routeParams -> List Head.Tag
+        -> BackendTask.BackendTask FatalError.FatalError (Server.Response.Response data ErrorPage.ErrorPage)
+    , pages : BackendTask.BackendTask FatalError.FatalError (List routeParams)
+    , head : RouteBuilder.App data action routeParams -> List Head.Tag
     }
-    -> Builder routeParams data action
+    -> RouteBuilder.Builder routeParams data action
 -}
 preRenderWithFallback :
     { data : Elm.Expression -> Elm.Expression
@@ -173,30 +185,39 @@ preRenderWithFallback preRenderWithFallbackArg =
                               , Type.function
                                     [ Type.var "routeParams" ]
                                     (Type.namedWith
-                                        []
+                                        [ "BackendTask" ]
                                         "BackendTask"
-                                        [ Type.namedWith [] "FatalError" []
+                                        [ Type.namedWith
+                                            [ "FatalError" ]
+                                            "FatalError"
+                                            []
                                         , Type.namedWith
                                             [ "Server", "Response" ]
                                             "Response"
                                             [ Type.var "data"
-                                            , Type.namedWith [] "ErrorPage" []
+                                            , Type.namedWith
+                                                [ "ErrorPage" ]
+                                                "ErrorPage"
+                                                []
                                             ]
                                         ]
                                     )
                               )
                             , ( "pages"
                               , Type.namedWith
-                                    []
+                                    [ "BackendTask" ]
                                     "BackendTask"
-                                    [ Type.namedWith [] "FatalError" []
+                                    [ Type.namedWith
+                                        [ "FatalError" ]
+                                        "FatalError"
+                                        []
                                     , Type.list (Type.var "routeParams")
                                     ]
                               )
                             , ( "head"
                               , Type.function
                                     [ Type.namedWith
-                                        []
+                                        [ "RouteBuilder" ]
                                         "App"
                                         [ Type.var "data"
                                         , Type.var "action"
@@ -210,7 +231,7 @@ preRenderWithFallback preRenderWithFallbackArg =
                             ]
                         ]
                         (Type.namedWith
-                            []
+                            [ "RouteBuilder" ]
                             "Builder"
                             [ Type.var "routeParams"
                             , Type.var "data"
@@ -241,11 +262,11 @@ preRenderWithFallback preRenderWithFallbackArg =
 {-| {-| -}
 
 preRender: 
-    { data : routeParams -> BackendTask FatalError data
-    , pages : BackendTask FatalError (List routeParams)
-    , head : App data action routeParams -> List Head.Tag
+    { data : routeParams -> BackendTask.BackendTask FatalError.FatalError data
+    , pages : BackendTask.BackendTask FatalError.FatalError (List routeParams)
+    , head : RouteBuilder.App data action routeParams -> List Head.Tag
     }
-    -> Builder routeParams data action
+    -> RouteBuilder.Builder routeParams data action
 -}
 preRender :
     { data : Elm.Expression -> Elm.Expression
@@ -266,25 +287,31 @@ preRender preRenderArg =
                               , Type.function
                                     [ Type.var "routeParams" ]
                                     (Type.namedWith
-                                        []
+                                        [ "BackendTask" ]
                                         "BackendTask"
-                                        [ Type.namedWith [] "FatalError" []
+                                        [ Type.namedWith
+                                            [ "FatalError" ]
+                                            "FatalError"
+                                            []
                                         , Type.var "data"
                                         ]
                                     )
                               )
                             , ( "pages"
                               , Type.namedWith
-                                    []
+                                    [ "BackendTask" ]
                                     "BackendTask"
-                                    [ Type.namedWith [] "FatalError" []
+                                    [ Type.namedWith
+                                        [ "FatalError" ]
+                                        "FatalError"
+                                        []
                                     , Type.list (Type.var "routeParams")
                                     ]
                               )
                             , ( "head"
                               , Type.function
                                     [ Type.namedWith
-                                        []
+                                        [ "RouteBuilder" ]
                                         "App"
                                         [ Type.var "data"
                                         , Type.var "action"
@@ -298,7 +325,7 @@ preRender preRenderArg =
                             ]
                         ]
                         (Type.namedWith
-                            []
+                            [ "RouteBuilder" ]
                             "Builder"
                             [ Type.var "routeParams"
                             , Type.var "data"
@@ -323,10 +350,10 @@ preRender preRenderArg =
 {-| {-| -}
 
 single: 
-    { data : BackendTask FatalError data
-    , head : App data action {} -> List Head.Tag
+    { data : BackendTask.BackendTask FatalError.FatalError data
+    , head : RouteBuilder.App data action {} -> List Head.Tag
     }
-    -> Builder {} data action
+    -> RouteBuilder.Builder {} data action
 -}
 single :
     { data : Elm.Expression, head : Elm.Expression -> Elm.Expression }
@@ -342,16 +369,19 @@ single singleArg =
                         [ Type.record
                             [ ( "data"
                               , Type.namedWith
-                                    []
+                                    [ "BackendTask" ]
                                     "BackendTask"
-                                    [ Type.namedWith [] "FatalError" []
+                                    [ Type.namedWith
+                                        [ "FatalError" ]
+                                        "FatalError"
+                                        []
                                     , Type.var "data"
                                     ]
                               )
                             , ( "head"
                               , Type.function
                                     [ Type.namedWith
-                                        []
+                                        [ "RouteBuilder" ]
                                         "App"
                                         [ Type.var "data"
                                         , Type.var "action"
@@ -365,7 +395,7 @@ single singleArg =
                             ]
                         ]
                         (Type.namedWith
-                            []
+                            [ "RouteBuilder" ]
                             "Builder"
                             [ Type.record []
                             , Type.var "data"
@@ -388,18 +418,29 @@ single singleArg =
 
 buildWithSharedState: 
     { view :
-        App data action routeParams -> Shared.Model -> model -> View (PagesMsg msg)
-    , init : App data action routeParams -> Shared.Model -> ( model, Effect msg )
+        RouteBuilder.App data action routeParams
+        -> Shared.Model
+        -> model
+        -> View.View (PagesMsg.PagesMsg msg)
+    , init :
+        RouteBuilder.App data action routeParams
+        -> Shared.Model
+        -> ( model, Effect.Effect msg )
     , update :
-        App data action routeParams
+        RouteBuilder.App data action routeParams
         -> Shared.Model
         -> msg
         -> model
-        -> ( model, Effect msg, Maybe Shared.Msg )
-    , subscriptions : routeParams -> UrlPath -> Shared.Model -> model -> Sub msg
+        -> ( model, Effect.Effect msg, Maybe Shared.Msg )
+    , subscriptions :
+        routeParams
+        -> UrlPath.UrlPath
+        -> Shared.Model
+        -> model
+        -> RouteBuilder.Sub msg
     }
-    -> Builder routeParams data action
-    -> StatefulRoute routeParams data action model msg
+    -> RouteBuilder.Builder routeParams data action
+    -> RouteBuilder.StatefulRoute routeParams data action model msg
 -}
 buildWithSharedState :
     { view :
@@ -432,7 +473,7 @@ buildWithSharedState buildWithSharedStateArg buildWithSharedStateArg0 =
                             [ ( "view"
                               , Type.function
                                     [ Type.namedWith
-                                        []
+                                        [ "RouteBuilder" ]
                                         "App"
                                         [ Type.var "data"
                                         , Type.var "action"
@@ -442,10 +483,10 @@ buildWithSharedState buildWithSharedStateArg buildWithSharedStateArg0 =
                                     , Type.var "model"
                                     ]
                                     (Type.namedWith
-                                        []
+                                        [ "View" ]
                                         "View"
                                         [ Type.namedWith
-                                            []
+                                            [ "PagesMsg" ]
                                             "PagesMsg"
                                             [ Type.var "msg" ]
                                         ]
@@ -454,7 +495,7 @@ buildWithSharedState buildWithSharedStateArg buildWithSharedStateArg0 =
                             , ( "init"
                               , Type.function
                                     [ Type.namedWith
-                                        []
+                                        [ "RouteBuilder" ]
                                         "App"
                                         [ Type.var "data"
                                         , Type.var "action"
@@ -465,7 +506,7 @@ buildWithSharedState buildWithSharedStateArg buildWithSharedStateArg0 =
                                     (Type.tuple
                                         (Type.var "model")
                                         (Type.namedWith
-                                            []
+                                            [ "Effect" ]
                                             "Effect"
                                             [ Type.var "msg" ]
                                         )
@@ -474,7 +515,7 @@ buildWithSharedState buildWithSharedStateArg buildWithSharedStateArg0 =
                             , ( "update"
                               , Type.function
                                     [ Type.namedWith
-                                        []
+                                        [ "RouteBuilder" ]
                                         "App"
                                         [ Type.var "data"
                                         , Type.var "action"
@@ -487,33 +528,35 @@ buildWithSharedState buildWithSharedStateArg buildWithSharedStateArg0 =
                                     (Type.triple
                                         (Type.var "model")
                                         (Type.namedWith
-                                            []
+                                            [ "Effect" ]
                                             "Effect"
                                             [ Type.var "msg" ]
                                         )
-                                        (Type.namedWith
-                                            []
-                                            "Maybe"
-                                            [ Type.namedWith
+                                        (Type.maybe
+                                            (Type.namedWith
                                                 [ "Shared" ]
                                                 "Msg"
                                                 []
-                                            ]
+                                            )
                                         )
                                     )
                               )
                             , ( "subscriptions"
                               , Type.function
                                     [ Type.var "routeParams"
-                                    , Type.namedWith [] "UrlPath" []
+                                    , Type.namedWith [ "UrlPath" ] "UrlPath" []
                                     , Type.namedWith [ "Shared" ] "Model" []
                                     , Type.var "model"
                                     ]
-                                    (Type.namedWith [] "Sub" [ Type.var "msg" ])
+                                    (Type.namedWith
+                                        [ "RouteBuilder" ]
+                                        "Sub"
+                                        [ Type.var "msg" ]
+                                    )
                               )
                             ]
                         , Type.namedWith
-                            []
+                            [ "RouteBuilder" ]
                             "Builder"
                             [ Type.var "routeParams"
                             , Type.var "data"
@@ -521,7 +564,7 @@ buildWithSharedState buildWithSharedStateArg buildWithSharedStateArg0 =
                             ]
                         ]
                         (Type.namedWith
-                            []
+                            [ "RouteBuilder" ]
                             "StatefulRoute"
                             [ Type.var "routeParams"
                             , Type.var "data"
@@ -614,18 +657,29 @@ buildWithSharedState buildWithSharedStateArg buildWithSharedStateArg0 =
 
 buildWithLocalState: 
     { view :
-        App data action routeParams -> Shared.Model -> model -> View (PagesMsg msg)
-    , init : App data action routeParams -> Shared.Model -> ( model, Effect msg )
+        RouteBuilder.App data action routeParams
+        -> Shared.Model
+        -> model
+        -> View.View (PagesMsg.PagesMsg msg)
+    , init :
+        RouteBuilder.App data action routeParams
+        -> Shared.Model
+        -> ( model, Effect.Effect msg )
     , update :
-        App data action routeParams
+        RouteBuilder.App data action routeParams
         -> Shared.Model
         -> msg
         -> model
-        -> ( model, Effect msg )
-    , subscriptions : routeParams -> UrlPath -> Shared.Model -> model -> Sub msg
+        -> ( model, Effect.Effect msg )
+    , subscriptions :
+        routeParams
+        -> UrlPath.UrlPath
+        -> Shared.Model
+        -> model
+        -> RouteBuilder.Sub msg
     }
-    -> Builder routeParams data action
-    -> StatefulRoute routeParams data action model msg
+    -> RouteBuilder.Builder routeParams data action
+    -> RouteBuilder.StatefulRoute routeParams data action model msg
 -}
 buildWithLocalState :
     { view :
@@ -658,7 +712,7 @@ buildWithLocalState buildWithLocalStateArg buildWithLocalStateArg0 =
                             [ ( "view"
                               , Type.function
                                     [ Type.namedWith
-                                        []
+                                        [ "RouteBuilder" ]
                                         "App"
                                         [ Type.var "data"
                                         , Type.var "action"
@@ -668,10 +722,10 @@ buildWithLocalState buildWithLocalStateArg buildWithLocalStateArg0 =
                                     , Type.var "model"
                                     ]
                                     (Type.namedWith
-                                        []
+                                        [ "View" ]
                                         "View"
                                         [ Type.namedWith
-                                            []
+                                            [ "PagesMsg" ]
                                             "PagesMsg"
                                             [ Type.var "msg" ]
                                         ]
@@ -680,7 +734,7 @@ buildWithLocalState buildWithLocalStateArg buildWithLocalStateArg0 =
                             , ( "init"
                               , Type.function
                                     [ Type.namedWith
-                                        []
+                                        [ "RouteBuilder" ]
                                         "App"
                                         [ Type.var "data"
                                         , Type.var "action"
@@ -691,7 +745,7 @@ buildWithLocalState buildWithLocalStateArg buildWithLocalStateArg0 =
                                     (Type.tuple
                                         (Type.var "model")
                                         (Type.namedWith
-                                            []
+                                            [ "Effect" ]
                                             "Effect"
                                             [ Type.var "msg" ]
                                         )
@@ -700,7 +754,7 @@ buildWithLocalState buildWithLocalStateArg buildWithLocalStateArg0 =
                             , ( "update"
                               , Type.function
                                     [ Type.namedWith
-                                        []
+                                        [ "RouteBuilder" ]
                                         "App"
                                         [ Type.var "data"
                                         , Type.var "action"
@@ -713,7 +767,7 @@ buildWithLocalState buildWithLocalStateArg buildWithLocalStateArg0 =
                                     (Type.tuple
                                         (Type.var "model")
                                         (Type.namedWith
-                                            []
+                                            [ "Effect" ]
                                             "Effect"
                                             [ Type.var "msg" ]
                                         )
@@ -722,15 +776,19 @@ buildWithLocalState buildWithLocalStateArg buildWithLocalStateArg0 =
                             , ( "subscriptions"
                               , Type.function
                                     [ Type.var "routeParams"
-                                    , Type.namedWith [] "UrlPath" []
+                                    , Type.namedWith [ "UrlPath" ] "UrlPath" []
                                     , Type.namedWith [ "Shared" ] "Model" []
                                     , Type.var "model"
                                     ]
-                                    (Type.namedWith [] "Sub" [ Type.var "msg" ])
+                                    (Type.namedWith
+                                        [ "RouteBuilder" ]
+                                        "Sub"
+                                        [ Type.var "msg" ]
+                                    )
                               )
                             ]
                         , Type.namedWith
-                            []
+                            [ "RouteBuilder" ]
                             "Builder"
                             [ Type.var "routeParams"
                             , Type.var "data"
@@ -738,7 +796,7 @@ buildWithLocalState buildWithLocalStateArg buildWithLocalStateArg0 =
                             ]
                         ]
                         (Type.namedWith
-                            []
+                            [ "RouteBuilder" ]
                             "StatefulRoute"
                             [ Type.var "routeParams"
                             , Type.var "data"
@@ -831,8 +889,8 @@ buildWithLocalState buildWithLocalStateArg buildWithLocalStateArg0 =
 
 withOnAction: 
     (action -> msg)
-    -> StatefulRoute routeParams data action model msg
-    -> StatefulRoute routeParams data action model msg
+    -> RouteBuilder.StatefulRoute routeParams data action model msg
+    -> RouteBuilder.StatefulRoute routeParams data action model msg
 -}
 withOnAction :
     (Elm.Expression -> Elm.Expression) -> Elm.Expression -> Elm.Expression
@@ -846,7 +904,7 @@ withOnAction withOnActionArg withOnActionArg0 =
                     (Type.function
                         [ Type.function [ Type.var "action" ] (Type.var "msg")
                         , Type.namedWith
-                            []
+                            [ "RouteBuilder" ]
                             "StatefulRoute"
                             [ Type.var "routeParams"
                             , Type.var "data"
@@ -856,7 +914,7 @@ withOnAction withOnActionArg withOnActionArg0 =
                             ]
                         ]
                         (Type.namedWith
-                            []
+                            [ "RouteBuilder" ]
                             "StatefulRoute"
                             [ Type.var "routeParams"
                             , Type.var "data"
@@ -876,9 +934,13 @@ withOnAction withOnActionArg withOnActionArg0 =
 {-| {-| -}
 
 buildNoState: 
-    { view : App data action routeParams -> Shared.Model -> View (PagesMsg ()) }
-    -> Builder routeParams data action
-    -> StatefulRoute routeParams data action {} ()
+    { view :
+        RouteBuilder.App data action routeParams
+        -> Shared.Model
+        -> View.View (PagesMsg.PagesMsg ())
+    }
+    -> RouteBuilder.Builder routeParams data action
+    -> RouteBuilder.StatefulRoute routeParams data action {} ()
 -}
 buildNoState :
     { view : Elm.Expression -> Elm.Expression -> Elm.Expression }
@@ -896,7 +958,7 @@ buildNoState buildNoStateArg buildNoStateArg0 =
                             [ ( "view"
                               , Type.function
                                     [ Type.namedWith
-                                        []
+                                        [ "RouteBuilder" ]
                                         "App"
                                         [ Type.var "data"
                                         , Type.var "action"
@@ -905,10 +967,10 @@ buildNoState buildNoStateArg buildNoStateArg0 =
                                     , Type.namedWith [ "Shared" ] "Model" []
                                     ]
                                     (Type.namedWith
-                                        []
+                                        [ "View" ]
                                         "View"
                                         [ Type.namedWith
-                                            []
+                                            [ "PagesMsg" ]
                                             "PagesMsg"
                                             [ Type.unit ]
                                         ]
@@ -916,7 +978,7 @@ buildNoState buildNoStateArg buildNoStateArg0 =
                               )
                             ]
                         , Type.namedWith
-                            []
+                            [ "RouteBuilder" ]
                             "Builder"
                             [ Type.var "routeParams"
                             , Type.var "data"
@@ -924,7 +986,7 @@ buildNoState buildNoStateArg buildNoStateArg0 =
                             ]
                         ]
                         (Type.namedWith
-                            []
+                            [ "RouteBuilder" ]
                             "StatefulRoute"
                             [ Type.var "routeParams"
                             , Type.var "data"
@@ -978,16 +1040,12 @@ annotation_ =
                     [ ( "data", Type.var "data" )
                     , ( "sharedData", Type.namedWith [ "Shared" ] "Data" [] )
                     , ( "routeParams", Type.var "routeParams" )
-                    , ( "path", Type.namedWith [] "UrlPath" [] )
+                    , ( "path", Type.namedWith [ "UrlPath" ] "UrlPath" [] )
                     , ( "url"
-                      , Type.namedWith
-                            []
-                            "Maybe"
-                            [ Type.namedWith [] "PageUrl" [] ]
+                      , Type.maybe
+                            (Type.namedWith [ "Pages", "PageUrl" ] "PageUrl" [])
                       )
-                    , ( "action"
-                      , Type.namedWith [] "Maybe" [ Type.var "action" ]
-                      )
+                    , ( "action", Type.maybe (Type.var "action") )
                     , ( "submit"
                       , Type.function
                             [ Type.record
@@ -1005,7 +1063,7 @@ annotation_ =
                                 [ "Pages", "Fetcher" ]
                                 "Fetcher"
                                 [ Type.namedWith
-                                    []
+                                    [ "Result" ]
                                     "Result"
                                     [ Type.namedWith [ "Http" ] "Error" []
                                     , Type.var "action"
@@ -1014,28 +1072,22 @@ annotation_ =
                             )
                       )
                     , ( "navigation"
-                      , Type.namedWith
-                            []
-                            "Maybe"
-                            [ Type.namedWith
+                      , Type.maybe
+                            (Type.namedWith
                                 [ "Pages", "Navigation" ]
                                 "Navigation"
                                 []
-                            ]
+                            )
                       )
                     , ( "concurrentSubmissions"
                       , Type.namedWith
-                            []
+                            [ "Dict" ]
                             "Dict"
                             [ Type.string
                             , Type.namedWith
                                 [ "Pages", "ConcurrentSubmission" ]
                                 "ConcurrentSubmission"
-                                [ Type.namedWith
-                                    []
-                                    "Maybe"
-                                    [ Type.var "action" ]
-                                ]
+                                [ Type.maybe (Type.var "action") ]
                             ]
                       )
                     , ( "pageFormState", Type.namedWith [ "Form" ] "Model" [] )
@@ -1048,7 +1100,7 @@ annotation_ =
                 "StatelessRoute"
                 [ statelessRouteArg0, statelessRouteArg1, statelessRouteArg2 ]
                 (Type.namedWith
-                    []
+                    [ "RouteBuilder" ]
                     "StatefulRoute"
                     [ Type.var "routeParams"
                     , Type.var "data"
@@ -1078,14 +1130,20 @@ annotation_ =
                             , Type.var "routeParams"
                             ]
                             (Type.namedWith
-                                []
+                                [ "BackendTask" ]
                                 "BackendTask"
-                                [ Type.namedWith [] "FatalError" []
+                                [ Type.namedWith
+                                    [ "FatalError" ]
+                                    "FatalError"
+                                    []
                                 , Type.namedWith
                                     [ "Server", "Response" ]
                                     "Response"
                                     [ Type.var "data"
-                                    , Type.namedWith [] "ErrorPage" []
+                                    , Type.namedWith
+                                        [ "ErrorPage" ]
+                                        "ErrorPage"
+                                        []
                                     ]
                                 ]
                             )
@@ -1099,23 +1157,29 @@ annotation_ =
                             , Type.var "routeParams"
                             ]
                             (Type.namedWith
-                                []
+                                [ "BackendTask" ]
                                 "BackendTask"
-                                [ Type.namedWith [] "FatalError" []
+                                [ Type.namedWith
+                                    [ "FatalError" ]
+                                    "FatalError"
+                                    []
                                 , Type.namedWith
                                     [ "Server", "Response" ]
                                     "Response"
                                     [ Type.var "action"
-                                    , Type.namedWith [] "ErrorPage" []
+                                    , Type.namedWith
+                                        [ "ErrorPage" ]
+                                        "ErrorPage"
+                                        []
                                     ]
                                 ]
                             )
                       )
                     , ( "staticRoutes"
                       , Type.namedWith
-                            []
+                            [ "BackendTask" ]
                             "BackendTask"
-                            [ Type.namedWith [] "FatalError" []
+                            [ Type.namedWith [ "FatalError" ] "FatalError" []
                             , Type.list (Type.var "routeParams")
                             ]
                       )
@@ -1124,7 +1188,7 @@ annotation_ =
                             [ Type.namedWith [ "Shared" ] "Model" []
                             , Type.var "model"
                             , Type.namedWith
-                                []
+                                [ "RouteBuilder" ]
                                 "App"
                                 [ Type.var "data"
                                 , Type.var "action"
@@ -1132,10 +1196,10 @@ annotation_ =
                                 ]
                             ]
                             (Type.namedWith
-                                []
+                                [ "View" ]
                                 "View"
                                 [ Type.namedWith
-                                    []
+                                    [ "PagesMsg" ]
                                     "PagesMsg"
                                     [ Type.var "msg" ]
                                 ]
@@ -1144,7 +1208,7 @@ annotation_ =
                     , ( "head"
                       , Type.function
                             [ Type.namedWith
-                                []
+                                [ "RouteBuilder" ]
                                 "App"
                                 [ Type.var "data"
                                 , Type.var "action"
@@ -1157,7 +1221,7 @@ annotation_ =
                       , Type.function
                             [ Type.namedWith [ "Shared" ] "Model" []
                             , Type.namedWith
-                                []
+                                [ "RouteBuilder" ]
                                 "App"
                                 [ Type.var "data"
                                 , Type.var "action"
@@ -1166,13 +1230,17 @@ annotation_ =
                             ]
                             (Type.tuple
                                 (Type.var "model")
-                                (Type.namedWith [] "Effect" [ Type.var "msg" ])
+                                (Type.namedWith
+                                    [ "Effect" ]
+                                    "Effect"
+                                    [ Type.var "msg" ]
+                                )
                             )
                       )
                     , ( "update"
                       , Type.function
                             [ Type.namedWith
-                                []
+                                [ "RouteBuilder" ]
                                 "App"
                                 [ Type.var "data"
                                 , Type.var "action"
@@ -1184,29 +1252,38 @@ annotation_ =
                             ]
                             (Type.triple
                                 (Type.var "model")
-                                (Type.namedWith [] "Effect" [ Type.var "msg" ])
                                 (Type.namedWith
-                                    []
-                                    "Maybe"
-                                    [ Type.namedWith [ "Shared" ] "Msg" [] ]
+                                    [ "Effect" ]
+                                    "Effect"
+                                    [ Type.var "msg" ]
+                                )
+                                (Type.maybe
+                                    (Type.namedWith [ "Shared" ] "Msg" [])
                                 )
                             )
                       )
                     , ( "subscriptions"
                       , Type.function
                             [ Type.var "routeParams"
-                            , Type.namedWith [] "UrlPath" []
+                            , Type.namedWith [ "UrlPath" ] "UrlPath" []
                             , Type.var "model"
                             , Type.namedWith [ "Shared" ] "Model" []
                             ]
-                            (Type.namedWith [] "Sub" [ Type.var "msg" ])
+                            (Type.namedWith
+                                [ "RouteBuilder" ]
+                                "Sub"
+                                [ Type.var "msg" ]
+                            )
                       )
                     , ( "handleRoute"
                       , Type.function
                             [ Type.record
                                 [ ( "moduleName", Type.list Type.string )
                                 , ( "routePattern"
-                                  , Type.namedWith [] "RoutePattern" []
+                                  , Type.namedWith
+                                        [ "Pages", "Internal", "RoutePattern" ]
+                                        "RoutePattern"
+                                        []
                                   )
                                 ]
                             , Type.function
@@ -1215,25 +1292,31 @@ annotation_ =
                             , Type.var "routeParams"
                             ]
                             (Type.namedWith
-                                []
+                                [ "BackendTask" ]
                                 "BackendTask"
-                                [ Type.namedWith [] "FatalError" []
-                                , Type.namedWith
+                                [ Type.namedWith
+                                    [ "FatalError" ]
+                                    "FatalError"
                                     []
-                                    "Maybe"
-                                    [ Type.namedWith [] "NotFoundReason" [] ]
+                                , Type.maybe
+                                    (Type.namedWith
+                                        [ "Pages"
+                                        , "Internal"
+                                        , "NotFoundReason"
+                                        ]
+                                        "NotFoundReason"
+                                        []
+                                    )
                                 ]
                             )
                       )
                     , ( "kind", Type.string )
                     , ( "onAction"
-                      , Type.namedWith
-                            []
-                            "Maybe"
-                            [ Type.function
+                      , Type.maybe
+                            (Type.function
                                 [ Type.var "action" ]
                                 (Type.var "msg")
-                            ]
+                            )
                       )
                     ]
                 )
@@ -1293,16 +1376,16 @@ make_ =
                           , Type.namedWith [ "Shared" ] "Data" []
                           )
                         , ( "routeParams", Type.var "routeParams" )
-                        , ( "path", Type.namedWith [] "UrlPath" [] )
+                        , ( "path", Type.namedWith [ "UrlPath" ] "UrlPath" [] )
                         , ( "url"
-                          , Type.namedWith
-                                []
-                                "Maybe"
-                                [ Type.namedWith [] "PageUrl" [] ]
+                          , Type.maybe
+                                (Type.namedWith
+                                    [ "Pages", "PageUrl" ]
+                                    "PageUrl"
+                                    []
+                                )
                           )
-                        , ( "action"
-                          , Type.namedWith [] "Maybe" [ Type.var "action" ]
-                          )
+                        , ( "action", Type.maybe (Type.var "action") )
                         , ( "submit"
                           , Type.function
                                 [ Type.record
@@ -1320,7 +1403,7 @@ make_ =
                                     [ "Pages", "Fetcher" ]
                                     "Fetcher"
                                     [ Type.namedWith
-                                        []
+                                        [ "Result" ]
                                         "Result"
                                         [ Type.namedWith [ "Http" ] "Error" []
                                         , Type.var "action"
@@ -1329,28 +1412,22 @@ make_ =
                                 )
                           )
                         , ( "navigation"
-                          , Type.namedWith
-                                []
-                                "Maybe"
-                                [ Type.namedWith
+                          , Type.maybe
+                                (Type.namedWith
                                     [ "Pages", "Navigation" ]
                                     "Navigation"
                                     []
-                                ]
+                                )
                           )
                         , ( "concurrentSubmissions"
                           , Type.namedWith
-                                []
+                                [ "Dict" ]
                                 "Dict"
                                 [ Type.string
                                 , Type.namedWith
                                     [ "Pages", "ConcurrentSubmission" ]
                                     "ConcurrentSubmission"
-                                    [ Type.namedWith
-                                        []
-                                        "Maybe"
-                                        [ Type.var "action" ]
-                                    ]
+                                    [ Type.maybe (Type.var "action") ]
                                 ]
                           )
                         , ( "pageFormState"
@@ -1396,14 +1473,20 @@ make_ =
                                 , Type.var "routeParams"
                                 ]
                                 (Type.namedWith
-                                    []
+                                    [ "BackendTask" ]
                                     "BackendTask"
-                                    [ Type.namedWith [] "FatalError" []
+                                    [ Type.namedWith
+                                        [ "FatalError" ]
+                                        "FatalError"
+                                        []
                                     , Type.namedWith
                                         [ "Server", "Response" ]
                                         "Response"
                                         [ Type.var "data"
-                                        , Type.namedWith [] "ErrorPage" []
+                                        , Type.namedWith
+                                            [ "ErrorPage" ]
+                                            "ErrorPage"
+                                            []
                                         ]
                                     ]
                                 )
@@ -1417,23 +1500,32 @@ make_ =
                                 , Type.var "routeParams"
                                 ]
                                 (Type.namedWith
-                                    []
+                                    [ "BackendTask" ]
                                     "BackendTask"
-                                    [ Type.namedWith [] "FatalError" []
+                                    [ Type.namedWith
+                                        [ "FatalError" ]
+                                        "FatalError"
+                                        []
                                     , Type.namedWith
                                         [ "Server", "Response" ]
                                         "Response"
                                         [ Type.var "action"
-                                        , Type.namedWith [] "ErrorPage" []
+                                        , Type.namedWith
+                                            [ "ErrorPage" ]
+                                            "ErrorPage"
+                                            []
                                         ]
                                     ]
                                 )
                           )
                         , ( "staticRoutes"
                           , Type.namedWith
-                                []
+                                [ "BackendTask" ]
                                 "BackendTask"
-                                [ Type.namedWith [] "FatalError" []
+                                [ Type.namedWith
+                                    [ "FatalError" ]
+                                    "FatalError"
+                                    []
                                 , Type.list (Type.var "routeParams")
                                 ]
                           )
@@ -1442,7 +1534,7 @@ make_ =
                                 [ Type.namedWith [ "Shared" ] "Model" []
                                 , Type.var "model"
                                 , Type.namedWith
-                                    []
+                                    [ "RouteBuilder" ]
                                     "App"
                                     [ Type.var "data"
                                     , Type.var "action"
@@ -1450,10 +1542,10 @@ make_ =
                                     ]
                                 ]
                                 (Type.namedWith
-                                    []
+                                    [ "View" ]
                                     "View"
                                     [ Type.namedWith
-                                        []
+                                        [ "PagesMsg" ]
                                         "PagesMsg"
                                         [ Type.var "msg" ]
                                     ]
@@ -1462,7 +1554,7 @@ make_ =
                         , ( "head"
                           , Type.function
                                 [ Type.namedWith
-                                    []
+                                    [ "RouteBuilder" ]
                                     "App"
                                     [ Type.var "data"
                                     , Type.var "action"
@@ -1475,7 +1567,7 @@ make_ =
                           , Type.function
                                 [ Type.namedWith [ "Shared" ] "Model" []
                                 , Type.namedWith
-                                    []
+                                    [ "RouteBuilder" ]
                                     "App"
                                     [ Type.var "data"
                                     , Type.var "action"
@@ -1485,7 +1577,7 @@ make_ =
                                 (Type.tuple
                                     (Type.var "model")
                                     (Type.namedWith
-                                        []
+                                        [ "Effect" ]
                                         "Effect"
                                         [ Type.var "msg" ]
                                     )
@@ -1494,7 +1586,7 @@ make_ =
                         , ( "update"
                           , Type.function
                                 [ Type.namedWith
-                                    []
+                                    [ "RouteBuilder" ]
                                     "App"
                                     [ Type.var "data"
                                     , Type.var "action"
@@ -1507,32 +1599,40 @@ make_ =
                                 (Type.triple
                                     (Type.var "model")
                                     (Type.namedWith
-                                        []
+                                        [ "Effect" ]
                                         "Effect"
                                         [ Type.var "msg" ]
                                     )
-                                    (Type.namedWith
-                                        []
-                                        "Maybe"
-                                        [ Type.namedWith [ "Shared" ] "Msg" [] ]
+                                    (Type.maybe
+                                        (Type.namedWith [ "Shared" ] "Msg" [])
                                     )
                                 )
                           )
                         , ( "subscriptions"
                           , Type.function
                                 [ Type.var "routeParams"
-                                , Type.namedWith [] "UrlPath" []
+                                , Type.namedWith [ "UrlPath" ] "UrlPath" []
                                 , Type.var "model"
                                 , Type.namedWith [ "Shared" ] "Model" []
                                 ]
-                                (Type.namedWith [] "Sub" [ Type.var "msg" ])
+                                (Type.namedWith
+                                    [ "RouteBuilder" ]
+                                    "Sub"
+                                    [ Type.var "msg" ]
+                                )
                           )
                         , ( "handleRoute"
                           , Type.function
                                 [ Type.record
                                     [ ( "moduleName", Type.list Type.string )
                                     , ( "routePattern"
-                                      , Type.namedWith [] "RoutePattern" []
+                                      , Type.namedWith
+                                            [ "Pages"
+                                            , "Internal"
+                                            , "RoutePattern"
+                                            ]
+                                            "RoutePattern"
+                                            []
                                       )
                                     ]
                                 , Type.function
@@ -1543,26 +1643,31 @@ make_ =
                                 , Type.var "routeParams"
                                 ]
                                 (Type.namedWith
-                                    []
+                                    [ "BackendTask" ]
                                     "BackendTask"
-                                    [ Type.namedWith [] "FatalError" []
-                                    , Type.namedWith
+                                    [ Type.namedWith
+                                        [ "FatalError" ]
+                                        "FatalError"
                                         []
-                                        "Maybe"
-                                        [ Type.namedWith [] "NotFoundReason" []
-                                        ]
+                                    , Type.maybe
+                                        (Type.namedWith
+                                            [ "Pages"
+                                            , "Internal"
+                                            , "NotFoundReason"
+                                            ]
+                                            "NotFoundReason"
+                                            []
+                                        )
                                     ]
                                 )
                           )
                         , ( "kind", Type.string )
                         , ( "onAction"
-                          , Type.namedWith
-                                []
-                                "Maybe"
-                                [ Type.function
+                          , Type.maybe
+                                (Type.function
                                     [ Type.var "action" ]
                                     (Type.var "msg")
-                                ]
+                                )
                           )
                         ]
                     )
@@ -1637,14 +1742,20 @@ caseOf_ =
                                 , Type.var "routeParams"
                                 ]
                                 (Type.namedWith
-                                    []
+                                    [ "BackendTask" ]
                                     "BackendTask"
-                                    [ Type.namedWith [] "FatalError" []
+                                    [ Type.namedWith
+                                        [ "FatalError" ]
+                                        "FatalError"
+                                        []
                                     , Type.namedWith
                                         [ "Server", "Response" ]
                                         "Response"
                                         [ Type.var "data"
-                                        , Type.namedWith [] "ErrorPage" []
+                                        , Type.namedWith
+                                            [ "ErrorPage" ]
+                                            "ErrorPage"
+                                            []
                                         ]
                                     ]
                                 )
@@ -1658,30 +1769,39 @@ caseOf_ =
                                 , Type.var "routeParams"
                                 ]
                                 (Type.namedWith
-                                    []
+                                    [ "BackendTask" ]
                                     "BackendTask"
-                                    [ Type.namedWith [] "FatalError" []
+                                    [ Type.namedWith
+                                        [ "FatalError" ]
+                                        "FatalError"
+                                        []
                                     , Type.namedWith
                                         [ "Server", "Response" ]
                                         "Response"
                                         [ Type.var "action"
-                                        , Type.namedWith [] "ErrorPage" []
+                                        , Type.namedWith
+                                            [ "ErrorPage" ]
+                                            "ErrorPage"
+                                            []
                                         ]
                                     ]
                                 )
                           )
                         , ( "staticRoutes"
                           , Type.namedWith
-                                []
+                                [ "BackendTask" ]
                                 "BackendTask"
-                                [ Type.namedWith [] "FatalError" []
+                                [ Type.namedWith
+                                    [ "FatalError" ]
+                                    "FatalError"
+                                    []
                                 , Type.list (Type.var "routeParams")
                                 ]
                           )
                         , ( "head"
                           , Type.function
                                 [ Type.namedWith
-                                    []
+                                    [ "RouteBuilder" ]
                                     "App"
                                     [ Type.var "data"
                                     , Type.var "action"
@@ -1696,7 +1816,13 @@ caseOf_ =
                                 [ Type.record
                                     [ ( "moduleName", Type.list Type.string )
                                     , ( "routePattern"
-                                      , Type.namedWith [] "RoutePattern" []
+                                      , Type.namedWith
+                                            [ "Pages"
+                                            , "Internal"
+                                            , "RoutePattern"
+                                            ]
+                                            "RoutePattern"
+                                            []
                                       )
                                     ]
                                 , Type.function
@@ -1707,14 +1833,21 @@ caseOf_ =
                                 , Type.var "routeParams"
                                 ]
                                 (Type.namedWith
-                                    []
+                                    [ "BackendTask" ]
                                     "BackendTask"
-                                    [ Type.namedWith [] "FatalError" []
-                                    , Type.namedWith
+                                    [ Type.namedWith
+                                        [ "FatalError" ]
+                                        "FatalError"
                                         []
-                                        "Maybe"
-                                        [ Type.namedWith [] "NotFoundReason" []
-                                        ]
+                                    , Type.maybe
+                                        (Type.namedWith
+                                            [ "Pages"
+                                            , "Internal"
+                                            , "NotFoundReason"
+                                            ]
+                                            "NotFoundReason"
+                                            []
+                                        )
                                     ]
                                 )
                           )
@@ -1756,10 +1889,10 @@ call_ =
                                                 []
                                             ]
                                             (Type.namedWith
-                                                []
+                                                [ "BackendTask" ]
                                                 "BackendTask"
                                                 [ Type.namedWith
-                                                    []
+                                                    [ "FatalError" ]
                                                     "FatalError"
                                                     []
                                                 , Type.namedWith
@@ -1767,7 +1900,7 @@ call_ =
                                                     "Response"
                                                     [ Type.var "data"
                                                     , Type.namedWith
-                                                        []
+                                                        [ "ErrorPage" ]
                                                         "ErrorPage"
                                                         []
                                                     ]
@@ -1783,10 +1916,10 @@ call_ =
                                                 []
                                             ]
                                             (Type.namedWith
-                                                []
+                                                [ "BackendTask" ]
                                                 "BackendTask"
                                                 [ Type.namedWith
-                                                    []
+                                                    [ "FatalError" ]
                                                     "FatalError"
                                                     []
                                                 , Type.namedWith
@@ -1794,7 +1927,7 @@ call_ =
                                                     "Response"
                                                     [ Type.var "action"
                                                     , Type.namedWith
-                                                        []
+                                                        [ "ErrorPage" ]
                                                         "ErrorPage"
                                                         []
                                                     ]
@@ -1804,7 +1937,7 @@ call_ =
                                     , ( "head"
                                       , Type.function
                                             [ Type.namedWith
-                                                []
+                                                [ "RouteBuilder" ]
                                                 "App"
                                                 [ Type.var "data"
                                                 , Type.var "action"
@@ -1822,7 +1955,7 @@ call_ =
                                     ]
                                 ]
                                 (Type.namedWith
-                                    []
+                                    [ "RouteBuilder" ]
                                     "Builder"
                                     [ Type.var "routeParams"
                                     , Type.var "data"
@@ -1847,10 +1980,10 @@ call_ =
                                       , Type.function
                                             [ Type.var "routeParams" ]
                                             (Type.namedWith
-                                                []
+                                                [ "BackendTask" ]
                                                 "BackendTask"
                                                 [ Type.namedWith
-                                                    []
+                                                    [ "FatalError" ]
                                                     "FatalError"
                                                     []
                                                 , Type.namedWith
@@ -1858,7 +1991,7 @@ call_ =
                                                     "Response"
                                                     [ Type.var "data"
                                                     , Type.namedWith
-                                                        []
+                                                        [ "ErrorPage" ]
                                                         "ErrorPage"
                                                         []
                                                     ]
@@ -1867,16 +2000,19 @@ call_ =
                                       )
                                     , ( "pages"
                                       , Type.namedWith
-                                            []
+                                            [ "BackendTask" ]
                                             "BackendTask"
-                                            [ Type.namedWith [] "FatalError" []
+                                            [ Type.namedWith
+                                                [ "FatalError" ]
+                                                "FatalError"
+                                                []
                                             , Type.list (Type.var "routeParams")
                                             ]
                                       )
                                     , ( "head"
                                       , Type.function
                                             [ Type.namedWith
-                                                []
+                                                [ "RouteBuilder" ]
                                                 "App"
                                                 [ Type.var "data"
                                                 , Type.var "action"
@@ -1894,7 +2030,7 @@ call_ =
                                     ]
                                 ]
                                 (Type.namedWith
-                                    []
+                                    [ "RouteBuilder" ]
                                     "Builder"
                                     [ Type.var "routeParams"
                                     , Type.var "data"
@@ -1919,10 +2055,10 @@ call_ =
                                       , Type.function
                                             [ Type.var "routeParams" ]
                                             (Type.namedWith
-                                                []
+                                                [ "BackendTask" ]
                                                 "BackendTask"
                                                 [ Type.namedWith
-                                                    []
+                                                    [ "FatalError" ]
                                                     "FatalError"
                                                     []
                                                 , Type.var "data"
@@ -1931,16 +2067,19 @@ call_ =
                                       )
                                     , ( "pages"
                                       , Type.namedWith
-                                            []
+                                            [ "BackendTask" ]
                                             "BackendTask"
-                                            [ Type.namedWith [] "FatalError" []
+                                            [ Type.namedWith
+                                                [ "FatalError" ]
+                                                "FatalError"
+                                                []
                                             , Type.list (Type.var "routeParams")
                                             ]
                                       )
                                     , ( "head"
                                       , Type.function
                                             [ Type.namedWith
-                                                []
+                                                [ "RouteBuilder" ]
                                                 "App"
                                                 [ Type.var "data"
                                                 , Type.var "action"
@@ -1958,7 +2097,7 @@ call_ =
                                     ]
                                 ]
                                 (Type.namedWith
-                                    []
+                                    [ "RouteBuilder" ]
                                     "Builder"
                                     [ Type.var "routeParams"
                                     , Type.var "data"
@@ -1981,16 +2120,19 @@ call_ =
                                 [ Type.record
                                     [ ( "data"
                                       , Type.namedWith
-                                            []
+                                            [ "BackendTask" ]
                                             "BackendTask"
-                                            [ Type.namedWith [] "FatalError" []
+                                            [ Type.namedWith
+                                                [ "FatalError" ]
+                                                "FatalError"
+                                                []
                                             , Type.var "data"
                                             ]
                                       )
                                     , ( "head"
                                       , Type.function
                                             [ Type.namedWith
-                                                []
+                                                [ "RouteBuilder" ]
                                                 "App"
                                                 [ Type.var "data"
                                                 , Type.var "action"
@@ -2008,7 +2150,7 @@ call_ =
                                     ]
                                 ]
                                 (Type.namedWith
-                                    []
+                                    [ "RouteBuilder" ]
                                     "Builder"
                                     [ Type.record []
                                     , Type.var "data"
@@ -2032,7 +2174,7 @@ call_ =
                                     [ ( "view"
                                       , Type.function
                                             [ Type.namedWith
-                                                []
+                                                [ "RouteBuilder" ]
                                                 "App"
                                                 [ Type.var "data"
                                                 , Type.var "action"
@@ -2045,10 +2187,10 @@ call_ =
                                             , Type.var "model"
                                             ]
                                             (Type.namedWith
-                                                []
+                                                [ "View" ]
                                                 "View"
                                                 [ Type.namedWith
-                                                    []
+                                                    [ "PagesMsg" ]
                                                     "PagesMsg"
                                                     [ Type.var "msg" ]
                                                 ]
@@ -2057,7 +2199,7 @@ call_ =
                                     , ( "init"
                                       , Type.function
                                             [ Type.namedWith
-                                                []
+                                                [ "RouteBuilder" ]
                                                 "App"
                                                 [ Type.var "data"
                                                 , Type.var "action"
@@ -2071,7 +2213,7 @@ call_ =
                                             (Type.tuple
                                                 (Type.var "model")
                                                 (Type.namedWith
-                                                    []
+                                                    [ "Effect" ]
                                                     "Effect"
                                                     [ Type.var "msg" ]
                                                 )
@@ -2080,7 +2222,7 @@ call_ =
                                     , ( "update"
                                       , Type.function
                                             [ Type.namedWith
-                                                []
+                                                [ "RouteBuilder" ]
                                                 "App"
                                                 [ Type.var "data"
                                                 , Type.var "action"
@@ -2096,25 +2238,26 @@ call_ =
                                             (Type.triple
                                                 (Type.var "model")
                                                 (Type.namedWith
-                                                    []
+                                                    [ "Effect" ]
                                                     "Effect"
                                                     [ Type.var "msg" ]
                                                 )
-                                                (Type.namedWith
-                                                    []
-                                                    "Maybe"
-                                                    [ Type.namedWith
+                                                (Type.maybe
+                                                    (Type.namedWith
                                                         [ "Shared" ]
                                                         "Msg"
                                                         []
-                                                    ]
+                                                    )
                                                 )
                                             )
                                       )
                                     , ( "subscriptions"
                                       , Type.function
                                             [ Type.var "routeParams"
-                                            , Type.namedWith [] "UrlPath" []
+                                            , Type.namedWith
+                                                [ "UrlPath" ]
+                                                "UrlPath"
+                                                []
                                             , Type.namedWith
                                                 [ "Shared" ]
                                                 "Model"
@@ -2122,14 +2265,14 @@ call_ =
                                             , Type.var "model"
                                             ]
                                             (Type.namedWith
-                                                []
+                                                [ "RouteBuilder" ]
                                                 "Sub"
                                                 [ Type.var "msg" ]
                                             )
                                       )
                                     ]
                                 , Type.namedWith
-                                    []
+                                    [ "RouteBuilder" ]
                                     "Builder"
                                     [ Type.var "routeParams"
                                     , Type.var "data"
@@ -2137,7 +2280,7 @@ call_ =
                                     ]
                                 ]
                                 (Type.namedWith
-                                    []
+                                    [ "RouteBuilder" ]
                                     "StatefulRoute"
                                     [ Type.var "routeParams"
                                     , Type.var "data"
@@ -2163,7 +2306,7 @@ call_ =
                                     [ ( "view"
                                       , Type.function
                                             [ Type.namedWith
-                                                []
+                                                [ "RouteBuilder" ]
                                                 "App"
                                                 [ Type.var "data"
                                                 , Type.var "action"
@@ -2176,10 +2319,10 @@ call_ =
                                             , Type.var "model"
                                             ]
                                             (Type.namedWith
-                                                []
+                                                [ "View" ]
                                                 "View"
                                                 [ Type.namedWith
-                                                    []
+                                                    [ "PagesMsg" ]
                                                     "PagesMsg"
                                                     [ Type.var "msg" ]
                                                 ]
@@ -2188,7 +2331,7 @@ call_ =
                                     , ( "init"
                                       , Type.function
                                             [ Type.namedWith
-                                                []
+                                                [ "RouteBuilder" ]
                                                 "App"
                                                 [ Type.var "data"
                                                 , Type.var "action"
@@ -2202,7 +2345,7 @@ call_ =
                                             (Type.tuple
                                                 (Type.var "model")
                                                 (Type.namedWith
-                                                    []
+                                                    [ "Effect" ]
                                                     "Effect"
                                                     [ Type.var "msg" ]
                                                 )
@@ -2211,7 +2354,7 @@ call_ =
                                     , ( "update"
                                       , Type.function
                                             [ Type.namedWith
-                                                []
+                                                [ "RouteBuilder" ]
                                                 "App"
                                                 [ Type.var "data"
                                                 , Type.var "action"
@@ -2227,7 +2370,7 @@ call_ =
                                             (Type.tuple
                                                 (Type.var "model")
                                                 (Type.namedWith
-                                                    []
+                                                    [ "Effect" ]
                                                     "Effect"
                                                     [ Type.var "msg" ]
                                                 )
@@ -2236,7 +2379,10 @@ call_ =
                                     , ( "subscriptions"
                                       , Type.function
                                             [ Type.var "routeParams"
-                                            , Type.namedWith [] "UrlPath" []
+                                            , Type.namedWith
+                                                [ "UrlPath" ]
+                                                "UrlPath"
+                                                []
                                             , Type.namedWith
                                                 [ "Shared" ]
                                                 "Model"
@@ -2244,14 +2390,14 @@ call_ =
                                             , Type.var "model"
                                             ]
                                             (Type.namedWith
-                                                []
+                                                [ "RouteBuilder" ]
                                                 "Sub"
                                                 [ Type.var "msg" ]
                                             )
                                       )
                                     ]
                                 , Type.namedWith
-                                    []
+                                    [ "RouteBuilder" ]
                                     "Builder"
                                     [ Type.var "routeParams"
                                     , Type.var "data"
@@ -2259,7 +2405,7 @@ call_ =
                                     ]
                                 ]
                                 (Type.namedWith
-                                    []
+                                    [ "RouteBuilder" ]
                                     "StatefulRoute"
                                     [ Type.var "routeParams"
                                     , Type.var "data"
@@ -2285,7 +2431,7 @@ call_ =
                                     [ Type.var "action" ]
                                     (Type.var "msg")
                                 , Type.namedWith
-                                    []
+                                    [ "RouteBuilder" ]
                                     "StatefulRoute"
                                     [ Type.var "routeParams"
                                     , Type.var "data"
@@ -2295,7 +2441,7 @@ call_ =
                                     ]
                                 ]
                                 (Type.namedWith
-                                    []
+                                    [ "RouteBuilder" ]
                                     "StatefulRoute"
                                     [ Type.var "routeParams"
                                     , Type.var "data"
@@ -2321,7 +2467,7 @@ call_ =
                                     [ ( "view"
                                       , Type.function
                                             [ Type.namedWith
-                                                []
+                                                [ "RouteBuilder" ]
                                                 "App"
                                                 [ Type.var "data"
                                                 , Type.var "action"
@@ -2333,10 +2479,10 @@ call_ =
                                                 []
                                             ]
                                             (Type.namedWith
-                                                []
+                                                [ "View" ]
                                                 "View"
                                                 [ Type.namedWith
-                                                    []
+                                                    [ "PagesMsg" ]
                                                     "PagesMsg"
                                                     [ Type.unit ]
                                                 ]
@@ -2344,7 +2490,7 @@ call_ =
                                       )
                                     ]
                                 , Type.namedWith
-                                    []
+                                    [ "RouteBuilder" ]
                                     "Builder"
                                     [ Type.var "routeParams"
                                     , Type.var "data"
@@ -2352,7 +2498,7 @@ call_ =
                                     ]
                                 ]
                                 (Type.namedWith
-                                    []
+                                    [ "RouteBuilder" ]
                                     "StatefulRoute"
                                     [ Type.var "routeParams"
                                     , Type.var "data"
@@ -2396,14 +2542,20 @@ values_ =
                                         []
                                     ]
                                     (Type.namedWith
-                                        []
+                                        [ "BackendTask" ]
                                         "BackendTask"
-                                        [ Type.namedWith [] "FatalError" []
+                                        [ Type.namedWith
+                                            [ "FatalError" ]
+                                            "FatalError"
+                                            []
                                         , Type.namedWith
                                             [ "Server", "Response" ]
                                             "Response"
                                             [ Type.var "data"
-                                            , Type.namedWith [] "ErrorPage" []
+                                            , Type.namedWith
+                                                [ "ErrorPage" ]
+                                                "ErrorPage"
+                                                []
                                             ]
                                         ]
                                     )
@@ -2417,14 +2569,20 @@ values_ =
                                         []
                                     ]
                                     (Type.namedWith
-                                        []
+                                        [ "BackendTask" ]
                                         "BackendTask"
-                                        [ Type.namedWith [] "FatalError" []
+                                        [ Type.namedWith
+                                            [ "FatalError" ]
+                                            "FatalError"
+                                            []
                                         , Type.namedWith
                                             [ "Server", "Response" ]
                                             "Response"
                                             [ Type.var "action"
-                                            , Type.namedWith [] "ErrorPage" []
+                                            , Type.namedWith
+                                                [ "ErrorPage" ]
+                                                "ErrorPage"
+                                                []
                                             ]
                                         ]
                                     )
@@ -2432,7 +2590,7 @@ values_ =
                             , ( "head"
                               , Type.function
                                     [ Type.namedWith
-                                        []
+                                        [ "RouteBuilder" ]
                                         "App"
                                         [ Type.var "data"
                                         , Type.var "action"
@@ -2446,7 +2604,7 @@ values_ =
                             ]
                         ]
                         (Type.namedWith
-                            []
+                            [ "RouteBuilder" ]
                             "Builder"
                             [ Type.var "routeParams"
                             , Type.var "data"
@@ -2467,30 +2625,39 @@ values_ =
                               , Type.function
                                     [ Type.var "routeParams" ]
                                     (Type.namedWith
-                                        []
+                                        [ "BackendTask" ]
                                         "BackendTask"
-                                        [ Type.namedWith [] "FatalError" []
+                                        [ Type.namedWith
+                                            [ "FatalError" ]
+                                            "FatalError"
+                                            []
                                         , Type.namedWith
                                             [ "Server", "Response" ]
                                             "Response"
                                             [ Type.var "data"
-                                            , Type.namedWith [] "ErrorPage" []
+                                            , Type.namedWith
+                                                [ "ErrorPage" ]
+                                                "ErrorPage"
+                                                []
                                             ]
                                         ]
                                     )
                               )
                             , ( "pages"
                               , Type.namedWith
-                                    []
+                                    [ "BackendTask" ]
                                     "BackendTask"
-                                    [ Type.namedWith [] "FatalError" []
+                                    [ Type.namedWith
+                                        [ "FatalError" ]
+                                        "FatalError"
+                                        []
                                     , Type.list (Type.var "routeParams")
                                     ]
                               )
                             , ( "head"
                               , Type.function
                                     [ Type.namedWith
-                                        []
+                                        [ "RouteBuilder" ]
                                         "App"
                                         [ Type.var "data"
                                         , Type.var "action"
@@ -2504,7 +2671,7 @@ values_ =
                             ]
                         ]
                         (Type.namedWith
-                            []
+                            [ "RouteBuilder" ]
                             "Builder"
                             [ Type.var "routeParams"
                             , Type.var "data"
@@ -2525,25 +2692,31 @@ values_ =
                               , Type.function
                                     [ Type.var "routeParams" ]
                                     (Type.namedWith
-                                        []
+                                        [ "BackendTask" ]
                                         "BackendTask"
-                                        [ Type.namedWith [] "FatalError" []
+                                        [ Type.namedWith
+                                            [ "FatalError" ]
+                                            "FatalError"
+                                            []
                                         , Type.var "data"
                                         ]
                                     )
                               )
                             , ( "pages"
                               , Type.namedWith
-                                    []
+                                    [ "BackendTask" ]
                                     "BackendTask"
-                                    [ Type.namedWith [] "FatalError" []
+                                    [ Type.namedWith
+                                        [ "FatalError" ]
+                                        "FatalError"
+                                        []
                                     , Type.list (Type.var "routeParams")
                                     ]
                               )
                             , ( "head"
                               , Type.function
                                     [ Type.namedWith
-                                        []
+                                        [ "RouteBuilder" ]
                                         "App"
                                         [ Type.var "data"
                                         , Type.var "action"
@@ -2557,7 +2730,7 @@ values_ =
                             ]
                         ]
                         (Type.namedWith
-                            []
+                            [ "RouteBuilder" ]
                             "Builder"
                             [ Type.var "routeParams"
                             , Type.var "data"
@@ -2576,16 +2749,19 @@ values_ =
                         [ Type.record
                             [ ( "data"
                               , Type.namedWith
-                                    []
+                                    [ "BackendTask" ]
                                     "BackendTask"
-                                    [ Type.namedWith [] "FatalError" []
+                                    [ Type.namedWith
+                                        [ "FatalError" ]
+                                        "FatalError"
+                                        []
                                     , Type.var "data"
                                     ]
                               )
                             , ( "head"
                               , Type.function
                                     [ Type.namedWith
-                                        []
+                                        [ "RouteBuilder" ]
                                         "App"
                                         [ Type.var "data"
                                         , Type.var "action"
@@ -2599,7 +2775,7 @@ values_ =
                             ]
                         ]
                         (Type.namedWith
-                            []
+                            [ "RouteBuilder" ]
                             "Builder"
                             [ Type.record []
                             , Type.var "data"
@@ -2619,7 +2795,7 @@ values_ =
                             [ ( "view"
                               , Type.function
                                     [ Type.namedWith
-                                        []
+                                        [ "RouteBuilder" ]
                                         "App"
                                         [ Type.var "data"
                                         , Type.var "action"
@@ -2629,10 +2805,10 @@ values_ =
                                     , Type.var "model"
                                     ]
                                     (Type.namedWith
-                                        []
+                                        [ "View" ]
                                         "View"
                                         [ Type.namedWith
-                                            []
+                                            [ "PagesMsg" ]
                                             "PagesMsg"
                                             [ Type.var "msg" ]
                                         ]
@@ -2641,7 +2817,7 @@ values_ =
                             , ( "init"
                               , Type.function
                                     [ Type.namedWith
-                                        []
+                                        [ "RouteBuilder" ]
                                         "App"
                                         [ Type.var "data"
                                         , Type.var "action"
@@ -2652,7 +2828,7 @@ values_ =
                                     (Type.tuple
                                         (Type.var "model")
                                         (Type.namedWith
-                                            []
+                                            [ "Effect" ]
                                             "Effect"
                                             [ Type.var "msg" ]
                                         )
@@ -2661,7 +2837,7 @@ values_ =
                             , ( "update"
                               , Type.function
                                     [ Type.namedWith
-                                        []
+                                        [ "RouteBuilder" ]
                                         "App"
                                         [ Type.var "data"
                                         , Type.var "action"
@@ -2674,33 +2850,35 @@ values_ =
                                     (Type.triple
                                         (Type.var "model")
                                         (Type.namedWith
-                                            []
+                                            [ "Effect" ]
                                             "Effect"
                                             [ Type.var "msg" ]
                                         )
-                                        (Type.namedWith
-                                            []
-                                            "Maybe"
-                                            [ Type.namedWith
+                                        (Type.maybe
+                                            (Type.namedWith
                                                 [ "Shared" ]
                                                 "Msg"
                                                 []
-                                            ]
+                                            )
                                         )
                                     )
                               )
                             , ( "subscriptions"
                               , Type.function
                                     [ Type.var "routeParams"
-                                    , Type.namedWith [] "UrlPath" []
+                                    , Type.namedWith [ "UrlPath" ] "UrlPath" []
                                     , Type.namedWith [ "Shared" ] "Model" []
                                     , Type.var "model"
                                     ]
-                                    (Type.namedWith [] "Sub" [ Type.var "msg" ])
+                                    (Type.namedWith
+                                        [ "RouteBuilder" ]
+                                        "Sub"
+                                        [ Type.var "msg" ]
+                                    )
                               )
                             ]
                         , Type.namedWith
-                            []
+                            [ "RouteBuilder" ]
                             "Builder"
                             [ Type.var "routeParams"
                             , Type.var "data"
@@ -2708,7 +2886,7 @@ values_ =
                             ]
                         ]
                         (Type.namedWith
-                            []
+                            [ "RouteBuilder" ]
                             "StatefulRoute"
                             [ Type.var "routeParams"
                             , Type.var "data"
@@ -2730,7 +2908,7 @@ values_ =
                             [ ( "view"
                               , Type.function
                                     [ Type.namedWith
-                                        []
+                                        [ "RouteBuilder" ]
                                         "App"
                                         [ Type.var "data"
                                         , Type.var "action"
@@ -2740,10 +2918,10 @@ values_ =
                                     , Type.var "model"
                                     ]
                                     (Type.namedWith
-                                        []
+                                        [ "View" ]
                                         "View"
                                         [ Type.namedWith
-                                            []
+                                            [ "PagesMsg" ]
                                             "PagesMsg"
                                             [ Type.var "msg" ]
                                         ]
@@ -2752,7 +2930,7 @@ values_ =
                             , ( "init"
                               , Type.function
                                     [ Type.namedWith
-                                        []
+                                        [ "RouteBuilder" ]
                                         "App"
                                         [ Type.var "data"
                                         , Type.var "action"
@@ -2763,7 +2941,7 @@ values_ =
                                     (Type.tuple
                                         (Type.var "model")
                                         (Type.namedWith
-                                            []
+                                            [ "Effect" ]
                                             "Effect"
                                             [ Type.var "msg" ]
                                         )
@@ -2772,7 +2950,7 @@ values_ =
                             , ( "update"
                               , Type.function
                                     [ Type.namedWith
-                                        []
+                                        [ "RouteBuilder" ]
                                         "App"
                                         [ Type.var "data"
                                         , Type.var "action"
@@ -2785,7 +2963,7 @@ values_ =
                                     (Type.tuple
                                         (Type.var "model")
                                         (Type.namedWith
-                                            []
+                                            [ "Effect" ]
                                             "Effect"
                                             [ Type.var "msg" ]
                                         )
@@ -2794,15 +2972,19 @@ values_ =
                             , ( "subscriptions"
                               , Type.function
                                     [ Type.var "routeParams"
-                                    , Type.namedWith [] "UrlPath" []
+                                    , Type.namedWith [ "UrlPath" ] "UrlPath" []
                                     , Type.namedWith [ "Shared" ] "Model" []
                                     , Type.var "model"
                                     ]
-                                    (Type.namedWith [] "Sub" [ Type.var "msg" ])
+                                    (Type.namedWith
+                                        [ "RouteBuilder" ]
+                                        "Sub"
+                                        [ Type.var "msg" ]
+                                    )
                               )
                             ]
                         , Type.namedWith
-                            []
+                            [ "RouteBuilder" ]
                             "Builder"
                             [ Type.var "routeParams"
                             , Type.var "data"
@@ -2810,7 +2992,7 @@ values_ =
                             ]
                         ]
                         (Type.namedWith
-                            []
+                            [ "RouteBuilder" ]
                             "StatefulRoute"
                             [ Type.var "routeParams"
                             , Type.var "data"
@@ -2830,7 +3012,7 @@ values_ =
                     (Type.function
                         [ Type.function [ Type.var "action" ] (Type.var "msg")
                         , Type.namedWith
-                            []
+                            [ "RouteBuilder" ]
                             "StatefulRoute"
                             [ Type.var "routeParams"
                             , Type.var "data"
@@ -2840,7 +3022,7 @@ values_ =
                             ]
                         ]
                         (Type.namedWith
-                            []
+                            [ "RouteBuilder" ]
                             "StatefulRoute"
                             [ Type.var "routeParams"
                             , Type.var "data"
@@ -2862,7 +3044,7 @@ values_ =
                             [ ( "view"
                               , Type.function
                                     [ Type.namedWith
-                                        []
+                                        [ "RouteBuilder" ]
                                         "App"
                                         [ Type.var "data"
                                         , Type.var "action"
@@ -2871,10 +3053,10 @@ values_ =
                                     , Type.namedWith [ "Shared" ] "Model" []
                                     ]
                                     (Type.namedWith
-                                        []
+                                        [ "View" ]
                                         "View"
                                         [ Type.namedWith
-                                            []
+                                            [ "PagesMsg" ]
                                             "PagesMsg"
                                             [ Type.unit ]
                                         ]
@@ -2882,7 +3064,7 @@ values_ =
                               )
                             ]
                         , Type.namedWith
-                            []
+                            [ "RouteBuilder" ]
                             "Builder"
                             [ Type.var "routeParams"
                             , Type.var "data"
@@ -2890,7 +3072,7 @@ values_ =
                             ]
                         ]
                         (Type.namedWith
-                            []
+                            [ "RouteBuilder" ]
                             "StatefulRoute"
                             [ Type.var "routeParams"
                             , Type.var "data"
@@ -2902,5 +3084,3 @@ values_ =
                     )
             }
     }
-
-

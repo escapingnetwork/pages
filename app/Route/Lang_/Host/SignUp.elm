@@ -395,7 +395,7 @@ action routeParams request =
                 (Env.get "SUPABASE_URL"
                     |> BackendTask.map (Maybe.withDefault "http://localhost:1234")
                 )
-                |> BackendTask.andThen (sendRequest formResponse userResult)
+                |> BackendTask.andThen (sendRequest routeParams.lang formResponse userResult)
 
 
 hostRequestToJSON : Host -> Encode.Value
@@ -410,8 +410,8 @@ hostRequestToJSON hostRequest =
         ]
 
 
-sendRequest : Form.ServerResponse String -> Form.Validated String Host -> EnvVariables -> BackendTask.BackendTask FatalError.FatalError (Server.Response.Response ActionData ErrorPage.ErrorPage)
-sendRequest formResponse userResult envVariables =
+sendRequest : String -> Form.ServerResponse String -> Form.Validated String Host -> EnvVariables -> BackendTask.BackendTask FatalError.FatalError (Server.Response.Response ActionData ErrorPage.ErrorPage)
+sendRequest lang formResponse userResult envVariables =
     let
         host =
             userResult
@@ -456,8 +456,8 @@ sendRequest formResponse userResult envVariables =
         |> BackendTask.map
             (\response ->
                 if Dict.isEmpty response.formResponse.serverSideErrors then
-                    Route.Host__SignUp_
-                        { signUp = host.forename }
+                    Route.Lang___Host__SignUp_
+                        { lang = lang, signUp = host.forename }
                         |> Route.redirectTo
 
                 else

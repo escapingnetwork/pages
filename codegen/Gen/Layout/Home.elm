@@ -1,7 +1,7 @@
 module Gen.Layout.Home exposing (call_, moduleName_, seoHeaders, socialsView, values_, view)
 
 {-| 
-@docs values_, call_, seoHeaders, socialsView, view, moduleName_
+@docs moduleName_, view, socialsView, seoHeaders, call_, values_
 -}
 
 
@@ -15,17 +15,25 @@ moduleName_ =
     [ "Layout", "Home" ]
 
 
-{-| view: Html msg -}
-view : Elm.Expression
-view =
-    Elm.value
-        { importFrom = [ "Layout", "Home" ]
-        , name = "view"
-        , annotation = Just (Type.namedWith [] "Html" [ Type.var "msg" ])
-        }
+{-| view: Layout.Home.I18n -> Html.Html msg -}
+view : Elm.Expression -> Elm.Expression
+view viewArg =
+    Elm.apply
+        (Elm.value
+            { importFrom = [ "Layout", "Home" ]
+            , name = "view"
+            , annotation =
+                Just
+                    (Type.function
+                        [ Type.namedWith [ "Layout", "Home" ] "I18n" [] ]
+                        (Type.namedWith [ "Html" ] "Html" [ Type.var "msg" ])
+                    )
+            }
+        )
+        [ viewArg ]
 
 
-{-| socialsView: List ( String, String ) -> Html msg -}
+{-| socialsView: List ( String, String ) -> Html.Html msg -}
 socialsView : List Elm.Expression -> Elm.Expression
 socialsView socialsViewArg =
     Elm.apply
@@ -36,14 +44,14 @@ socialsView socialsViewArg =
                 Just
                     (Type.function
                         [ Type.list (Type.tuple Type.string Type.string) ]
-                        (Type.namedWith [] "Html" [ Type.var "msg" ])
+                        (Type.namedWith [ "Html" ] "Html" [ Type.var "msg" ])
                     )
             }
         )
         [ Elm.list socialsViewArg ]
 
 
-{-| seoHeaders: Author -> List Head.Tag -}
+{-| seoHeaders: Content.About.Author -> List Head.Tag -}
 seoHeaders : Elm.Expression -> Elm.Expression
 seoHeaders seoHeadersArg =
     Elm.apply
@@ -53,7 +61,7 @@ seoHeaders seoHeadersArg =
             , annotation =
                 Just
                     (Type.function
-                        [ Type.namedWith [] "Author" [] ]
+                        [ Type.namedWith [ "Content", "About" ] "Author" [] ]
                         (Type.list (Type.namedWith [ "Head" ] "Tag" []))
                     )
             }
@@ -62,11 +70,32 @@ seoHeaders seoHeadersArg =
 
 
 call_ :
-    { socialsView : Elm.Expression -> Elm.Expression
+    { view : Elm.Expression -> Elm.Expression
+    , socialsView : Elm.Expression -> Elm.Expression
     , seoHeaders : Elm.Expression -> Elm.Expression
     }
 call_ =
-    { socialsView =
+    { view =
+        \viewArg ->
+            Elm.apply
+                (Elm.value
+                    { importFrom = [ "Layout", "Home" ]
+                    , name = "view"
+                    , annotation =
+                        Just
+                            (Type.function
+                                [ Type.namedWith [ "Layout", "Home" ] "I18n" []
+                                ]
+                                (Type.namedWith
+                                    [ "Html" ]
+                                    "Html"
+                                    [ Type.var "msg" ]
+                                )
+                            )
+                    }
+                )
+                [ viewArg ]
+    , socialsView =
         \socialsViewArg ->
             Elm.apply
                 (Elm.value
@@ -77,7 +106,11 @@ call_ =
                             (Type.function
                                 [ Type.list (Type.tuple Type.string Type.string)
                                 ]
-                                (Type.namedWith [] "Html" [ Type.var "msg" ])
+                                (Type.namedWith
+                                    [ "Html" ]
+                                    "Html"
+                                    [ Type.var "msg" ]
+                                )
                             )
                     }
                 )
@@ -91,7 +124,11 @@ call_ =
                     , annotation =
                         Just
                             (Type.function
-                                [ Type.namedWith [] "Author" [] ]
+                                [ Type.namedWith
+                                    [ "Content", "About" ]
+                                    "Author"
+                                    []
+                                ]
                                 (Type.list (Type.namedWith [ "Head" ] "Tag" []))
                             )
                     }
@@ -110,7 +147,12 @@ values_ =
         Elm.value
             { importFrom = [ "Layout", "Home" ]
             , name = "view"
-            , annotation = Just (Type.namedWith [] "Html" [ Type.var "msg" ])
+            , annotation =
+                Just
+                    (Type.function
+                        [ Type.namedWith [ "Layout", "Home" ] "I18n" [] ]
+                        (Type.namedWith [ "Html" ] "Html" [ Type.var "msg" ])
+                    )
             }
     , socialsView =
         Elm.value
@@ -120,7 +162,7 @@ values_ =
                 Just
                     (Type.function
                         [ Type.list (Type.tuple Type.string Type.string) ]
-                        (Type.namedWith [] "Html" [ Type.var "msg" ])
+                        (Type.namedWith [ "Html" ] "Html" [ Type.var "msg" ])
                     )
             }
     , seoHeaders =
@@ -130,10 +172,8 @@ values_ =
             , annotation =
                 Just
                     (Type.function
-                        [ Type.namedWith [] "Author" [] ]
+                        [ Type.namedWith [ "Content", "About" ] "Author" [] ]
                         (Type.list (Type.namedWith [ "Head" ] "Tag" []))
                     )
             }
     }
-
-

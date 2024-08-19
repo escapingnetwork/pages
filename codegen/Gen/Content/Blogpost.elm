@@ -1,7 +1,7 @@
 module Gen.Content.Blogpost exposing (allBlogposts, allTags, annotation_, blogpostFromSlug, call_, caseOf_, make_, moduleName_, values_)
 
 {-| 
-@docs values_, call_, caseOf_, make_, annotation_, allTags, allBlogposts, blogpostFromSlug, moduleName_
+@docs moduleName_, blogpostFromSlug, allBlogposts, allTags, annotation_, make_, caseOf_, call_, values_
 -}
 
 
@@ -16,7 +16,10 @@ moduleName_ =
     [ "Content", "Blogpost" ]
 
 
-{-| blogpostFromSlug: String -> BackendTask FatalError Blogpost -}
+{-| blogpostFromSlug: 
+    String
+    -> BackendTask.BackendTask FatalError.FatalError Content.Blogpost.Blogpost
+-}
 blogpostFromSlug : String -> Elm.Expression
 blogpostFromSlug blogpostFromSlugArg =
     Elm.apply
@@ -28,10 +31,13 @@ blogpostFromSlug blogpostFromSlugArg =
                     (Type.function
                         [ Type.string ]
                         (Type.namedWith
-                            []
+                            [ "BackendTask" ]
                             "BackendTask"
-                            [ Type.namedWith [] "FatalError" []
-                            , Type.namedWith [] "Blogpost" []
+                            [ Type.namedWith [ "FatalError" ] "FatalError" []
+                            , Type.namedWith
+                                [ "Content", "Blogpost" ]
+                                "Blogpost"
+                                []
                             ]
                         )
                     )
@@ -40,7 +46,7 @@ blogpostFromSlug blogpostFromSlugArg =
         [ Elm.string blogpostFromSlugArg ]
 
 
-{-| allBlogposts: BackendTask FatalError (List Blogpost) -}
+{-| allBlogposts: BackendTask.BackendTask FatalError.FatalError (List Content.Blogpost.Blogpost) -}
 allBlogposts : Elm.Expression
 allBlogposts =
     Elm.value
@@ -49,16 +55,17 @@ allBlogposts =
         , annotation =
             Just
                 (Type.namedWith
-                    []
+                    [ "BackendTask" ]
                     "BackendTask"
-                    [ Type.namedWith [] "FatalError" []
-                    , Type.list (Type.namedWith [] "Blogpost" [])
+                    [ Type.namedWith [ "FatalError" ] "FatalError" []
+                    , Type.list
+                        (Type.namedWith [ "Content", "Blogpost" ] "Blogpost" [])
                     ]
                 )
         }
 
 
-{-| allTags: BackendTask FatalError (List TagWithCount) -}
+{-| allTags: BackendTask.BackendTask FatalError.FatalError (List Content.Blogpost.TagWithCount) -}
 allTags : Elm.Expression
 allTags =
     Elm.value
@@ -67,10 +74,15 @@ allTags =
         , annotation =
             Just
                 (Type.namedWith
-                    []
+                    [ "BackendTask" ]
                     "BackendTask"
-                    [ Type.namedWith [] "FatalError" []
-                    , Type.list (Type.namedWith [] "TagWithCount" [])
+                    [ Type.namedWith [ "FatalError" ] "FatalError" []
+                    , Type.list
+                        (Type.namedWith
+                            [ "Content", "Blogpost" ]
+                            "TagWithCount"
+                            []
+                        )
                     ]
                 )
         }
@@ -102,11 +114,16 @@ annotation_ =
             (Type.record
                 [ ( "title", Type.string )
                 , ( "slug", Type.string )
-                , ( "image", Type.namedWith [] "Maybe" [ Type.string ] )
-                , ( "description", Type.namedWith [] "Maybe" [ Type.string ] )
+                , ( "image", Type.maybe Type.string )
+                , ( "description", Type.maybe Type.string )
                 , ( "tags", Type.list Type.string )
-                , ( "authors", Type.list (Type.namedWith [] "Author" []) )
-                , ( "status", Type.namedWith [] "Status" [] )
+                , ( "authors"
+                  , Type.list
+                        (Type.namedWith [ "Content", "About" ] "Author" [])
+                  )
+                , ( "status"
+                  , Type.namedWith [ "Content", "Blogpost" ] "Status" []
+                  )
                 , ( "readingTimeInMin", Type.int )
                 ]
             )
@@ -116,19 +133,17 @@ annotation_ =
             "Blogpost"
             []
             (Type.record
-                [ ( "metadata", Type.namedWith [] "Metadata" [] )
+                [ ( "metadata"
+                  , Type.namedWith [ "Content", "Blogpost" ] "Metadata" []
+                  )
                 , ( "body", Type.string )
                 , ( "previousPost"
-                  , Type.namedWith
-                        []
-                        "Maybe"
-                        [ Type.namedWith [] "Metadata" [] ]
+                  , Type.maybe
+                        (Type.namedWith [ "Content", "Blogpost" ] "Metadata" [])
                   )
                 , ( "nextPost"
-                  , Type.namedWith
-                        []
-                        "Maybe"
-                        [ Type.namedWith [] "Metadata" [] ]
+                  , Type.maybe
+                        (Type.namedWith [ "Content", "Blogpost" ] "Metadata" [])
                   )
                 ]
             )
@@ -196,15 +211,20 @@ make_ =
                     (Type.record
                         [ ( "title", Type.string )
                         , ( "slug", Type.string )
-                        , ( "image", Type.namedWith [] "Maybe" [ Type.string ] )
-                        , ( "description"
-                          , Type.namedWith [] "Maybe" [ Type.string ]
-                          )
+                        , ( "image", Type.maybe Type.string )
+                        , ( "description", Type.maybe Type.string )
                         , ( "tags", Type.list Type.string )
                         , ( "authors"
-                          , Type.list (Type.namedWith [] "Author" [])
+                          , Type.list
+                                (Type.namedWith
+                                    [ "Content", "About" ]
+                                    "Author"
+                                    []
+                                )
                           )
-                        , ( "status", Type.namedWith [] "Status" [] )
+                        , ( "status"
+                          , Type.namedWith [ "Content", "Blogpost" ] "Status" []
+                          )
                         , ( "readingTimeInMin", Type.int )
                         ]
                     )
@@ -230,19 +250,28 @@ make_ =
                     "Blogpost"
                     []
                     (Type.record
-                        [ ( "metadata", Type.namedWith [] "Metadata" [] )
+                        [ ( "metadata"
+                          , Type.namedWith
+                                [ "Content", "Blogpost" ]
+                                "Metadata"
+                                []
+                          )
                         , ( "body", Type.string )
                         , ( "previousPost"
-                          , Type.namedWith
-                                []
-                                "Maybe"
-                                [ Type.namedWith [] "Metadata" [] ]
+                          , Type.maybe
+                                (Type.namedWith
+                                    [ "Content", "Blogpost" ]
+                                    "Metadata"
+                                    []
+                                )
                           )
                         , ( "nextPost"
-                          , Type.namedWith
-                                []
-                                "Maybe"
-                                [ Type.namedWith [] "Metadata" [] ]
+                          , Type.maybe
+                                (Type.namedWith
+                                    [ "Content", "Blogpost" ]
+                                    "Metadata"
+                                    []
+                                )
                           )
                         ]
                     )
@@ -299,7 +328,7 @@ caseOf_ =
                 , Elm.Case.branch0 "Published" statusTags.published
                 , Elm.Case.branch1
                     "PublishedWithDate"
-                    ( "date", Type.namedWith [] "Date" [] )
+                    ( "dateDate", Type.namedWith [ "Date" ] "Date" [] )
                     statusTags.publishedWithDate
                 ]
     }
@@ -318,10 +347,16 @@ call_ =
                             (Type.function
                                 [ Type.string ]
                                 (Type.namedWith
-                                    []
+                                    [ "BackendTask" ]
                                     "BackendTask"
-                                    [ Type.namedWith [] "FatalError" []
-                                    , Type.namedWith [] "Blogpost" []
+                                    [ Type.namedWith
+                                        [ "FatalError" ]
+                                        "FatalError"
+                                        []
+                                    , Type.namedWith
+                                        [ "Content", "Blogpost" ]
+                                        "Blogpost"
+                                        []
                                     ]
                                 )
                             )
@@ -346,10 +381,13 @@ values_ =
                     (Type.function
                         [ Type.string ]
                         (Type.namedWith
-                            []
+                            [ "BackendTask" ]
                             "BackendTask"
-                            [ Type.namedWith [] "FatalError" []
-                            , Type.namedWith [] "Blogpost" []
+                            [ Type.namedWith [ "FatalError" ] "FatalError" []
+                            , Type.namedWith
+                                [ "Content", "Blogpost" ]
+                                "Blogpost"
+                                []
                             ]
                         )
                     )
@@ -361,10 +399,15 @@ values_ =
             , annotation =
                 Just
                     (Type.namedWith
-                        []
+                        [ "BackendTask" ]
                         "BackendTask"
-                        [ Type.namedWith [] "FatalError" []
-                        , Type.list (Type.namedWith [] "Blogpost" [])
+                        [ Type.namedWith [ "FatalError" ] "FatalError" []
+                        , Type.list
+                            (Type.namedWith
+                                [ "Content", "Blogpost" ]
+                                "Blogpost"
+                                []
+                            )
                         ]
                     )
             }
@@ -375,13 +418,16 @@ values_ =
             , annotation =
                 Just
                     (Type.namedWith
-                        []
+                        [ "BackendTask" ]
                         "BackendTask"
-                        [ Type.namedWith [] "FatalError" []
-                        , Type.list (Type.namedWith [] "TagWithCount" [])
+                        [ Type.namedWith [ "FatalError" ] "FatalError" []
+                        , Type.list
+                            (Type.namedWith
+                                [ "Content", "Blogpost" ]
+                                "TagWithCount"
+                                []
+                            )
                         ]
                     )
             }
     }
-
-

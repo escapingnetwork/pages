@@ -1,7 +1,7 @@
 module Gen.Css.Media exposing (all, annotation_, anyHover, anyPointer, aspectRatio, bits, call_, canHover, coarse, color, colorGamut, colorIndex, dpcm, dpi, dppx, enabled, fast, fine, grid, height, hover, initialOnly, interlace, landscape, make_, maxAspectRatio, maxColor, maxColorIndex, maxHeight, maxMonochrome, maxResolution, maxWidth, minAspectRatio, minColor, minColorIndex, minHeight, minMonochrome, minResolution, minWidth, moduleName_, monochrome, not, only, optionalPaged, orientation, overflowBlock, overflowInline, p3, paged, pointer, portrait, print, progressive, ratio, rec2020, resolution, scan, screen, scripting, slow, speech, srgb, update, values_, width, withMedia, withMediaQuery)
 
 {-| 
-@docs values_, call_, make_, annotation_, scripting, enabled, initialOnly, anyHover, hover, canHover, anyPointer, pointer, coarse, fine, colorGamut, rec2020, p3, srgb, maxColorIndex, colorIndex, minColorIndex, maxMonochrome, monochrome, minMonochrome, maxColor, color, minColor, bits, overflowInline, overflowBlock, optionalPaged, paged, update, fast, slow, grid, scan, interlace, progressive, maxResolution, resolution, minResolution, dppx, dpcm, dpi, orientation, portrait, landscape, maxAspectRatio, aspectRatio, minAspectRatio, ratio, maxHeight, height, minHeight, maxWidth, width, minWidth, speech, print, screen, not, only, all, withMediaQuery, withMedia, moduleName_
+@docs moduleName_, withMedia, withMediaQuery, all, only, not, screen, print, speech, minWidth, width, maxWidth, minHeight, height, maxHeight, ratio, minAspectRatio, aspectRatio, maxAspectRatio, landscape, portrait, orientation, dpi, dpcm, dppx, minResolution, resolution, maxResolution, progressive, interlace, scan, grid, slow, fast, update, paged, optionalPaged, overflowBlock, overflowInline, bits, minColor, color, maxColor, minMonochrome, monochrome, maxMonochrome, minColorIndex, colorIndex, maxColorIndex, srgb, p3, rec2020, colorGamut, fine, coarse, pointer, anyPointer, canHover, hover, anyHover, initialOnly, enabled, scripting, annotation_, make_, call_, values_
 -}
 
 
@@ -3848,5 +3848,3 @@ values_ =
                     )
             }
     }
-
-

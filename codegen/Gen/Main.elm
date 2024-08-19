@@ -1,7 +1,7 @@
 module Gen.Main exposing (main, moduleName_, values_)
 
 {-| 
-@docs values_, main, moduleName_
+@docs moduleName_, main, values_
 -}
 
 
@@ -15,7 +15,7 @@ moduleName_ =
     [ "Main" ]
 
 
-{-| main: Platform.Program Pages.Internal.Platform.Flags (Pages.Internal.Platform.Model Model PageData ActionData Shared.Data) (Pages.Internal.Platform.Msg Msg PageData ActionData Shared.Data ErrorPage.ErrorPage) -}
+{-| main: Platform.Program Pages.Internal.Platform.Flags (Pages.Internal.Platform.Model Main.Model Main.PageData Main.ActionData Shared.Data) (Pages.Internal.Platform.Msg Main.Msg Main.PageData Main.ActionData Shared.Data ErrorPage.ErrorPage) -}
 main : Elm.Expression
 main =
     Elm.value
@@ -33,17 +33,17 @@ main =
                     , Type.namedWith
                         [ "Pages", "Internal", "Platform" ]
                         "Model"
-                        [ Type.namedWith [] "Model" []
-                        , Type.namedWith [] "PageData" []
-                        , Type.namedWith [] "ActionData" []
+                        [ Type.namedWith [ "Main" ] "Model" []
+                        , Type.namedWith [ "Main" ] "PageData" []
+                        , Type.namedWith [ "Main" ] "ActionData" []
                         , Type.namedWith [ "Shared" ] "Data" []
                         ]
                     , Type.namedWith
                         [ "Pages", "Internal", "Platform" ]
                         "Msg"
-                        [ Type.namedWith [] "Msg" []
-                        , Type.namedWith [] "PageData" []
-                        , Type.namedWith [] "ActionData" []
+                        [ Type.namedWith [ "Main" ] "Msg" []
+                        , Type.namedWith [ "Main" ] "PageData" []
+                        , Type.namedWith [ "Main" ] "ActionData" []
                         , Type.namedWith [ "Shared" ] "Data" []
                         , Type.namedWith [ "ErrorPage" ] "ErrorPage" []
                         ]
@@ -70,17 +70,17 @@ values_ =
                         , Type.namedWith
                             [ "Pages", "Internal", "Platform" ]
                             "Model"
-                            [ Type.namedWith [] "Model" []
-                            , Type.namedWith [] "PageData" []
-                            , Type.namedWith [] "ActionData" []
+                            [ Type.namedWith [ "Main" ] "Model" []
+                            , Type.namedWith [ "Main" ] "PageData" []
+                            , Type.namedWith [ "Main" ] "ActionData" []
                             , Type.namedWith [ "Shared" ] "Data" []
                             ]
                         , Type.namedWith
                             [ "Pages", "Internal", "Platform" ]
                             "Msg"
-                            [ Type.namedWith [] "Msg" []
-                            , Type.namedWith [] "PageData" []
-                            , Type.namedWith [] "ActionData" []
+                            [ Type.namedWith [ "Main" ] "Msg" []
+                            , Type.namedWith [ "Main" ] "PageData" []
+                            , Type.namedWith [ "Main" ] "ActionData" []
                             , Type.namedWith [ "Shared" ] "Data" []
                             , Type.namedWith [ "ErrorPage" ] "ErrorPage" []
                             ]
@@ -88,5 +88,3 @@ values_ =
                     )
             }
     }
-
-

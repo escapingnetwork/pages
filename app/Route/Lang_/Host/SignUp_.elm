@@ -14,6 +14,7 @@ import FatalError exposing (FatalError)
 import Head
 import Html
 import Html.Attributes as Attrs exposing (height)
+import I18n as Translations
 import Layout.Minimal
 import PagesMsg
 import RouteBuilder exposing (App, StatefulRoute)
@@ -104,11 +105,11 @@ view app shared model =
             , Html.h1
                 [ Attrs.class "text-5xl font-extrabold mt-2 text-center"
                 ]
-                [ Html.text <| "Thank You " ++ app.routeParams.signUp ++ " !"
+                [ Html.text <| Translations.formsSuccess shared.i18n ++ " " ++ app.routeParams.signUp ++ " !"
                 , Html.small
                     [ Attrs.class "ms-2 font-semibold text-gray-500 dark:text-gray-400"
                     ]
-                    [ Html.text " We'll get back to you soon!" ]
+                    [ Html.text <| " " ++ Translations.formsSuccessContact shared.i18n ]
                 ]
             ]
         ]

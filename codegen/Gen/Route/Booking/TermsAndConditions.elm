@@ -1,7 +1,7 @@
 module Gen.Route.Booking.TermsAndConditions exposing (annotation_, make_, moduleName_, route, values_)
 
 {-| 
-@docs values_, make_, annotation_, route, moduleName_
+@docs moduleName_, route, annotation_, make_, values_
 -}
 
 
@@ -15,7 +15,7 @@ moduleName_ =
     [ "Route", "Booking", "TermsAndConditions" ]
 
 
-{-| route: RouteBuilder.StatefulRoute RouteParams Data ActionData Model Msg -}
+{-| route: RouteBuilder.StatefulRoute Route.Booking.TermsAndConditions.RouteParams Route.Booking.TermsAndConditions.Data Route.Booking.TermsAndConditions.ActionData Route.Booking.TermsAndConditions.Model Route.Booking.TermsAndConditions.Msg -}
 route : Elm.Expression
 route =
     Elm.value
@@ -26,11 +26,26 @@ route =
                 (Type.namedWith
                     [ "RouteBuilder" ]
                     "StatefulRoute"
-                    [ Type.namedWith [] "RouteParams" []
-                    , Type.namedWith [] "Data" []
-                    , Type.namedWith [] "ActionData" []
-                    , Type.namedWith [] "Model" []
-                    , Type.namedWith [] "Msg" []
+                    [ Type.namedWith
+                        [ "Route", "Booking", "TermsAndConditions" ]
+                        "RouteParams"
+                        []
+                    , Type.namedWith
+                        [ "Route", "Booking", "TermsAndConditions" ]
+                        "Data"
+                        []
+                    , Type.namedWith
+                        [ "Route", "Booking", "TermsAndConditions" ]
+                        "ActionData"
+                        []
+                    , Type.namedWith
+                        [ "Route", "Booking", "TermsAndConditions" ]
+                        "Model"
+                        []
+                    , Type.namedWith
+                        [ "Route", "Booking", "TermsAndConditions" ]
+                        "Msg"
+                        []
                     ]
                 )
         }
@@ -51,7 +66,9 @@ annotation_ =
             "Data"
             []
             (Type.record
-                [ ( "legal", Type.namedWith [ "Content", "Legals" ] "Legal" [] )
+                [ ( "minimal"
+                  , Type.namedWith [ "Content", "Minimal" ] "Minimal" []
+                  )
                 ]
             )
     , routeParams = Type.alias moduleName_ "RouteParams" [] (Type.record [])
@@ -62,7 +79,7 @@ annotation_ =
 
 make_ :
     { actionData : actionData -> Elm.Expression
-    , data : { legal : Elm.Expression } -> Elm.Expression
+    , data : { minimal : Elm.Expression } -> Elm.Expression
     , routeParams : routeParams -> Elm.Expression
     , model : model -> Elm.Expression
     }
@@ -85,13 +102,13 @@ make_ =
                     "Data"
                     []
                     (Type.record
-                        [ ( "legal"
-                          , Type.namedWith [ "Content", "Legals" ] "Legal" []
+                        [ ( "minimal"
+                          , Type.namedWith [ "Content", "Minimal" ] "Minimal" []
                           )
                         ]
                     )
                 )
-                (Elm.record [ Tuple.pair "legal" data_args.legal ])
+                (Elm.record [ Tuple.pair "minimal" data_args.minimal ])
     , routeParams =
         \routeParams_args ->
             Elm.withType
@@ -126,14 +143,27 @@ values_ =
                     (Type.namedWith
                         [ "RouteBuilder" ]
                         "StatefulRoute"
-                        [ Type.namedWith [] "RouteParams" []
-                        , Type.namedWith [] "Data" []
-                        , Type.namedWith [] "ActionData" []
-                        , Type.namedWith [] "Model" []
-                        , Type.namedWith [] "Msg" []
+                        [ Type.namedWith
+                            [ "Route", "Booking", "TermsAndConditions" ]
+                            "RouteParams"
+                            []
+                        , Type.namedWith
+                            [ "Route", "Booking", "TermsAndConditions" ]
+                            "Data"
+                            []
+                        , Type.namedWith
+                            [ "Route", "Booking", "TermsAndConditions" ]
+                            "ActionData"
+                            []
+                        , Type.namedWith
+                            [ "Route", "Booking", "TermsAndConditions" ]
+                            "Model"
+                            []
+                        , Type.namedWith
+                            [ "Route", "Booking", "TermsAndConditions" ]
+                            "Msg"
+                            []
                         ]
                     )
             }
     }
-
-

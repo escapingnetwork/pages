@@ -1,7 +1,7 @@
 module Gen.Pages.Script exposing (annotation_, call_, caseOf_, log, make_, moduleName_, values_, withCliOptions, withoutCliOptions, writeFile)
 
 {-| 
-@docs values_, call_, caseOf_, make_, annotation_, log, writeFile, withoutCliOptions, withCliOptions, moduleName_
+@docs moduleName_, withCliOptions, withoutCliOptions, writeFile, log, annotation_, make_, caseOf_, call_, values_
 -}
 
 
@@ -470,5 +470,3 @@ values_ =
                     )
             }
     }
-
-

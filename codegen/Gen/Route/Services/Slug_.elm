@@ -1,7 +1,7 @@
 module Gen.Route.Services.Slug_ exposing (annotation_, make_, moduleName_, route, values_)
 
 {-| 
-@docs values_, make_, annotation_, route, moduleName_
+@docs moduleName_, route, annotation_, make_, values_
 -}
 
 
@@ -15,7 +15,7 @@ moduleName_ =
     [ "Route", "Services", "Slug_" ]
 
 
-{-| route: StatelessRoute RouteParams Data ActionData -}
+{-| route: RouteBuilder.StatelessRoute Route.Services.Slug_.RouteParams Route.Services.Slug_.Data Route.Services.Slug_.ActionData -}
 route : Elm.Expression
 route =
     Elm.value
@@ -24,11 +24,17 @@ route =
         , annotation =
             Just
                 (Type.namedWith
-                    []
+                    [ "RouteBuilder" ]
                     "StatelessRoute"
-                    [ Type.namedWith [] "RouteParams" []
-                    , Type.namedWith [] "Data" []
-                    , Type.namedWith [] "ActionData" []
+                    [ Type.namedWith
+                        [ "Route", "Services", "Slug_" ]
+                        "RouteParams"
+                        []
+                    , Type.namedWith [ "Route", "Services", "Slug_" ] "Data" []
+                    , Type.namedWith
+                        [ "Route", "Services", "Slug_" ]
+                        "ActionData"
+                        []
                     ]
                 )
         }
@@ -48,7 +54,12 @@ annotation_ =
             moduleName_
             "Data"
             []
-            (Type.record [ ( "service", Type.namedWith [] "Service" [] ) ])
+            (Type.record
+                [ ( "service"
+                  , Type.namedWith [ "Content", "Services" ] "Service" []
+                  )
+                ]
+            )
     , routeParams =
         Type.alias
             moduleName_
@@ -85,7 +96,13 @@ make_ =
                     "Data"
                     []
                     (Type.record
-                        [ ( "service", Type.namedWith [] "Service" [] ) ]
+                        [ ( "service"
+                          , Type.namedWith
+                                [ "Content", "Services" ]
+                                "Service"
+                                []
+                          )
+                        ]
                     )
                 )
                 (Elm.record [ Tuple.pair "service" data_args.service ])
@@ -121,14 +138,21 @@ values_ =
             , annotation =
                 Just
                     (Type.namedWith
-                        []
+                        [ "RouteBuilder" ]
                         "StatelessRoute"
-                        [ Type.namedWith [] "RouteParams" []
-                        , Type.namedWith [] "Data" []
-                        , Type.namedWith [] "ActionData" []
+                        [ Type.namedWith
+                            [ "Route", "Services", "Slug_" ]
+                            "RouteParams"
+                            []
+                        , Type.namedWith
+                            [ "Route", "Services", "Slug_" ]
+                            "Data"
+                            []
+                        , Type.namedWith
+                            [ "Route", "Services", "Slug_" ]
+                            "ActionData"
+                            []
                         ]
                     )
             }
     }
-
-

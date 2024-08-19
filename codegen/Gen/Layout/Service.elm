@@ -1,7 +1,7 @@
 module Gen.Layout.Service exposing (call_, moduleName_, values_, viewListItem, viewService, viewServiceList)
 
 {-| 
-@docs values_, call_, viewService, viewListItem, viewServiceList, moduleName_
+@docs moduleName_, viewServiceList, viewListItem, viewService, call_, values_
 -}
 
 
@@ -15,7 +15,7 @@ moduleName_ =
     [ "Layout", "Service" ]
 
 
-{-| viewServiceList: List Metadata -> List (Html msg) -}
+{-| viewServiceList: List Content.Services.Metadata -> List (Html.Html msg) -}
 viewServiceList : List Elm.Expression -> Elm.Expression
 viewServiceList viewServiceListArg =
     Elm.apply
@@ -25,8 +25,16 @@ viewServiceList viewServiceListArg =
             , annotation =
                 Just
                     (Type.function
-                        [ Type.list (Type.namedWith [] "Metadata" []) ]
-                        (Type.list (Type.namedWith [] "Html" [ Type.var "msg" ])
+                        [ Type.list
+                            (Type.namedWith
+                                [ "Content", "Services" ]
+                                "Metadata"
+                                []
+                            )
+                        ]
+                        (Type.list
+                            (Type.namedWith [ "Html" ] "Html" [ Type.var "msg" ]
+                            )
                         )
                     )
             }
@@ -34,7 +42,7 @@ viewServiceList viewServiceListArg =
         [ Elm.list viewServiceListArg ]
 
 
-{-| viewListItem: Metadata -> Html.Html msg -}
+{-| viewListItem: Content.Services.Metadata -> Html.Html msg -}
 viewListItem : Elm.Expression -> Elm.Expression
 viewListItem viewListItemArg =
     Elm.apply
@@ -44,7 +52,8 @@ viewListItem viewListItemArg =
             , annotation =
                 Just
                     (Type.function
-                        [ Type.namedWith [] "Metadata" [] ]
+                        [ Type.namedWith [ "Content", "Services" ] "Metadata" []
+                        ]
                         (Type.namedWith [ "Html" ] "Html" [ Type.var "msg" ])
                     )
             }
@@ -52,7 +61,7 @@ viewListItem viewListItemArg =
         [ viewListItemArg ]
 
 
-{-| viewService: Service -> Html msg -}
+{-| viewService: Content.Services.Service -> Html.Html msg -}
 viewService : Elm.Expression -> Elm.Expression
 viewService viewServiceArg =
     Elm.apply
@@ -62,8 +71,9 @@ viewService viewServiceArg =
             , annotation =
                 Just
                     (Type.function
-                        [ Type.namedWith [] "Service" [] ]
-                        (Type.namedWith [] "Html" [ Type.var "msg" ])
+                        [ Type.namedWith [ "Content", "Services" ] "Service" []
+                        ]
+                        (Type.namedWith [ "Html" ] "Html" [ Type.var "msg" ])
                     )
             }
         )
@@ -85,9 +95,18 @@ call_ =
                     , annotation =
                         Just
                             (Type.function
-                                [ Type.list (Type.namedWith [] "Metadata" []) ]
+                                [ Type.list
+                                    (Type.namedWith
+                                        [ "Content", "Services" ]
+                                        "Metadata"
+                                        []
+                                    )
+                                ]
                                 (Type.list
-                                    (Type.namedWith [] "Html" [ Type.var "msg" ]
+                                    (Type.namedWith
+                                        [ "Html" ]
+                                        "Html"
+                                        [ Type.var "msg" ]
                                     )
                                 )
                             )
@@ -103,7 +122,11 @@ call_ =
                     , annotation =
                         Just
                             (Type.function
-                                [ Type.namedWith [] "Metadata" [] ]
+                                [ Type.namedWith
+                                    [ "Content", "Services" ]
+                                    "Metadata"
+                                    []
+                                ]
                                 (Type.namedWith
                                     [ "Html" ]
                                     "Html"
@@ -122,8 +145,16 @@ call_ =
                     , annotation =
                         Just
                             (Type.function
-                                [ Type.namedWith [] "Service" [] ]
-                                (Type.namedWith [] "Html" [ Type.var "msg" ])
+                                [ Type.namedWith
+                                    [ "Content", "Services" ]
+                                    "Service"
+                                    []
+                                ]
+                                (Type.namedWith
+                                    [ "Html" ]
+                                    "Html"
+                                    [ Type.var "msg" ]
+                                )
                             )
                     }
                 )
@@ -144,8 +175,16 @@ values_ =
             , annotation =
                 Just
                     (Type.function
-                        [ Type.list (Type.namedWith [] "Metadata" []) ]
-                        (Type.list (Type.namedWith [] "Html" [ Type.var "msg" ])
+                        [ Type.list
+                            (Type.namedWith
+                                [ "Content", "Services" ]
+                                "Metadata"
+                                []
+                            )
+                        ]
+                        (Type.list
+                            (Type.namedWith [ "Html" ] "Html" [ Type.var "msg" ]
+                            )
                         )
                     )
             }
@@ -156,7 +195,8 @@ values_ =
             , annotation =
                 Just
                     (Type.function
-                        [ Type.namedWith [] "Metadata" [] ]
+                        [ Type.namedWith [ "Content", "Services" ] "Metadata" []
+                        ]
                         (Type.namedWith [ "Html" ] "Html" [ Type.var "msg" ])
                     )
             }
@@ -167,10 +207,9 @@ values_ =
             , annotation =
                 Just
                     (Type.function
-                        [ Type.namedWith [] "Service" [] ]
-                        (Type.namedWith [] "Html" [ Type.var "msg" ])
+                        [ Type.namedWith [ "Content", "Services" ] "Service" []
+                        ]
+                        (Type.namedWith [ "Html" ] "Html" [ Type.var "msg" ])
                     )
             }
     }
-
-

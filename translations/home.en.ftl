@@ -52,3 +52,5 @@ forms-submit = Submit
 forms-submitting = Sending...
 forms-error = There was an error sending your request!
 forms-error-contact = Please contact 
+forms-success = Thank You
+forms-success-contact = We'll get back to you soon!

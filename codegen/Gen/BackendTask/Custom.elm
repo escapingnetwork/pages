@@ -1,7 +1,7 @@
 module Gen.BackendTask.Custom exposing (annotation_, call_, caseOf_, dateDecoder, make_, moduleName_, run, timeDecoder, values_)
 
 {-| 
-@docs values_, call_, caseOf_, make_, annotation_, dateDecoder, timeDecoder, run, moduleName_
+@docs moduleName_, run, timeDecoder, dateDecoder, annotation_, make_, caseOf_, call_, values_
 -}
 
 
@@ -221,20 +221,20 @@ caseOf_ =
                     errorTags.customBackendTaskNotDefined
                 , Elm.Case.branch1
                     "CustomBackendTaskException"
-                    ( "json.Decode.Value"
+                    ( "jsonDecodeValue"
                     , Type.namedWith [ "Json", "Decode" ] "Value" []
                     )
                     errorTags.customBackendTaskException
                 , Elm.Case.branch1
                     "NonJsonException"
-                    ( "string.String", Type.string )
+                    ( "stringString", Type.string )
                     errorTags.nonJsonException
                 , Elm.Case.branch0
                     "ExportIsNotFunction"
                     errorTags.exportIsNotFunction
                 , Elm.Case.branch1
                     "DecodeError"
-                    ( "json.Decode.Error"
+                    ( "jsonDecodeError"
                     , Type.namedWith [ "Json", "Decode" ] "Error" []
                     )
                     errorTags.decodeError
@@ -356,5 +356,3 @@ values_ =
                     )
             }
     }
-
-

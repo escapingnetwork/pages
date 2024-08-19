@@ -1,7 +1,7 @@
 module Gen.Html.Styled.Keyed exposing (call_, lazyNode, lazyNode2, lazyNode3, lazyNode4, lazyNode5, lazyNode6, moduleName_, node, ol, ul, values_)
 
 {-| 
-@docs values_, call_, lazyNode6, lazyNode5, lazyNode4, lazyNode3, lazyNode2, lazyNode, ul, ol, node, moduleName_
+@docs moduleName_, node, ol, ul, lazyNode, lazyNode2, lazyNode3, lazyNode4, lazyNode5, lazyNode6, call_, values_
 -}
 
 
@@ -1407,5 +1407,3 @@ values_ =
                     )
             }
     }
-
-

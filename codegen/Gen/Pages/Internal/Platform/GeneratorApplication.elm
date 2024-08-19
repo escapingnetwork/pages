@@ -1,7 +1,7 @@
 module Gen.Pages.Internal.Platform.GeneratorApplication exposing (annotation_, app, call_, caseOf_, init, make_, moduleName_, requestDecoder, update, values_)
 
 {-| 
-@docs values_, call_, caseOf_, make_, annotation_, app, update, requestDecoder, init, moduleName_
+@docs moduleName_, init, requestDecoder, update, app, annotation_, make_, caseOf_, call_, values_
 -}
 
 
@@ -364,13 +364,13 @@ caseOf_ =
                 )
                 [ Elm.Case.branch1
                     "GotDataBatch"
-                    ( "json.Decode.Value"
+                    ( "jsonDecodeValue"
                     , Type.namedWith [ "Json", "Decode" ] "Value" []
                     )
                     msgTags.gotDataBatch
                 , Elm.Case.branch1
                     "GotBuildError"
-                    ( "buildError.BuildError"
+                    ( "buildErrorBuildError"
                     , Type.namedWith [ "BuildError" ] "BuildError" []
                     )
                     msgTags.gotBuildError
@@ -671,5 +671,3 @@ values_ =
                     )
             }
     }
-
-

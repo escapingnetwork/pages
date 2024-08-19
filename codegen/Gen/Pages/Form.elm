@@ -1,7 +1,7 @@
 module Gen.Pages.Form exposing (annotation_, call_, moduleName_, renderHtml, renderStyledHtml, values_, withConcurrent)
 
 {-| 
-@docs values_, call_, annotation_, withConcurrent, renderStyledHtml, renderHtml, moduleName_
+@docs moduleName_, renderHtml, renderStyledHtml, withConcurrent, annotation_, call_, values_
 -}
 
 
@@ -1016,5 +1016,3 @@ values_ =
                     )
             }
     }
-
-

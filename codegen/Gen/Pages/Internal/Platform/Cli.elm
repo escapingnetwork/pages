@@ -1,7 +1,7 @@
 module Gen.Pages.Internal.Platform.Cli exposing (annotation_, call_, caseOf_, cliApplication, currentCompatibilityKey, init, make_, moduleName_, requestDecoder, update, values_)
 
 {-| 
-@docs values_, call_, caseOf_, make_, annotation_, currentCompatibilityKey, update, requestDecoder, init, cliApplication, moduleName_
+@docs moduleName_, cliApplication, init, requestDecoder, update, currentCompatibilityKey, annotation_, make_, caseOf_, call_, values_
 -}
 
 
@@ -362,13 +362,13 @@ caseOf_ =
                 )
                 [ Elm.Case.branch1
                     "GotDataBatch"
-                    ( "json.Decode.Value"
+                    ( "jsonDecodeValue"
                     , Type.namedWith [ "Json", "Decode" ] "Value" []
                     )
                     msgTags.gotDataBatch
                 , Elm.Case.branch1
                     "GotBuildError"
-                    ( "buildError.BuildError"
+                    ( "buildErrorBuildError"
                     , Type.namedWith [ "BuildError" ] "BuildError" []
                     )
                     msgTags.gotBuildError
@@ -653,5 +653,3 @@ values_ =
             , annotation = Just Type.int
             }
     }
-
-

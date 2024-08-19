@@ -1,7 +1,7 @@
 module Gen.Scaffold.Form exposing (annotation_, call_, caseOf_, fieldEncoder, make_, moduleName_, provide, recordEncoder, restArgsParser, values_)
 
 {-| 
-@docs values_, call_, caseOf_, make_, annotation_, fieldEncoder, recordEncoder, restArgsParser, provide, moduleName_
+@docs moduleName_, provide, restArgsParser, recordEncoder, fieldEncoder, annotation_, make_, caseOf_, call_, values_
 -}
 
 
@@ -648,5 +648,3 @@ values_ =
                     )
             }
     }
-
-

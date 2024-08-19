@@ -1,7 +1,7 @@
 module Gen.Api exposing (call_, manifest, moduleName_, routes, values_)
 
 {-| 
-@docs values_, call_, routes, manifest, moduleName_
+@docs moduleName_, manifest, routes, call_, values_
 -}
 
 
@@ -15,20 +15,20 @@ moduleName_ =
     [ "Api" ]
 
 
-{-| manifest: Manifest.Config -}
+{-| manifest: Pages.Manifest.Config -}
 manifest : Elm.Expression
 manifest =
     Elm.value
         { importFrom = [ "Api" ]
         , name = "manifest"
-        , annotation = Just (Type.namedWith [ "Manifest" ] "Config" [])
+        , annotation = Just (Type.namedWith [ "Pages", "Manifest" ] "Config" [])
         }
 
 
 {-| routes: 
-    BackendTask FatalError (List Route)
-    -> (Maybe { indent : Int, newLines : Bool } -> Html Never -> String)
-    -> List (ApiRoute ApiRoute.Response)
+    BackendTask.BackendTask FatalError.FatalError (List Route.Route)
+    -> (Maybe { indent : Int, newLines : Bool } -> Html.Html Basics.Never -> String)
+    -> List (ApiRoute.ApiRoute ApiRoute.Response)
 -}
 routes :
     Elm.Expression
@@ -43,30 +43,28 @@ routes routesArg routesArg0 =
                 Just
                     (Type.function
                         [ Type.namedWith
-                            []
+                            [ "BackendTask" ]
                             "BackendTask"
-                            [ Type.namedWith [] "FatalError" []
-                            , Type.list (Type.namedWith [] "Route" [])
+                            [ Type.namedWith [ "FatalError" ] "FatalError" []
+                            , Type.list (Type.namedWith [ "Route" ] "Route" [])
                             ]
                         , Type.function
-                            [ Type.namedWith
-                                []
-                                "Maybe"
-                                [ Type.record
+                            [ Type.maybe
+                                (Type.record
                                     [ ( "indent", Type.int )
                                     , ( "newLines", Type.bool )
                                     ]
-                                ]
+                                )
                             , Type.namedWith
-                                []
+                                [ "Html" ]
                                 "Html"
-                                [ Type.namedWith [] "Never" [] ]
+                                [ Type.namedWith [ "Basics" ] "Never" [] ]
                             ]
                             Type.string
                         ]
                         (Type.list
                             (Type.namedWith
-                                []
+                                [ "ApiRoute" ]
                                 "ApiRoute"
                                 [ Type.namedWith [ "ApiRoute" ] "Response" [] ]
                             )
@@ -95,30 +93,33 @@ call_ =
                         Just
                             (Type.function
                                 [ Type.namedWith
-                                    []
+                                    [ "BackendTask" ]
                                     "BackendTask"
-                                    [ Type.namedWith [] "FatalError" []
-                                    , Type.list (Type.namedWith [] "Route" [])
+                                    [ Type.namedWith
+                                        [ "FatalError" ]
+                                        "FatalError"
+                                        []
+                                    , Type.list
+                                        (Type.namedWith [ "Route" ] "Route" [])
                                     ]
                                 , Type.function
-                                    [ Type.namedWith
-                                        []
-                                        "Maybe"
-                                        [ Type.record
+                                    [ Type.maybe
+                                        (Type.record
                                             [ ( "indent", Type.int )
                                             , ( "newLines", Type.bool )
                                             ]
-                                        ]
+                                        )
                                     , Type.namedWith
-                                        []
+                                        [ "Html" ]
                                         "Html"
-                                        [ Type.namedWith [] "Never" [] ]
+                                        [ Type.namedWith [ "Basics" ] "Never" []
+                                        ]
                                     ]
                                     Type.string
                                 ]
                                 (Type.list
                                     (Type.namedWith
-                                        []
+                                        [ "ApiRoute" ]
                                         "ApiRoute"
                                         [ Type.namedWith
                                             [ "ApiRoute" ]
@@ -140,7 +141,8 @@ values_ =
         Elm.value
             { importFrom = [ "Api" ]
             , name = "manifest"
-            , annotation = Just (Type.namedWith [ "Manifest" ] "Config" [])
+            , annotation =
+                Just (Type.namedWith [ "Pages", "Manifest" ] "Config" [])
             }
     , routes =
         Elm.value
@@ -150,30 +152,28 @@ values_ =
                 Just
                     (Type.function
                         [ Type.namedWith
-                            []
+                            [ "BackendTask" ]
                             "BackendTask"
-                            [ Type.namedWith [] "FatalError" []
-                            , Type.list (Type.namedWith [] "Route" [])
+                            [ Type.namedWith [ "FatalError" ] "FatalError" []
+                            , Type.list (Type.namedWith [ "Route" ] "Route" [])
                             ]
                         , Type.function
-                            [ Type.namedWith
-                                []
-                                "Maybe"
-                                [ Type.record
+                            [ Type.maybe
+                                (Type.record
                                     [ ( "indent", Type.int )
                                     , ( "newLines", Type.bool )
                                     ]
-                                ]
+                                )
                             , Type.namedWith
-                                []
+                                [ "Html" ]
                                 "Html"
-                                [ Type.namedWith [] "Never" [] ]
+                                [ Type.namedWith [ "Basics" ] "Never" [] ]
                             ]
                             Type.string
                         ]
                         (Type.list
                             (Type.namedWith
-                                []
+                                [ "ApiRoute" ]
                                 "ApiRoute"
                                 [ Type.namedWith [ "ApiRoute" ] "Response" [] ]
                             )
@@ -181,5 +181,3 @@ values_ =
                     )
             }
     }
-
-

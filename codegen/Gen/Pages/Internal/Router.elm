@@ -1,7 +1,7 @@
 module Gen.Pages.Internal.Router exposing (annotation_, call_, firstMatch, fromOptionalSplat, make_, maybeToList, moduleName_, nonEmptyToList, toNonEmpty, values_)
 
 {-| 
-@docs values_, call_, make_, annotation_, toNonEmpty, nonEmptyToList, maybeToList, fromOptionalSplat, firstMatch, moduleName_
+@docs moduleName_, firstMatch, fromOptionalSplat, maybeToList, nonEmptyToList, toNonEmpty, annotation_, make_, call_, values_
 -}
 
 
@@ -327,5 +327,3 @@ values_ =
                     )
             }
     }
-
-

@@ -1,7 +1,7 @@
 module Gen.Html.Keyed exposing (call_, moduleName_, node, ol, ul, values_)
 
 {-| 
-@docs values_, call_, ul, ol, node, moduleName_
+@docs moduleName_, node, ol, ul, call_, values_
 -}
 
 
@@ -320,5 +320,3 @@ values_ =
                     )
             }
     }
-
-

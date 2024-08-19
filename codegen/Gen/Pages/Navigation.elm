@@ -1,7 +1,7 @@
 module Gen.Pages.Navigation exposing (annotation_, caseOf_, make_, moduleName_)
 
 {-| 
-@docs caseOf_, make_, annotation_, moduleName_
+@docs moduleName_, annotation_, make_, caseOf_
 -}
 
 
@@ -114,28 +114,28 @@ caseOf_ =
                 (Type.namedWith [ "Pages", "Navigation" ] "Navigation" [])
                 [ Elm.Case.branch1
                     "Submitting"
-                    ( "pages.FormData.FormData"
+                    ( "pagesFormDataFormData"
                     , Type.namedWith [ "Pages", "FormData" ] "FormData" []
                     )
                     navigationTags.submitting
                 , Elm.Case.branch3
                     "LoadAfterSubmit"
-                    ( "pages.FormData.FormData"
+                    ( "pagesFormDataFormData"
                     , Type.namedWith [ "Pages", "FormData" ] "FormData" []
                     )
-                    ( "urlPath.UrlPath"
+                    ( "urlPathUrlPath"
                     , Type.namedWith [ "UrlPath" ] "UrlPath" []
                     )
-                    ( "pages.Navigation.LoadingState"
+                    ( "pagesNavigationLoadingState"
                     , Type.namedWith [ "Pages", "Navigation" ] "LoadingState" []
                     )
                     navigationTags.loadAfterSubmit
                 , Elm.Case.branch2
                     "Loading"
-                    ( "urlPath.UrlPath"
+                    ( "urlPathUrlPath"
                     , Type.namedWith [ "UrlPath" ] "UrlPath" []
                     )
-                    ( "pages.Navigation.LoadingState"
+                    ( "pagesNavigationLoadingState"
                     , Type.namedWith [ "Pages", "Navigation" ] "LoadingState" []
                     )
                     navigationTags.loading
@@ -152,5 +152,3 @@ caseOf_ =
                     loadingStateTags.actionRedirect
                 ]
     }
-
-

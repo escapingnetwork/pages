@@ -1,7 +1,7 @@
 module Gen.Pages.Flags exposing (annotation_, caseOf_, make_, moduleName_)
 
 {-| 
-@docs caseOf_, make_, annotation_, moduleName_
+@docs moduleName_, annotation_, make_, caseOf_
 -}
 
 
@@ -62,12 +62,10 @@ caseOf_ =
                 (Type.namedWith [ "Pages", "Flags" ] "Flags" [])
                 [ Elm.Case.branch1
                     "BrowserFlags"
-                    ( "json.Decode.Value"
+                    ( "jsonDecodeValue"
                     , Type.namedWith [ "Json", "Decode" ] "Value" []
                     )
                     flagsTags.browserFlags
                 , Elm.Case.branch0 "PreRenderFlags" flagsTags.preRenderFlags
                 ]
     }
-
-

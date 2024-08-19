@@ -1,7 +1,7 @@
 module Gen.SiteConfig exposing (annotation_, make_, moduleName_)
 
 {-| 
-@docs make_, annotation_, moduleName_
+@docs moduleName_, annotation_, make_
 -}
 
 
@@ -26,9 +26,9 @@ annotation_ =
                 [ ( "canonicalUrl", Type.string )
                 , ( "head"
                   , Type.namedWith
-                        []
+                        [ "BackendTask" ]
                         "BackendTask"
-                        [ Type.namedWith [] "FatalError" []
+                        [ Type.namedWith [ "FatalError" ] "FatalError" []
                         , Type.list (Type.namedWith [ "Head" ] "Tag" [])
                         ]
                   )
@@ -54,9 +54,12 @@ make_ =
                         [ ( "canonicalUrl", Type.string )
                         , ( "head"
                           , Type.namedWith
-                                []
+                                [ "BackendTask" ]
                                 "BackendTask"
-                                [ Type.namedWith [] "FatalError" []
+                                [ Type.namedWith
+                                    [ "FatalError" ]
+                                    "FatalError"
+                                    []
                                 , Type.list (Type.namedWith [ "Head" ] "Tag" [])
                                 ]
                           )
@@ -69,5 +72,3 @@ make_ =
                     ]
                 )
     }
-
-

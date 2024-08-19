@@ -1,7 +1,7 @@
 module Gen.Pages.ConcurrentSubmission exposing (annotation_, call_, caseOf_, make_, map, moduleName_, values_)
 
 {-| 
-@docs values_, call_, caseOf_, make_, annotation_, map, moduleName_
+@docs moduleName_, map, annotation_, make_, caseOf_, call_, values_
 -}
 
 
@@ -252,5 +252,3 @@ values_ =
                     )
             }
     }
-
-

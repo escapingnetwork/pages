@@ -1,7 +1,7 @@
 module Gen.Route.Tags exposing (annotation_, make_, moduleName_, route, values_)
 
 {-| 
-@docs values_, make_, annotation_, route, moduleName_
+@docs moduleName_, route, annotation_, make_, values_
 -}
 
 
@@ -15,7 +15,7 @@ moduleName_ =
     [ "Route", "Tags" ]
 
 
-{-| route: StatelessRoute RouteParams Data ActionData -}
+{-| route: RouteBuilder.StatelessRoute Route.Tags.RouteParams Route.Tags.Data Route.Tags.ActionData -}
 route : Elm.Expression
 route =
     Elm.value
@@ -24,11 +24,11 @@ route =
         , annotation =
             Just
                 (Type.namedWith
-                    []
+                    [ "RouteBuilder" ]
                     "StatelessRoute"
-                    [ Type.namedWith [] "RouteParams" []
-                    , Type.namedWith [] "Data" []
-                    , Type.namedWith [] "ActionData" []
+                    [ Type.namedWith [ "Route", "Tags" ] "RouteParams" []
+                    , Type.namedWith [ "Route", "Tags" ] "Data" []
+                    , Type.namedWith [ "Route", "Tags" ] "ActionData" []
                     ]
                 )
         }
@@ -48,7 +48,9 @@ annotation_ =
             moduleName_
             "Data"
             []
-            (Type.list (Type.namedWith [] "TagWithCount" []))
+            (Type.list
+                (Type.namedWith [ "Content", "Blogpost" ] "TagWithCount" [])
+            )
     , routeParams = Type.alias moduleName_ "RouteParams" [] (Type.record [])
     , msg = Type.alias moduleName_ "Msg" [] Type.unit
     , model = Type.alias moduleName_ "Model" [] (Type.record [])
@@ -94,14 +96,12 @@ values_ =
             , annotation =
                 Just
                     (Type.namedWith
-                        []
+                        [ "RouteBuilder" ]
                         "StatelessRoute"
-                        [ Type.namedWith [] "RouteParams" []
-                        , Type.namedWith [] "Data" []
-                        , Type.namedWith [] "ActionData" []
+                        [ Type.namedWith [ "Route", "Tags" ] "RouteParams" []
+                        , Type.namedWith [ "Route", "Tags" ] "Data" []
+                        , Type.namedWith [ "Route", "Tags" ] "ActionData" []
                         ]
                     )
             }
     }
-
-

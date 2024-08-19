@@ -1,7 +1,7 @@
 module Gen.Site exposing (config, moduleName_, values_)
 
 {-| 
-@docs values_, config, moduleName_
+@docs moduleName_, config, values_
 -}
 
 
@@ -15,13 +15,13 @@ moduleName_ =
     [ "Site" ]
 
 
-{-| config: SiteConfig -}
+{-| config: SiteConfig.SiteConfig -}
 config : Elm.Expression
 config =
     Elm.value
         { importFrom = [ "Site" ]
         , name = "config"
-        , annotation = Just (Type.namedWith [] "SiteConfig" [])
+        , annotation = Just (Type.namedWith [ "SiteConfig" ] "SiteConfig" [])
         }
 
 
@@ -31,8 +31,7 @@ values_ =
         Elm.value
             { importFrom = [ "Site" ]
             , name = "config"
-            , annotation = Just (Type.namedWith [] "SiteConfig" [])
+            , annotation =
+                Just (Type.namedWith [ "SiteConfig" ] "SiteConfig" [])
             }
     }
-
-

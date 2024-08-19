@@ -1,7 +1,7 @@
 module Gen.Pages.Internal.NotFoundReason exposing (annotation_, call_, caseOf_, document, make_, moduleName_, values_)
 
 {-| 
-@docs values_, call_, caseOf_, make_, annotation_, document, moduleName_
+@docs moduleName_, document, annotation_, make_, caseOf_, call_, values_
 -}
 
 
@@ -254,13 +254,13 @@ caseOf_ =
                     notFoundReasonTags.noMatchingRoute
                 , Elm.Case.branch2
                     "NotPrerendered"
-                    ( "pages.Internal.NotFoundReason.ModuleContext"
+                    ( "pagesInternalNotFoundReasonModuleContext"
                     , Type.namedWith
                         [ "Pages", "Internal", "NotFoundReason" ]
                         "ModuleContext"
                         []
                     )
-                    ( "list.List"
+                    ( "listList"
                     , Type.list
                         (Type.namedWith
                             [ "Pages", "Internal", "NotFoundReason" ]
@@ -271,13 +271,13 @@ caseOf_ =
                     notFoundReasonTags.notPrerendered
                 , Elm.Case.branch2
                     "NotPrerenderedOrHandledByFallback"
-                    ( "pages.Internal.NotFoundReason.ModuleContext"
+                    ( "pagesInternalNotFoundReasonModuleContext"
                     , Type.namedWith
                         [ "Pages", "Internal", "NotFoundReason" ]
                         "ModuleContext"
                         []
                     )
-                    ( "list.List"
+                    ( "listList"
                     , Type.list
                         (Type.namedWith
                             [ "Pages", "Internal", "NotFoundReason" ]
@@ -288,7 +288,7 @@ caseOf_ =
                     notFoundReasonTags.notPrerenderedOrHandledByFallback
                 , Elm.Case.branch1
                     "UnhandledServerRoute"
-                    ( "pages.Internal.NotFoundReason.ModuleContext"
+                    ( "pagesInternalNotFoundReasonModuleContext"
                     , Type.namedWith
                         [ "Pages", "Internal", "NotFoundReason" ]
                         "ModuleContext"
@@ -375,5 +375,3 @@ values_ =
                     )
             }
     }
-
-

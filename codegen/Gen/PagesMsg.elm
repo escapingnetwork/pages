@@ -1,7 +1,7 @@
 module Gen.PagesMsg exposing (annotation_, call_, fromMsg, map, moduleName_, noOp, values_)
 
 {-| 
-@docs values_, call_, annotation_, noOp, map, fromMsg, moduleName_
+@docs moduleName_, fromMsg, map, noOp, annotation_, call_, values_
 -}
 
 
@@ -240,5 +240,3 @@ values_ =
                     )
             }
     }
-
-

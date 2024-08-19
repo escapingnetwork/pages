@@ -1,7 +1,7 @@
 module Gen.Html.Styled exposing (a, abbr, address, annotation_, article, aside, audio, b, bdi, bdo, blockquote, br, button, call_, canvas, caption, cite, code, col, colgroup, datalist, dd, del, details, dfn, div, dl, dt, em, embed, fieldset, figcaption, figure, footer, form, fromUnstyled, h1, h2, h3, h4, h5, h6, header, hr, i, iframe, img, input, ins, kbd, label, legend, li, main_, map, mark, math, menu, menuitem, meter, moduleName_, nav, node, object, ol, optgroup, option, output, p, param, pre, progress, q, rp, rt, ruby, s, samp, section, select, small, source, span, strong, styled, sub, summary, sup, table, tbody, td, text, textarea, tfoot, th, thead, time, toNonceUnstyled, toUnstyled, tr, track, u, ul, values_, var, video, wbr)
 
 {-| 
-@docs values_, call_, annotation_, menu, menuitem, summary, details, wbr, bdo, bdi, rp, rt, ruby, mark, q, s, kbd, samp, var, time, abbr, dfn, cite, small, del, ins, param, object, embed, track, source, video, audio, meter, progress, output, optgroup, datalist, label, legend, fieldset, th, td, tr, tfoot, thead, tbody, col, colgroup, caption, table, figcaption, figure, main_, address, footer, header, aside, article, nav, section, option, select, button, textarea, input, form, math, canvas, iframe, img, dd, dt, dl, li, ul, ol, br, sup, sub, u, b, i, strong, em, code, a, span, blockquote, pre, hr, p, div, h6, h5, h4, h3, h2, h1, map, node, text, toNonceUnstyled, toUnstyled, fromUnstyled, styled, moduleName_
+@docs moduleName_, styled, fromUnstyled, toUnstyled, toNonceUnstyled, text, node, map, h1, h2, h3, h4, h5, h6, div, p, hr, pre, blockquote, span, a, code, em, strong, i, b, u, sub, sup, br, ol, ul, li, dl, dt, dd, img, iframe, canvas, math, form, input, textarea, button, select, option, section, nav, article, aside, header, footer, address, main_, figure, figcaption, table, caption, colgroup, col, tbody, thead, tfoot, tr, td, th, fieldset, legend, label, datalist, optgroup, output, progress, meter, audio, video, source, track, embed, object, param, ins, del, small, cite, dfn, abbr, time, var, samp, kbd, s, q, mark, ruby, rt, rp, bdi, bdo, wbr, details, summary, menuitem, menu, annotation_, call_, values_
 -}
 
 
@@ -10384,5 +10384,3 @@ values_ =
                     )
             }
     }
-
-

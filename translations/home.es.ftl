@@ -51,4 +51,6 @@ forms-contact = Metodo Favorito de Contacto
 forms-submit = Enviar
 forms-submitting = Enviando...
 forms-error = Hubo un error al enviar tu solicitud!
-forms-error-contact = Por favor contactá 
+forms-error-contact = Por favor contactá
+forms-success = Gracias
+forms-success-contact = Volveremos a contactarte pronto!

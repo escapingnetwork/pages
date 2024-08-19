@@ -1,7 +1,7 @@
 module Gen.Pages.Internal.Platform exposing (annotation_, application, call_, caseOf_, init, make_, moduleName_, update, values_, view)
 
 {-| 
-@docs values_, call_, caseOf_, make_, annotation_, view, update, init, application, moduleName_
+@docs moduleName_, application, init, update, view, annotation_, make_, caseOf_, call_, values_
 -}
 
 
@@ -1255,17 +1255,17 @@ caseOf_ =
                 )
                 [ Elm.Case.branch1
                     "LinkClicked"
-                    ( "browser.UrlRequest"
+                    ( "browserUrlRequest"
                     , Type.namedWith [ "Browser" ] "UrlRequest" []
                     )
                     msgTags.linkClicked
                 , Elm.Case.branch1
                     "UrlChanged"
-                    ( "url.Url", Type.namedWith [ "Url" ] "Url" [] )
+                    ( "urlUrl", Type.namedWith [ "Url" ] "Url" [] )
                     msgTags.urlChanged
                 , Elm.Case.branch1
                     "UserMsg"
-                    ( "pagesMsg.PagesMsg"
+                    ( "pagesMsgPagesMsg"
                     , Type.namedWith
                         [ "PagesMsg" ]
                         "PagesMsg"
@@ -1274,7 +1274,7 @@ caseOf_ =
                     msgTags.userMsg
                 , Elm.Case.branch1
                     "FormMsg"
-                    ( "form.Msg"
+                    ( "formMsg"
                     , Type.namedWith
                         [ "Form" ]
                         "Msg"
@@ -1292,10 +1292,10 @@ caseOf_ =
                     msgTags.formMsg
                 , Elm.Case.branch4
                     "UpdateCacheAndUrlNew"
-                    ( "basics.Bool", Type.bool )
-                    ( "url.Url", Type.namedWith [ "Url" ] "Url" [] )
-                    ( "maybe.Maybe", Type.maybe (Type.var "userMsg") )
-                    ( "result.Result"
+                    ( "basicsBool", Type.bool )
+                    ( "urlUrl", Type.namedWith [ "Url" ] "Url" [] )
+                    ( "maybeMaybe", Type.maybe (Type.var "userMsg") )
+                    ( "resultResult"
                     , Type.namedWith
                         [ "Result" ]
                         "Result"
@@ -1315,10 +1315,10 @@ caseOf_ =
                     msgTags.updateCacheAndUrlNew
                 , Elm.Case.branch4
                     "FetcherComplete"
-                    ( "basics.Bool", Type.bool )
-                    ( "string.String", Type.string )
-                    ( "basics.Int", Type.int )
-                    ( "result.Result"
+                    ( "basicsBool", Type.bool )
+                    ( "stringString", Type.string )
+                    ( "basicsInt", Type.int )
+                    ( "resultResult"
                     , Type.namedWith
                         [ "Result" ]
                         "Result"
@@ -1335,27 +1335,27 @@ caseOf_ =
                     msgTags.fetcherComplete
                 , Elm.Case.branch4
                     "FetcherStarted"
-                    ( "string.String", Type.string )
-                    ( "basics.Int", Type.int )
-                    ( "pages.Internal.Platform.FormData"
+                    ( "stringString", Type.string )
+                    ( "basicsInt", Type.int )
+                    ( "pagesInternalPlatformFormData"
                     , Type.namedWith
                         [ "Pages", "Internal", "Platform" ]
                         "FormData"
                         []
                     )
-                    ( "time.Posix", Type.namedWith [ "Time" ] "Posix" [] )
+                    ( "timePosix", Type.namedWith [ "Time" ] "Posix" [] )
                     msgTags.fetcherStarted
                 , Elm.Case.branch0
                     "PageScrollComplete"
                     msgTags.pageScrollComplete
                 , Elm.Case.branch1
                     "HotReloadCompleteNew"
-                    ( "bytes.Bytes", Type.namedWith [ "Bytes" ] "Bytes" [] )
+                    ( "bytesBytes", Type.namedWith [ "Bytes" ] "Bytes" [] )
                     msgTags.hotReloadCompleteNew
                 , Elm.Case.branch3
                     "ProcessFetchResponse"
-                    ( "basics.Int", Type.int )
-                    ( "result.Result"
+                    ( "basicsInt", Type.int )
+                    ( "resultResult"
                     , Type.namedWith
                         [ "Result" ]
                         "Result"
@@ -1422,20 +1422,20 @@ caseOf_ =
                 , Elm.Case.branch0 "NoEffect" effectTags.noEffect
                 , Elm.Case.branch1
                     "BrowserLoadUrl"
-                    ( "string.String", Type.string )
+                    ( "stringString", Type.string )
                     effectTags.browserLoadUrl
                 , Elm.Case.branch1
                     "BrowserPushUrl"
-                    ( "string.String", Type.string )
+                    ( "stringString", Type.string )
                     effectTags.browserPushUrl
                 , Elm.Case.branch1
                     "BrowserReplaceUrl"
-                    ( "string.String", Type.string )
+                    ( "stringString", Type.string )
                     effectTags.browserReplaceUrl
                 , Elm.Case.branch4
                     "FetchPageData"
-                    ( "basics.Int", Type.int )
-                    ( "maybe.Maybe"
+                    ( "basicsInt", Type.int )
+                    ( "maybeMaybe"
                     , Type.maybe
                         (Type.namedWith
                             [ "Pages", "Internal", "Platform" ]
@@ -1443,7 +1443,7 @@ caseOf_ =
                             []
                         )
                     )
-                    ( "url.Url", Type.namedWith [ "Url" ] "Url" [] )
+                    ( "urlUrl", Type.namedWith [ "Url" ] "Url" [] )
                     ( "four"
                     , Type.function
                         [ Type.namedWith
@@ -1476,7 +1476,7 @@ caseOf_ =
                     effectTags.fetchPageData
                 , Elm.Case.branch1
                     "Submit"
-                    ( "pages.Internal.Platform.FormData"
+                    ( "pagesInternalPlatformFormData"
                     , Type.namedWith
                         [ "Pages", "Internal", "Platform" ]
                         "FormData"
@@ -1485,9 +1485,9 @@ caseOf_ =
                     effectTags.submit
                 , Elm.Case.branch3
                     "SubmitFetcher"
-                    ( "string.String", Type.string )
-                    ( "basics.Int", Type.int )
-                    ( "pages.Internal.Platform.FormData"
+                    ( "stringString", Type.string )
+                    ( "basicsInt", Type.int )
+                    ( "pagesInternalPlatformFormData"
                     , Type.namedWith
                         [ "Pages", "Internal", "Platform" ]
                         "FormData"
@@ -1496,7 +1496,7 @@ caseOf_ =
                     effectTags.submitFetcher
                 , Elm.Case.branch1
                     "Batch"
-                    ( "list.List"
+                    ( "listList"
                     , Type.list
                         (Type.namedWith
                             [ "Pages", "Internal", "Platform" ]
@@ -1517,11 +1517,11 @@ caseOf_ =
                     effectTags.userCmd
                 , Elm.Case.branch1
                     "CancelRequest"
-                    ( "basics.Int", Type.int )
+                    ( "basicsInt", Type.int )
                     effectTags.cancelRequest
                 , Elm.Case.branch1
                     "RunCmd"
-                    ( "platform.Cmd.Cmd"
+                    ( "platformCmdCmd"
                     , Type.namedWith
                         []
                         "Cmd"
@@ -2066,5 +2066,3 @@ values_ =
                     )
             }
     }
-
-

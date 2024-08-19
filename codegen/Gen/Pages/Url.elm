@@ -1,7 +1,7 @@
 module Gen.Pages.Url exposing (annotation_, call_, external, fromPath, moduleName_, toAbsoluteUrl, toString, values_)
 
 {-| 
-@docs values_, call_, annotation_, toString, toAbsoluteUrl, fromPath, external, moduleName_
+@docs moduleName_, external, fromPath, toAbsoluteUrl, toString, annotation_, call_, values_
 -}
 
 
@@ -220,5 +220,3 @@ values_ =
                     )
             }
     }
-
-

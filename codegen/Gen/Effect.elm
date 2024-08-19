@@ -1,7 +1,7 @@
 module Gen.Effect exposing (annotation_, batch, call_, caseOf_, fromCmd, make_, map, moduleName_, none, perform, values_)
 
 {-| 
-@docs values_, call_, caseOf_, make_, annotation_, none, batch, fromCmd, map, perform, moduleName_
+@docs moduleName_, perform, map, fromCmd, batch, none, annotation_, make_, caseOf_, call_, values_
 -}
 
 
@@ -20,17 +20,23 @@ moduleName_ =
 
 perform: 
     { fetchRouteData :
-        { data : Maybe FormData, toMsg : Result Http.Error Url -> pageMsg }
-        -> Cmd msg
+        { data : Maybe Effect.FormData
+        , toMsg : Result.Result Http.Error Url.Url -> pageMsg
+        }
+        -> Effect.Cmd msg
     , submit :
-        { values : FormData, toMsg : Result Http.Error Url -> pageMsg } -> Cmd msg
-    , runFetcher : Pages.Fetcher.Fetcher pageMsg -> Cmd msg
+        { values : Effect.FormData
+        , toMsg : Result.Result Http.Error Url.Url -> pageMsg
+        }
+        -> Effect.Cmd msg
+    , runFetcher : Pages.Fetcher.Fetcher pageMsg -> Effect.Cmd msg
     , fromPageMsg : pageMsg -> msg
     , key : Browser.Navigation.Key
-    , setField : { formId : String, name : String, value : String } -> Cmd msg
+    , setField :
+        { formId : String, name : String, value : String } -> Effect.Cmd msg
     }
-    -> Effect pageMsg
-    -> Cmd msg
+    -> Effect.Effect pageMsg
+    -> Effect.Cmd msg
 -}
 perform :
     { fetchRouteData : Elm.Expression -> Elm.Expression
@@ -55,56 +61,71 @@ perform performArg performArg0 =
                               , Type.function
                                     [ Type.record
                                         [ ( "data"
-                                          , Type.namedWith
-                                                []
-                                                "Maybe"
-                                                [ Type.namedWith
-                                                    []
+                                          , Type.maybe
+                                                (Type.namedWith
+                                                    [ "Effect" ]
                                                     "FormData"
                                                     []
-                                                ]
+                                                )
                                           )
                                         , ( "toMsg"
                                           , Type.function
                                                 [ Type.namedWith
-                                                    []
+                                                    [ "Result" ]
                                                     "Result"
                                                     [ Type.namedWith
                                                         [ "Http" ]
                                                         "Error"
                                                         []
-                                                    , Type.namedWith [] "Url" []
+                                                    , Type.namedWith
+                                                        [ "Url" ]
+                                                        "Url"
+                                                        []
                                                     ]
                                                 ]
                                                 (Type.var "pageMsg")
                                           )
                                         ]
                                     ]
-                                    (Type.namedWith [] "Cmd" [ Type.var "msg" ])
+                                    (Type.namedWith
+                                        [ "Effect" ]
+                                        "Cmd"
+                                        [ Type.var "msg" ]
+                                    )
                               )
                             , ( "submit"
                               , Type.function
                                     [ Type.record
                                         [ ( "values"
-                                          , Type.namedWith [] "FormData" []
+                                          , Type.namedWith
+                                                [ "Effect" ]
+                                                "FormData"
+                                                []
                                           )
                                         , ( "toMsg"
                                           , Type.function
                                                 [ Type.namedWith
-                                                    []
+                                                    [ "Result" ]
                                                     "Result"
                                                     [ Type.namedWith
                                                         [ "Http" ]
                                                         "Error"
                                                         []
-                                                    , Type.namedWith [] "Url" []
+                                                    , Type.namedWith
+                                                        [ "Url" ]
+                                                        "Url"
+                                                        []
                                                     ]
                                                 ]
                                                 (Type.var "pageMsg")
                                           )
                                         ]
                                     ]
-                                    (Type.namedWith [] "Cmd" [ Type.var "msg" ])
+                                    (Type.namedWith
+                                        [ "Effect" ]
+                                        "Cmd"
+                                        [ Type.var "msg" ]
+                                    )
                               )
                             , ( "runFetcher"
                               , Type.function
@@ -113,7 +134,11 @@ perform performArg performArg0 =
                                         "Fetcher"
                                         [ Type.var "pageMsg" ]
                                     ]
-                                    (Type.namedWith [] "Cmd" [ Type.var "msg" ])
+                                    (Type.namedWith
+                                        [ "Effect" ]
+                                        "Cmd"
+                                        [ Type.var "msg" ]
+                                    )
                               )
                             , ( "fromPageMsg"
                               , Type.function
@@ -134,12 +159,19 @@ perform performArg performArg0 =
                                         , ( "value", Type.string )
                                         ]
                                     ]
-                                    (Type.namedWith [] "Cmd" [ Type.var "msg" ])
+                                    (Type.namedWith
+                                        [ "Effect" ]
+                                        "Cmd"
+                                        [ Type.var "msg" ]
+                                    )
                               )
                             ]
-                        , Type.namedWith [] "Effect" [ Type.var "pageMsg" ]
+                        , Type.namedWith
+                            [ "Effect" ]
+                            "Effect"
+                            [ Type.var "pageMsg" ]
                         ]
-                        (Type.namedWith [] "Cmd" [ Type.var "msg" ])
+                        (Type.namedWith [ "Effect" ] "Cmd" [ Type.var "msg" ])
                     )
             }
         )
@@ -167,7 +199,7 @@ perform performArg performArg0 =
 
 {-| {-| -}
 
-map: (a -> b) -> Effect a -> Effect b
+map: (a -> b) -> Effect.Effect a -> Effect.Effect b
 -}
 map : (Elm.Expression -> Elm.Expression) -> Elm.Expression -> Elm.Expression
 map mapArg mapArg0 =
@@ -179,9 +211,9 @@ map mapArg mapArg0 =
                 Just
                     (Type.function
                         [ Type.function [ Type.var "a" ] (Type.var "b")
-                        , Type.namedWith [] "Effect" [ Type.var "a" ]
+                        , Type.namedWith [ "Effect" ] "Effect" [ Type.var "a" ]
                         ]
-                        (Type.namedWith [] "Effect" [ Type.var "b" ])
+                        (Type.namedWith [ "Effect" ] "Effect" [ Type.var "b" ])
                     )
             }
         )
@@ -190,7 +222,7 @@ map mapArg mapArg0 =
 
 {-| {-| -}
 
-fromCmd: Cmd msg -> Effect msg
+fromCmd: Effect.Cmd msg -> Effect.Effect msg
 -}
 fromCmd : Elm.Expression -> Elm.Expression
 fromCmd fromCmdArg =
@@ -201,8 +233,9 @@ fromCmd fromCmdArg =
             , annotation =
                 Just
                     (Type.function
-                        [ Type.namedWith [] "Cmd" [ Type.var "msg" ] ]
-                        (Type.namedWith [] "Effect" [ Type.var "msg" ])
+                        [ Type.namedWith [ "Effect" ] "Cmd" [ Type.var "msg" ] ]
+                        (Type.namedWith [ "Effect" ] "Effect" [ Type.var "msg" ]
+                        )
                     )
             }
         )
@@ -211,7 +244,7 @@ fromCmd fromCmdArg =
 
 {-| {-| -}
 
-batch: List (Effect msg) -> Effect msg
+batch: List (Effect.Effect msg) -> Effect.Effect msg
 -}
 batch : List Elm.Expression -> Elm.Expression
 batch batchArg =
@@ -223,9 +256,14 @@ batch batchArg =
                 Just
                     (Type.function
                         [ Type.list
-                            (Type.namedWith [] "Effect" [ Type.var "msg" ])
+                            (Type.namedWith
+                                [ "Effect" ]
+                                "Effect"
+                                [ Type.var "msg" ]
+                            )
                         ]
-                        (Type.namedWith [] "Effect" [ Type.var "msg" ])
+                        (Type.namedWith [ "Effect" ] "Effect" [ Type.var "msg" ]
+                        )
                     )
             }
         )
@@ -234,14 +272,15 @@ batch batchArg =
 
 {-| {-| -}
 
-none: Effect msg
+none: Effect.Effect msg
 -}
 none : Elm.Expression
 none =
     Elm.value
         { importFrom = [ "Effect" ]
         , name = "none"
-        , annotation = Just (Type.namedWith [] "Effect" [ Type.var "msg" ])
+        , annotation =
+            Just (Type.namedWith [ "Effect" ] "Effect" [ Type.var "msg" ])
         }
 
 
@@ -257,7 +296,7 @@ annotation_ =
                 [ ( "fields", Type.list (Type.tuple Type.string Type.string) )
                 , ( "method", Type.namedWith [ "Form" ] "Method" [] )
                 , ( "action", Type.string )
-                , ( "id", Type.namedWith [] "Maybe" [ Type.string ] )
+                , ( "id", Type.maybe Type.string )
                 ]
             )
     , effect =
@@ -291,7 +330,7 @@ make_ =
                           )
                         , ( "method", Type.namedWith [ "Form" ] "Method" [] )
                         , ( "action", Type.string )
-                        , ( "id", Type.namedWith [] "Maybe" [ Type.string ] )
+                        , ( "id", Type.maybe Type.string )
                         ]
                     )
                 )
@@ -352,12 +391,16 @@ caseOf_ =
                 [ Elm.Case.branch0 "None" effectTags.none
                 , Elm.Case.branch1
                     "Cmd"
-                    ( "cmd", Type.namedWith [] "Cmd" [ Type.var "msg" ] )
+                    ( "effectCmd"
+                    , Type.namedWith [ "Effect" ] "Cmd" [ Type.var "msg" ]
+                    )
                     effectTags.cmd
                 , Elm.Case.branch1
                     "Batch"
-                    ( "list.List"
-                    , Type.list (Type.namedWith [] "Effect" [ Type.var "msg" ])
+                    ( "listList"
+                    , Type.list
+                        (Type.namedWith [ "Effect" ] "Effect" [ Type.var "msg" ]
+                        )
                     )
                     effectTags.batch
                 ]
@@ -385,26 +428,24 @@ call_ =
                                       , Type.function
                                             [ Type.record
                                                 [ ( "data"
-                                                  , Type.namedWith
-                                                        []
-                                                        "Maybe"
-                                                        [ Type.namedWith
-                                                            []
+                                                  , Type.maybe
+                                                        (Type.namedWith
+                                                            [ "Effect" ]
                                                             "FormData"
                                                             []
-                                                        ]
+                                                        )
                                                   )
                                                 , ( "toMsg"
                                                   , Type.function
                                                         [ Type.namedWith
-                                                            []
+                                                            [ "Result" ]
                                                             "Result"
                                                             [ Type.namedWith
                                                                 [ "Http" ]
                                                                 "Error"
                                                                 []
                                                             , Type.namedWith
-                                                                []
+                                                                [ "Url" ]
                                                                 "Url"
                                                                 []
                                                             ]
@@ -414,7 +455,7 @@ call_ =
                                                 ]
                                             ]
                                             (Type.namedWith
-                                                []
+                                                [ "Effect" ]
                                                 "Cmd"
                                                 [ Type.var "msg" ]
                                             )
@@ -424,21 +465,21 @@ call_ =
                                             [ Type.record
                                                 [ ( "values"
                                                   , Type.namedWith
-                                                        []
+                                                        [ "Effect" ]
                                                         "FormData"
                                                         []
                                                   )
                                                 , ( "toMsg"
                                                   , Type.function
                                                         [ Type.namedWith
-                                                            []
+                                                            [ "Result" ]
                                                             "Result"
                                                             [ Type.namedWith
                                                                 [ "Http" ]
                                                                 "Error"
                                                                 []
                                                             , Type.namedWith
-                                                                []
+                                                                [ "Url" ]
                                                                 "Url"
                                                                 []
                                                             ]
@@ -448,7 +489,7 @@ call_ =
                                                 ]
                                             ]
                                             (Type.namedWith
-                                                []
+                                                [ "Effect" ]
                                                 "Cmd"
                                                 [ Type.var "msg" ]
                                             )
@@ -461,7 +502,7 @@ call_ =
                                                 [ Type.var "pageMsg" ]
                                             ]
                                             (Type.namedWith
-                                                []
+                                                [ "Effect" ]
                                                 "Cmd"
                                                 [ Type.var "msg" ]
                                             )
@@ -486,18 +527,22 @@ call_ =
                                                 ]
                                             ]
                                             (Type.namedWith
-                                                []
+                                                [ "Effect" ]
                                                 "Cmd"
                                                 [ Type.var "msg" ]
                                             )
                                       )
                                     ]
                                 , Type.namedWith
-                                    []
+                                    [ "Effect" ]
                                     "Effect"
                                     [ Type.var "pageMsg" ]
                                 ]
-                                (Type.namedWith [] "Cmd" [ Type.var "msg" ])
+                                (Type.namedWith
+                                    [ "Effect" ]
+                                    "Cmd"
+                                    [ Type.var "msg" ]
+                                )
                             )
                     }
                 )
@@ -512,9 +557,16 @@ call_ =
                         Just
                             (Type.function
                                 [ Type.function [ Type.var "a" ] (Type.var "b")
-                                , Type.namedWith [] "Effect" [ Type.var "a" ]
+                                , Type.namedWith
+                                    [ "Effect" ]
+                                    "Effect"
+                                    [ Type.var "a" ]
                                 ]
-                                (Type.namedWith [] "Effect" [ Type.var "b" ])
+                                (Type.namedWith
+                                    [ "Effect" ]
+                                    "Effect"
+                                    [ Type.var "b" ]
+                                )
                             )
                     }
                 )
@@ -528,8 +580,16 @@ call_ =
                     , annotation =
                         Just
                             (Type.function
-                                [ Type.namedWith [] "Cmd" [ Type.var "msg" ] ]
-                                (Type.namedWith [] "Effect" [ Type.var "msg" ])
+                                [ Type.namedWith
+                                    [ "Effect" ]
+                                    "Cmd"
+                                    [ Type.var "msg" ]
+                                ]
+                                (Type.namedWith
+                                    [ "Effect" ]
+                                    "Effect"
+                                    [ Type.var "msg" ]
+                                )
                             )
                     }
                 )
@@ -545,12 +605,16 @@ call_ =
                             (Type.function
                                 [ Type.list
                                     (Type.namedWith
-                                        []
+                                        [ "Effect" ]
                                         "Effect"
                                         [ Type.var "msg" ]
                                     )
                                 ]
-                                (Type.namedWith [] "Effect" [ Type.var "msg" ])
+                                (Type.namedWith
+                                    [ "Effect" ]
+                                    "Effect"
+                                    [ Type.var "msg" ]
+                                )
                             )
                     }
                 )
@@ -578,56 +642,71 @@ values_ =
                               , Type.function
                                     [ Type.record
                                         [ ( "data"
-                                          , Type.namedWith
-                                                []
-                                                "Maybe"
-                                                [ Type.namedWith
-                                                    []
+                                          , Type.maybe
+                                                (Type.namedWith
+                                                    [ "Effect" ]
                                                     "FormData"
                                                     []
-                                                ]
+                                                )
                                           )
                                         , ( "toMsg"
                                           , Type.function
                                                 [ Type.namedWith
-                                                    []
+                                                    [ "Result" ]
                                                     "Result"
                                                     [ Type.namedWith
                                                         [ "Http" ]
                                                         "Error"
                                                         []
-                                                    , Type.namedWith [] "Url" []
+                                                    , Type.namedWith
+                                                        [ "Url" ]
+                                                        "Url"
+                                                        []
                                                     ]
                                                 ]
                                                 (Type.var "pageMsg")
                                           )
                                         ]
                                     ]
-                                    (Type.namedWith [] "Cmd" [ Type.var "msg" ])
+                                    (Type.namedWith
+                                        [ "Effect" ]
+                                        "Cmd"
+                                        [ Type.var "msg" ]
+                                    )
                               )
                             , ( "submit"
                               , Type.function
                                     [ Type.record
                                         [ ( "values"
-                                          , Type.namedWith [] "FormData" []
+                                          , Type.namedWith
+                                                [ "Effect" ]
+                                                "FormData"
+                                                []
                                           )
                                         , ( "toMsg"
                                           , Type.function
                                                 [ Type.namedWith
-                                                    []
+                                                    [ "Result" ]
                                                     "Result"
                                                     [ Type.namedWith
                                                         [ "Http" ]
                                                         "Error"
                                                         []
-                                                    , Type.namedWith [] "Url" []
+                                                    , Type.namedWith
+                                                        [ "Url" ]
+                                                        "Url"
+                                                        []
                                                     ]
                                                 ]
                                                 (Type.var "pageMsg")
                                           )
                                         ]
                                     ]
-                                    (Type.namedWith [] "Cmd" [ Type.var "msg" ])
+                                    (Type.namedWith
+                                        [ "Effect" ]
+                                        "Cmd"
+                                        [ Type.var "msg" ]
+                                    )
                               )
                             , ( "runFetcher"
                               , Type.function
@@ -636,7 +715,11 @@ values_ =
                                         "Fetcher"
                                         [ Type.var "pageMsg" ]
                                     ]
-                                    (Type.namedWith [] "Cmd" [ Type.var "msg" ])
+                                    (Type.namedWith
+                                        [ "Effect" ]
+                                        "Cmd"
+                                        [ Type.var "msg" ]
+                                    )
                               )
                             , ( "fromPageMsg"
                               , Type.function
@@ -657,12 +740,19 @@ values_ =
                                         , ( "value", Type.string )
                                         ]
                                     ]
-                                    (Type.namedWith [] "Cmd" [ Type.var "msg" ])
+                                    (Type.namedWith
+                                        [ "Effect" ]
+                                        "Cmd"
+                                        [ Type.var "msg" ]
+                                    )
                               )
                             ]
-                        , Type.namedWith [] "Effect" [ Type.var "pageMsg" ]
+                        , Type.namedWith
+                            [ "Effect" ]
+                            "Effect"
+                            [ Type.var "pageMsg" ]
                         ]
-                        (Type.namedWith [] "Cmd" [ Type.var "msg" ])
+                        (Type.namedWith [ "Effect" ] "Cmd" [ Type.var "msg" ])
                     )
             }
     , map =
@@ -673,9 +763,9 @@ values_ =
                 Just
                     (Type.function
                         [ Type.function [ Type.var "a" ] (Type.var "b")
-                        , Type.namedWith [] "Effect" [ Type.var "a" ]
+                        , Type.namedWith [ "Effect" ] "Effect" [ Type.var "a" ]
                         ]
-                        (Type.namedWith [] "Effect" [ Type.var "b" ])
+                        (Type.namedWith [ "Effect" ] "Effect" [ Type.var "b" ])
                     )
             }
     , fromCmd =
@@ -685,8 +775,9 @@ values_ =
             , annotation =
                 Just
                     (Type.function
-                        [ Type.namedWith [] "Cmd" [ Type.var "msg" ] ]
-                        (Type.namedWith [] "Effect" [ Type.var "msg" ])
+                        [ Type.namedWith [ "Effect" ] "Cmd" [ Type.var "msg" ] ]
+                        (Type.namedWith [ "Effect" ] "Effect" [ Type.var "msg" ]
+                        )
                     )
             }
     , batch =
@@ -697,17 +788,21 @@ values_ =
                 Just
                     (Type.function
                         [ Type.list
-                            (Type.namedWith [] "Effect" [ Type.var "msg" ])
+                            (Type.namedWith
+                                [ "Effect" ]
+                                "Effect"
+                                [ Type.var "msg" ]
+                            )
                         ]
-                        (Type.namedWith [] "Effect" [ Type.var "msg" ])
+                        (Type.namedWith [ "Effect" ] "Effect" [ Type.var "msg" ]
+                        )
                     )
             }
     , none =
         Elm.value
             { importFrom = [ "Effect" ]
             , name = "none"
-            , annotation = Just (Type.namedWith [] "Effect" [ Type.var "msg" ])
+            , annotation =
+                Just (Type.namedWith [ "Effect" ] "Effect" [ Type.var "msg" ])
             }
     }
-
-

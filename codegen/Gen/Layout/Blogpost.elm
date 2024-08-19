@@ -1,7 +1,7 @@
 module Gen.Layout.Blogpost exposing (call_, moduleName_, values_, viewBlogpost, viewListItem, viewPostList)
 
 {-| 
-@docs values_, call_, viewBlogpost, viewListItem, viewPostList, moduleName_
+@docs moduleName_, viewPostList, viewListItem, viewBlogpost, call_, values_
 -}
 
 
@@ -15,7 +15,12 @@ moduleName_ =
     [ "Layout", "Blogpost" ]
 
 
-{-| viewPostList: List TagWithCount -> List Metadata -> Maybe TagWithCount -> List (Html msg) -}
+{-| viewPostList: 
+    List Content.Blogpost.TagWithCount
+    -> List Content.Blogpost.Metadata
+    -> Maybe Content.Blogpost.TagWithCount
+    -> List (Html.Html msg)
+-}
 viewPostList :
     List Elm.Expression
     -> List Elm.Expression
@@ -29,14 +34,28 @@ viewPostList viewPostListArg viewPostListArg0 viewPostListArg1 =
             , annotation =
                 Just
                     (Type.function
-                        [ Type.list (Type.namedWith [] "TagWithCount" [])
-                        , Type.list (Type.namedWith [] "Metadata" [])
-                        , Type.namedWith
-                            []
-                            "Maybe"
-                            [ Type.namedWith [] "TagWithCount" [] ]
+                        [ Type.list
+                            (Type.namedWith
+                                [ "Content", "Blogpost" ]
+                                "TagWithCount"
+                                []
+                            )
+                        , Type.list
+                            (Type.namedWith
+                                [ "Content", "Blogpost" ]
+                                "Metadata"
+                                []
+                            )
+                        , Type.maybe
+                            (Type.namedWith
+                                [ "Content", "Blogpost" ]
+                                "TagWithCount"
+                                []
+                            )
                         ]
-                        (Type.list (Type.namedWith [] "Html" [ Type.var "msg" ])
+                        (Type.list
+                            (Type.namedWith [ "Html" ] "Html" [ Type.var "msg" ]
+                            )
                         )
                     )
             }
@@ -47,7 +66,7 @@ viewPostList viewPostListArg viewPostListArg0 viewPostListArg1 =
         ]
 
 
-{-| viewListItem: Metadata -> Html.Html msg -}
+{-| viewListItem: Content.Blogpost.Metadata -> Html.Html msg -}
 viewListItem : Elm.Expression -> Elm.Expression
 viewListItem viewListItemArg =
     Elm.apply
@@ -57,7 +76,8 @@ viewListItem viewListItemArg =
             , annotation =
                 Just
                     (Type.function
-                        [ Type.namedWith [] "Metadata" [] ]
+                        [ Type.namedWith [ "Content", "Blogpost" ] "Metadata" []
+                        ]
                         (Type.namedWith [ "Html" ] "Html" [ Type.var "msg" ])
                     )
             }
@@ -65,7 +85,7 @@ viewListItem viewListItemArg =
         [ viewListItemArg ]
 
 
-{-| viewBlogpost: Blogpost -> Html msg -}
+{-| viewBlogpost: Content.Blogpost.Blogpost -> Html.Html msg -}
 viewBlogpost : Elm.Expression -> Elm.Expression
 viewBlogpost viewBlogpostArg =
     Elm.apply
@@ -75,8 +95,9 @@ viewBlogpost viewBlogpostArg =
             , annotation =
                 Just
                     (Type.function
-                        [ Type.namedWith [] "Blogpost" [] ]
-                        (Type.namedWith [] "Html" [ Type.var "msg" ])
+                        [ Type.namedWith [ "Content", "Blogpost" ] "Blogpost" []
+                        ]
+                        (Type.namedWith [ "Html" ] "Html" [ Type.var "msg" ])
                     )
             }
         )
@@ -100,15 +121,29 @@ call_ =
                         Just
                             (Type.function
                                 [ Type.list
-                                    (Type.namedWith [] "TagWithCount" [])
-                                , Type.list (Type.namedWith [] "Metadata" [])
-                                , Type.namedWith
-                                    []
-                                    "Maybe"
-                                    [ Type.namedWith [] "TagWithCount" [] ]
+                                    (Type.namedWith
+                                        [ "Content", "Blogpost" ]
+                                        "TagWithCount"
+                                        []
+                                    )
+                                , Type.list
+                                    (Type.namedWith
+                                        [ "Content", "Blogpost" ]
+                                        "Metadata"
+                                        []
+                                    )
+                                , Type.maybe
+                                    (Type.namedWith
+                                        [ "Content", "Blogpost" ]
+                                        "TagWithCount"
+                                        []
+                                    )
                                 ]
                                 (Type.list
-                                    (Type.namedWith [] "Html" [ Type.var "msg" ]
+                                    (Type.namedWith
+                                        [ "Html" ]
+                                        "Html"
+                                        [ Type.var "msg" ]
                                     )
                                 )
                             )
@@ -124,7 +159,11 @@ call_ =
                     , annotation =
                         Just
                             (Type.function
-                                [ Type.namedWith [] "Metadata" [] ]
+                                [ Type.namedWith
+                                    [ "Content", "Blogpost" ]
+                                    "Metadata"
+                                    []
+                                ]
                                 (Type.namedWith
                                     [ "Html" ]
                                     "Html"
@@ -143,8 +182,16 @@ call_ =
                     , annotation =
                         Just
                             (Type.function
-                                [ Type.namedWith [] "Blogpost" [] ]
-                                (Type.namedWith [] "Html" [ Type.var "msg" ])
+                                [ Type.namedWith
+                                    [ "Content", "Blogpost" ]
+                                    "Blogpost"
+                                    []
+                                ]
+                                (Type.namedWith
+                                    [ "Html" ]
+                                    "Html"
+                                    [ Type.var "msg" ]
+                                )
                             )
                     }
                 )
@@ -165,14 +212,28 @@ values_ =
             , annotation =
                 Just
                     (Type.function
-                        [ Type.list (Type.namedWith [] "TagWithCount" [])
-                        , Type.list (Type.namedWith [] "Metadata" [])
-                        , Type.namedWith
-                            []
-                            "Maybe"
-                            [ Type.namedWith [] "TagWithCount" [] ]
+                        [ Type.list
+                            (Type.namedWith
+                                [ "Content", "Blogpost" ]
+                                "TagWithCount"
+                                []
+                            )
+                        , Type.list
+                            (Type.namedWith
+                                [ "Content", "Blogpost" ]
+                                "Metadata"
+                                []
+                            )
+                        , Type.maybe
+                            (Type.namedWith
+                                [ "Content", "Blogpost" ]
+                                "TagWithCount"
+                                []
+                            )
                         ]
-                        (Type.list (Type.namedWith [] "Html" [ Type.var "msg" ])
+                        (Type.list
+                            (Type.namedWith [ "Html" ] "Html" [ Type.var "msg" ]
+                            )
                         )
                     )
             }
@@ -183,7 +244,8 @@ values_ =
             , annotation =
                 Just
                     (Type.function
-                        [ Type.namedWith [] "Metadata" [] ]
+                        [ Type.namedWith [ "Content", "Blogpost" ] "Metadata" []
+                        ]
                         (Type.namedWith [ "Html" ] "Html" [ Type.var "msg" ])
                     )
             }
@@ -194,10 +256,9 @@ values_ =
             , annotation =
                 Just
                     (Type.function
-                        [ Type.namedWith [] "Blogpost" [] ]
-                        (Type.namedWith [] "Html" [ Type.var "msg" ])
+                        [ Type.namedWith [ "Content", "Blogpost" ] "Blogpost" []
+                        ]
+                        (Type.namedWith [ "Html" ] "Html" [ Type.var "msg" ])
                     )
             }
     }
-
-

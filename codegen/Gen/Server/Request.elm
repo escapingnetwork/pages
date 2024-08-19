@@ -1,7 +1,7 @@
 module Gen.Server.Request exposing (annotation_, body, call_, caseOf_, cookie, cookies, formData, formDataWithServerValidation, header, headers, jsonBody, make_, matchesContentType, method, methodToString, moduleName_, queryParam, queryParams, rawFormData, rawUrl, requestTime, values_)
 
 {-| 
-@docs values_, call_, caseOf_, make_, annotation_, cookies, cookie, matchesContentType, queryParams, queryParam, rawUrl, rawFormData, formDataWithServerValidation, formData, jsonBody, body, methodToString, method, headers, header, requestTime, moduleName_
+@docs moduleName_, requestTime, header, headers, method, methodToString, body, jsonBody, formData, formDataWithServerValidation, rawFormData, rawUrl, queryParam, queryParams, matchesContentType, cookie, cookies, annotation_, make_, caseOf_, call_, values_
 -}
 
 
@@ -747,7 +747,7 @@ caseOf_ =
                 , Elm.Case.branch0 "Trace" methodTags.trace
                 , Elm.Case.branch1
                     "NonStandard"
-                    ( "string.String", Type.string )
+                    ( "stringString", Type.string )
                     methodTags.nonStandard
                 ]
     }
@@ -1448,5 +1448,3 @@ values_ =
                     )
             }
     }
-
-

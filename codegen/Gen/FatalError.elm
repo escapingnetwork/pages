@@ -1,7 +1,7 @@
 module Gen.FatalError exposing (annotation_, build, call_, fromString, moduleName_, recoverable, values_)
 
 {-| 
-@docs values_, call_, annotation_, recoverable, fromString, build, moduleName_
+@docs moduleName_, build, fromString, recoverable, annotation_, call_, values_
 -}
 
 
@@ -245,5 +245,3 @@ values_ =
                     )
             }
     }
-
-

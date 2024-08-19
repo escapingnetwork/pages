@@ -1,7 +1,7 @@
 module Gen.Css.Global exposing (a, adjacentSiblings, annotation_, article, aside, audio, blockquote, body, button, call_, canvas, caption, children, circle, class, code, col, colgroup, dd, descendants, details, div, dl, dt, each, ellipse, em, everything, fieldset, footer, form, generalSiblings, global, h1, h2, h3, h4, h5, h6, header, hr, html, i, id, img, input, label, legend, li, line, main_, media, mediaQuery, menu, moduleName_, nav, ol, optgroup, option, p, path, polygon, polyline, pre, progress, q, rect, section, select, selector, small, span, strong, summary, svg, table, tbody, td, textarea, tfoot, th, thead, time, tr, typeSelector, ul, values_, video, withAttribute, withClass)
 
 {-| 
-@docs values_, call_, annotation_, polygon, polyline, line, ellipse, circle, rect, path, svg, textarea, select, progress, option, optgroup, legend, label, input, form, fieldset, button, tr, thead, th, tfoot, td, tbody, table, colgroup, col, caption, canvas, video, audio, img, q, em, i, strong, span, small, code, a, blockquote, dd, dt, dl, pre, ul, p, ol, main_, li, hr, div, summary, details, time, aside, section, menu, nav, h6, h5, h4, h3, h2, h1, footer, header, article, body, html, typeSelector, withClass, withAttribute, each, generalSiblings, adjacentSiblings, descendants, children, mediaQuery, media, everything, selector, id, class, global, moduleName_
+@docs moduleName_, global, class, id, selector, everything, media, mediaQuery, children, descendants, adjacentSiblings, generalSiblings, each, withAttribute, withClass, typeSelector, html, body, article, header, footer, h1, h2, h3, h4, h5, h6, nav, menu, section, aside, time, details, summary, div, hr, li, main_, ol, p, ul, pre, dl, dt, dd, blockquote, a, code, small, span, strong, i, em, q, img, audio, video, canvas, caption, col, colgroup, table, tbody, td, tfoot, th, thead, tr, button, fieldset, form, input, label, legend, optgroup, option, progress, select, textarea, svg, path, rect, circle, ellipse, line, polyline, polygon, annotation_, call_, values_
 -}
 
 
@@ -5508,5 +5508,3 @@ values_ =
                     )
             }
     }
-
-

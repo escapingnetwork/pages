@@ -1,7 +1,7 @@
 module Gen.Head.Seo exposing (annotation_, article, audioPlayer, book, call_, make_, moduleName_, profile, song, summary, summaryLarge, values_, videoPlayer, website)
 
 {-| 
-@docs values_, call_, make_, annotation_, website, videoPlayer, summaryLarge, summary, song, profile, book, audioPlayer, article, moduleName_
+@docs moduleName_, article, audioPlayer, book, profile, song, summary, summaryLarge, videoPlayer, website, annotation_, make_, call_, values_
 -}
 
 
@@ -1247,5 +1247,3 @@ values_ =
                     )
             }
     }
-
-

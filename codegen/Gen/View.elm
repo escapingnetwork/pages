@@ -1,7 +1,7 @@
 module Gen.View exposing (annotation_, call_, make_, map, moduleName_, values_)
 
 {-| 
-@docs values_, call_, make_, annotation_, map, moduleName_
+@docs moduleName_, map, annotation_, make_, call_, values_
 -}
 
 
@@ -17,7 +17,7 @@ moduleName_ =
 
 {-| {-| -}
 
-map: (msg1 -> msg2) -> View msg1 -> View msg2
+map: (msg1 -> msg2) -> View.View msg1 -> View.View msg2
 -}
 map : (Elm.Expression -> Elm.Expression) -> Elm.Expression -> Elm.Expression
 map mapArg mapArg0 =
@@ -29,9 +29,9 @@ map mapArg mapArg0 =
                 Just
                     (Type.function
                         [ Type.function [ Type.var "msg1" ] (Type.var "msg2")
-                        , Type.namedWith [] "View" [ Type.var "msg1" ]
+                        , Type.namedWith [ "View" ] "View" [ Type.var "msg1" ]
                         ]
-                        (Type.namedWith [] "View" [ Type.var "msg2" ])
+                        (Type.namedWith [ "View" ] "View" [ Type.var "msg2" ])
                     )
             }
         )
@@ -49,7 +49,9 @@ annotation_ =
                 (Type.record
                     [ ( "title", Type.string )
                     , ( "body"
-                      , Type.list (Type.namedWith [] "Html" [ Type.var "msg" ])
+                      , Type.list
+                            (Type.namedWith [ "Html" ] "Html" [ Type.var "msg" ]
+                            )
                       )
                     ]
                 )
@@ -71,7 +73,11 @@ make_ =
                         [ ( "title", Type.string )
                         , ( "body"
                           , Type.list
-                                (Type.namedWith [] "Html" [ Type.var "msg" ])
+                                (Type.namedWith
+                                    [ "Html" ]
+                                    "Html"
+                                    [ Type.var "msg" ]
+                                )
                           )
                         ]
                     )
@@ -98,9 +104,16 @@ call_ =
                                 [ Type.function
                                     [ Type.var "msg1" ]
                                     (Type.var "msg2")
-                                , Type.namedWith [] "View" [ Type.var "msg1" ]
+                                , Type.namedWith
+                                    [ "View" ]
+                                    "View"
+                                    [ Type.var "msg1" ]
                                 ]
-                                (Type.namedWith [] "View" [ Type.var "msg2" ])
+                                (Type.namedWith
+                                    [ "View" ]
+                                    "View"
+                                    [ Type.var "msg2" ]
+                                )
                             )
                     }
                 )
@@ -118,11 +131,9 @@ values_ =
                 Just
                     (Type.function
                         [ Type.function [ Type.var "msg1" ] (Type.var "msg2")
-                        , Type.namedWith [] "View" [ Type.var "msg1" ]
+                        , Type.namedWith [ "View" ] "View" [ Type.var "msg1" ]
                         ]
-                        (Type.namedWith [] "View" [ Type.var "msg2" ])
+                        (Type.namedWith [ "View" ] "View" [ Type.var "msg2" ])
                     )
             }
     }
-
-

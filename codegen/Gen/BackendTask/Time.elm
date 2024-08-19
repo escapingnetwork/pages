@@ -1,7 +1,7 @@
 module Gen.BackendTask.Time exposing (moduleName_, now, values_)
 
 {-| 
-@docs values_, now, moduleName_
+@docs moduleName_, now, values_
 -}
 
 
@@ -69,5 +69,3 @@ values_ =
                     )
             }
     }
-
-

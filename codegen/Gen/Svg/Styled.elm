@@ -1,7 +1,7 @@
 module Gen.Svg.Styled exposing (a, altGlyph, altGlyphDef, altGlyphItem, animate, animateColor, animateMotion, animateTransform, annotation_, call_, circle, clipPath, colorProfile, cursor, defs, desc, ellipse, feBlend, feColorMatrix, feComponentTransfer, feComposite, feConvolveMatrix, feDiffuseLighting, feDisplacementMap, feDistantLight, feFlood, feFuncA, feFuncB, feFuncG, feFuncR, feGaussianBlur, feImage, feMerge, feMergeNode, feMorphology, feOffset, fePointLight, feSpecularLighting, feSpotLight, feTile, feTurbulence, filter, font, foreignObject, fromUnstyled, g, glyph, glyphRef, image, line, linearGradient, map, marker, mask, metadata, moduleName_, mpath, node, path, pattern, polygon, polyline, radialGradient, rect, set, stop, style, styled, svg, switch, symbol, text, textPath, text_, title, toNonceUnstyled, toUnstyled, tref, tspan, use, values_, view)
 
 {-| 
-@docs values_, call_, annotation_, view, style, filter, cursor, colorProfile, clipPath, feSpotLight, fePointLight, feDistantLight, feTurbulence, feTile, feSpecularLighting, feOffset, feMorphology, feMergeNode, feMerge, feImage, feGaussianBlur, feFuncR, feFuncG, feFuncB, feFuncA, feFlood, feDisplacementMap, feDiffuseLighting, feConvolveMatrix, feComposite, feComponentTransfer, feColorMatrix, feBlend, stop, radialGradient, linearGradient, font, tspan, tref, text_, textPath, glyphRef, glyph, altGlyphItem, altGlyphDef, altGlyph, symbol, switch, pattern, mask, marker, g, defs, a, title, metadata, desc, set, mpath, animateTransform, animateMotion, animateColor, animate, use, rect, polyline, polygon, path, line, image, ellipse, circle, foreignObject, svg, map, node, text, toNonceUnstyled, toUnstyled, fromUnstyled, styled, moduleName_
+@docs moduleName_, styled, fromUnstyled, toUnstyled, toNonceUnstyled, text, node, map, svg, foreignObject, circle, ellipse, image, line, path, polygon, polyline, rect, use, animate, animateColor, animateMotion, animateTransform, mpath, set, desc, metadata, title, a, defs, g, marker, mask, pattern, switch, symbol, altGlyph, altGlyphDef, altGlyphItem, glyph, glyphRef, textPath, text_, tref, tspan, font, linearGradient, radialGradient, stop, feBlend, feColorMatrix, feComponentTransfer, feComposite, feConvolveMatrix, feDiffuseLighting, feDisplacementMap, feFlood, feFuncA, feFuncB, feFuncG, feFuncR, feGaussianBlur, feImage, feMerge, feMergeNode, feMorphology, feOffset, feSpecularLighting, feTile, feTurbulence, feDistantLight, fePointLight, feSpotLight, clipPath, colorProfile, cursor, filter, style, view, annotation_, call_, values_
 -}
 
 
@@ -7694,5 +7694,3 @@ values_ =
                     )
             }
     }
-
-

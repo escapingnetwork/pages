@@ -1,7 +1,7 @@
 module Gen.BackendTask.Http exposing (annotation_, bytesBody, call_, caseOf_, emptyBody, expectBytes, expectJson, expectString, expectWhatever, get, getJson, getWithOptions, jsonBody, make_, moduleName_, post, request, stringBody, values_, withMetadata)
 
 {-| 
-@docs values_, call_, caseOf_, make_, annotation_, withMetadata, getWithOptions, bytesBody, jsonBody, stringBody, emptyBody, request, expectWhatever, expectBytes, expectJson, expectString, post, getJson, get, moduleName_
+@docs moduleName_, get, getJson, post, expectString, expectJson, expectBytes, expectWhatever, request, emptyBody, stringBody, jsonBody, bytesBody, getWithOptions, withMetadata, annotation_, make_, caseOf_, call_, values_
 -}
 
 
@@ -808,24 +808,24 @@ caseOf_ =
                 (Type.namedWith [ "BackendTask", "Http" ] "Error" [])
                 [ Elm.Case.branch1
                     "BadUrl"
-                    ( "string.String", Type.string )
+                    ( "stringString", Type.string )
                     errorTags.badUrl
                 , Elm.Case.branch0 "Timeout" errorTags.timeout
                 , Elm.Case.branch0 "NetworkError" errorTags.networkError
                 , Elm.Case.branch2
                     "BadStatus"
-                    ( "backendTask.Http.Metadata"
+                    ( "backendTaskHttpMetadata"
                     , Type.namedWith [ "BackendTask", "Http" ] "Metadata" []
                     )
-                    ( "string.String", Type.string )
+                    ( "stringString", Type.string )
                     errorTags.badStatus
                 , Elm.Case.branch2
                     "BadBody"
-                    ( "maybe.Maybe"
+                    ( "maybeMaybe"
                     , Type.maybe
                         (Type.namedWith [ "Json", "Decode" ] "Error" [])
                     )
-                    ( "string.String", Type.string )
+                    ( "stringString", Type.string )
                     errorTags.badBody
                 ]
     , cacheStrategy =
@@ -1612,5 +1612,3 @@ values_ =
                     )
             }
     }
-
-

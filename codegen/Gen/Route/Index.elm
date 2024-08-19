@@ -1,7 +1,7 @@
 module Gen.Route.Index exposing (annotation_, make_, moduleName_, route, values_)
 
 {-| 
-@docs values_, make_, annotation_, route, moduleName_
+@docs moduleName_, route, annotation_, make_, values_
 -}
 
 
@@ -15,7 +15,7 @@ moduleName_ =
     [ "Route", "Index" ]
 
 
-{-| route: StatelessRoute RouteParams Data ActionData -}
+{-| route: RouteBuilder.StatelessRoute Route.Index.RouteParams Route.Index.Data Route.Index.ActionData -}
 route : Elm.Expression
 route =
     Elm.value
@@ -24,11 +24,11 @@ route =
         , annotation =
             Just
                 (Type.namedWith
-                    []
+                    [ "RouteBuilder" ]
                     "StatelessRoute"
-                    [ Type.namedWith [] "RouteParams" []
-                    , Type.namedWith [] "Data" []
-                    , Type.namedWith [] "ActionData" []
+                    [ Type.namedWith [ "Route", "Index" ] "RouteParams" []
+                    , Type.namedWith [ "Route", "Index" ] "Data" []
+                    , Type.namedWith [ "Route", "Index" ] "ActionData" []
                     ]
                 )
         }
@@ -50,7 +50,8 @@ annotation_ =
             []
             (Type.record
                 [ ( "blogpostMetadata"
-                  , Type.list (Type.namedWith [] "Metadata" [])
+                  , Type.list
+                        (Type.namedWith [ "Content", "Blogpost" ] "Metadata" [])
                   )
                 ]
             )
@@ -86,7 +87,12 @@ make_ =
                     []
                     (Type.record
                         [ ( "blogpostMetadata"
-                          , Type.list (Type.namedWith [] "Metadata" [])
+                          , Type.list
+                                (Type.namedWith
+                                    [ "Content", "Blogpost" ]
+                                    "Metadata"
+                                    []
+                                )
                           )
                         ]
                     )
@@ -121,14 +127,12 @@ values_ =
             , annotation =
                 Just
                     (Type.namedWith
-                        []
+                        [ "RouteBuilder" ]
                         "StatelessRoute"
-                        [ Type.namedWith [] "RouteParams" []
-                        , Type.namedWith [] "Data" []
-                        , Type.namedWith [] "ActionData" []
+                        [ Type.namedWith [ "Route", "Index" ] "RouteParams" []
+                        , Type.namedWith [ "Route", "Index" ] "Data" []
+                        , Type.namedWith [ "Route", "Index" ] "ActionData" []
                         ]
                     )
             }
     }
-
-

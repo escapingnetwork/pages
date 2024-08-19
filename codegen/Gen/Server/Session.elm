@@ -1,7 +1,7 @@
 module Gen.Server.Session exposing (annotation_, call_, caseOf_, empty, get, insert, make_, moduleName_, remove, update, values_, withFlash, withSession, withSessionResult)
 
 {-| 
-@docs values_, call_, caseOf_, make_, annotation_, withFlash, update, remove, insert, get, empty, withSessionResult, withSession, moduleName_
+@docs moduleName_, withSession, withSessionResult, empty, get, insert, remove, update, withFlash, annotation_, make_, caseOf_, call_, values_
 -}
 
 
@@ -958,5 +958,3 @@ values_ =
                     )
             }
     }
-
-

@@ -1,7 +1,7 @@
 module Gen.Content.Services exposing (allServices, annotation_, call_, make_, moduleName_, serviceFromSlug, values_)
 
 {-| 
-@docs values_, call_, make_, annotation_, allServices, serviceFromSlug, moduleName_
+@docs moduleName_, serviceFromSlug, allServices, annotation_, make_, call_, values_
 -}
 
 
@@ -15,7 +15,7 @@ moduleName_ =
     [ "Content", "Services" ]
 
 
-{-| serviceFromSlug: String -> BackendTask FatalError Service -}
+{-| serviceFromSlug: String -> BackendTask.BackendTask FatalError.FatalError Content.Services.Service -}
 serviceFromSlug : String -> Elm.Expression
 serviceFromSlug serviceFromSlugArg =
     Elm.apply
@@ -27,10 +27,13 @@ serviceFromSlug serviceFromSlugArg =
                     (Type.function
                         [ Type.string ]
                         (Type.namedWith
-                            []
+                            [ "BackendTask" ]
                             "BackendTask"
-                            [ Type.namedWith [] "FatalError" []
-                            , Type.namedWith [] "Service" []
+                            [ Type.namedWith [ "FatalError" ] "FatalError" []
+                            , Type.namedWith
+                                [ "Content", "Services" ]
+                                "Service"
+                                []
                             ]
                         )
                     )
@@ -39,7 +42,7 @@ serviceFromSlug serviceFromSlugArg =
         [ Elm.string serviceFromSlugArg ]
 
 
-{-| allServices: BackendTask FatalError (List Service) -}
+{-| allServices: BackendTask.BackendTask FatalError.FatalError (List Content.Services.Service) -}
 allServices : Elm.Expression
 allServices =
     Elm.value
@@ -48,10 +51,11 @@ allServices =
         , annotation =
             Just
                 (Type.namedWith
-                    []
+                    [ "BackendTask" ]
                     "BackendTask"
-                    [ Type.namedWith [] "FatalError" []
-                    , Type.list (Type.namedWith [] "Service" [])
+                    [ Type.namedWith [ "FatalError" ] "FatalError" []
+                    , Type.list
+                        (Type.namedWith [ "Content", "Services" ] "Service" [])
                     ]
                 )
         }
@@ -67,8 +71,8 @@ annotation_ =
             (Type.record
                 [ ( "title", Type.string )
                 , ( "slug", Type.string )
-                , ( "image", Type.namedWith [] "Maybe" [ Type.string ] )
-                , ( "description", Type.namedWith [] "Maybe" [ Type.string ] )
+                , ( "image", Type.maybe Type.string )
+                , ( "description", Type.maybe Type.string )
                 ]
             )
     , service =
@@ -77,19 +81,17 @@ annotation_ =
             "Service"
             []
             (Type.record
-                [ ( "service", Type.namedWith [] "Metadata" [] )
+                [ ( "service"
+                  , Type.namedWith [ "Content", "Services" ] "Metadata" []
+                  )
                 , ( "body", Type.string )
                 , ( "previousService"
-                  , Type.namedWith
-                        []
-                        "Maybe"
-                        [ Type.namedWith [] "Metadata" [] ]
+                  , Type.maybe
+                        (Type.namedWith [ "Content", "Services" ] "Metadata" [])
                   )
                 , ( "nextService"
-                  , Type.namedWith
-                        []
-                        "Maybe"
-                        [ Type.namedWith [] "Metadata" [] ]
+                  , Type.maybe
+                        (Type.namedWith [ "Content", "Services" ] "Metadata" [])
                   )
                 ]
             )
@@ -123,10 +125,8 @@ make_ =
                     (Type.record
                         [ ( "title", Type.string )
                         , ( "slug", Type.string )
-                        , ( "image", Type.namedWith [] "Maybe" [ Type.string ] )
-                        , ( "description"
-                          , Type.namedWith [] "Maybe" [ Type.string ]
-                          )
+                        , ( "image", Type.maybe Type.string )
+                        , ( "description", Type.maybe Type.string )
                         ]
                     )
                 )
@@ -145,19 +145,28 @@ make_ =
                     "Service"
                     []
                     (Type.record
-                        [ ( "service", Type.namedWith [] "Metadata" [] )
+                        [ ( "service"
+                          , Type.namedWith
+                                [ "Content", "Services" ]
+                                "Metadata"
+                                []
+                          )
                         , ( "body", Type.string )
                         , ( "previousService"
-                          , Type.namedWith
-                                []
-                                "Maybe"
-                                [ Type.namedWith [] "Metadata" [] ]
+                          , Type.maybe
+                                (Type.namedWith
+                                    [ "Content", "Services" ]
+                                    "Metadata"
+                                    []
+                                )
                           )
                         , ( "nextService"
-                          , Type.namedWith
-                                []
-                                "Maybe"
-                                [ Type.namedWith [] "Metadata" [] ]
+                          , Type.maybe
+                                (Type.namedWith
+                                    [ "Content", "Services" ]
+                                    "Metadata"
+                                    []
+                                )
                           )
                         ]
                     )
@@ -185,10 +194,16 @@ call_ =
                             (Type.function
                                 [ Type.string ]
                                 (Type.namedWith
-                                    []
+                                    [ "BackendTask" ]
                                     "BackendTask"
-                                    [ Type.namedWith [] "FatalError" []
-                                    , Type.namedWith [] "Service" []
+                                    [ Type.namedWith
+                                        [ "FatalError" ]
+                                        "FatalError"
+                                        []
+                                    , Type.namedWith
+                                        [ "Content", "Services" ]
+                                        "Service"
+                                        []
                                     ]
                                 )
                             )
@@ -209,10 +224,13 @@ values_ =
                     (Type.function
                         [ Type.string ]
                         (Type.namedWith
-                            []
+                            [ "BackendTask" ]
                             "BackendTask"
-                            [ Type.namedWith [] "FatalError" []
-                            , Type.namedWith [] "Service" []
+                            [ Type.namedWith [ "FatalError" ] "FatalError" []
+                            , Type.namedWith
+                                [ "Content", "Services" ]
+                                "Service"
+                                []
                             ]
                         )
                     )
@@ -224,13 +242,16 @@ values_ =
             , annotation =
                 Just
                     (Type.namedWith
-                        []
+                        [ "BackendTask" ]
                         "BackendTask"
-                        [ Type.namedWith [] "FatalError" []
-                        , Type.list (Type.namedWith [] "Service" [])
+                        [ Type.namedWith [ "FatalError" ] "FatalError" []
+                        , Type.list
+                            (Type.namedWith
+                                [ "Content", "Services" ]
+                                "Service"
+                                []
+                            )
                         ]
                     )
             }
     }
-
-

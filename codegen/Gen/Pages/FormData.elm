@@ -1,7 +1,7 @@
 module Gen.Pages.FormData exposing (annotation_, make_, moduleName_)
 
 {-| 
-@docs make_, annotation_, moduleName_
+@docs moduleName_, annotation_, make_
 -}
 
 
@@ -67,5 +67,3 @@ make_ =
                     ]
                 )
     }
-
-

@@ -1,7 +1,7 @@
 module Gen.ErrorPage exposing (annotation_, call_, caseOf_, init, internalError, make_, moduleName_, notFound, statusCode, update, values_, view)
 
 {-| 
-@docs values_, call_, caseOf_, make_, annotation_, init, update, notFound, internalError, view, statusCode, moduleName_
+@docs moduleName_, statusCode, view, internalError, notFound, update, init, annotation_, make_, caseOf_, call_, values_
 -}
 
 
@@ -16,7 +16,7 @@ moduleName_ =
     [ "ErrorPage" ]
 
 
-{-| statusCode: ErrorPage -> number -}
+{-| statusCode: ErrorPage.ErrorPage -> number -}
 statusCode : Elm.Expression -> Elm.Expression
 statusCode statusCodeArg =
     Elm.apply
@@ -26,7 +26,7 @@ statusCode statusCodeArg =
             , annotation =
                 Just
                     (Type.function
-                        [ Type.namedWith [] "ErrorPage" [] ]
+                        [ Type.namedWith [ "ErrorPage" ] "ErrorPage" [] ]
                         (Type.var "number")
                     )
             }
@@ -34,7 +34,7 @@ statusCode statusCodeArg =
         [ statusCodeArg ]
 
 
-{-| view: ErrorPage -> Model -> View Msg -}
+{-| view: ErrorPage.ErrorPage -> ErrorPage.Model -> View.View ErrorPage.Msg -}
 view : Elm.Expression -> Elm.Expression -> Elm.Expression
 view viewArg viewArg0 =
     Elm.apply
@@ -44,10 +44,13 @@ view viewArg viewArg0 =
             , annotation =
                 Just
                     (Type.function
-                        [ Type.namedWith [] "ErrorPage" []
-                        , Type.namedWith [] "Model" []
+                        [ Type.namedWith [ "ErrorPage" ] "ErrorPage" []
+                        , Type.namedWith [ "ErrorPage" ] "Model" []
                         ]
-                        (Type.namedWith [] "View" [ Type.namedWith [] "Msg" [] ]
+                        (Type.namedWith
+                            [ "View" ]
+                            "View"
+                            [ Type.namedWith [ "ErrorPage" ] "Msg" [] ]
                         )
                     )
             }
@@ -55,7 +58,7 @@ view viewArg viewArg0 =
         [ viewArg, viewArg0 ]
 
 
-{-| internalError: String -> ErrorPage -}
+{-| internalError: String -> ErrorPage.ErrorPage -}
 internalError : String -> Elm.Expression
 internalError internalErrorArg =
     Elm.apply
@@ -66,24 +69,29 @@ internalError internalErrorArg =
                 Just
                     (Type.function
                         [ Type.string ]
-                        (Type.namedWith [] "ErrorPage" [])
+                        (Type.namedWith [ "ErrorPage" ] "ErrorPage" [])
                     )
             }
         )
         [ Elm.string internalErrorArg ]
 
 
-{-| notFound: ErrorPage -}
+{-| notFound: ErrorPage.ErrorPage -}
 notFound : Elm.Expression
 notFound =
     Elm.value
         { importFrom = [ "ErrorPage" ]
         , name = "notFound"
-        , annotation = Just (Type.namedWith [] "ErrorPage" [])
+        , annotation = Just (Type.namedWith [ "ErrorPage" ] "ErrorPage" [])
         }
 
 
-{-| update: ErrorPage -> Msg -> Model -> ( Model, Effect Msg ) -}
+{-| update: 
+    ErrorPage.ErrorPage
+    -> ErrorPage.Msg
+    -> ErrorPage.Model
+    -> ( ErrorPage.Model, Effect.Effect ErrorPage.Msg )
+-}
 update : Elm.Expression -> Elm.Expression -> Elm.Expression -> Elm.Expression
 update updateArg updateArg0 updateArg1 =
     Elm.apply
@@ -93,16 +101,16 @@ update updateArg updateArg0 updateArg1 =
             , annotation =
                 Just
                     (Type.function
-                        [ Type.namedWith [] "ErrorPage" []
-                        , Type.namedWith [] "Msg" []
-                        , Type.namedWith [] "Model" []
+                        [ Type.namedWith [ "ErrorPage" ] "ErrorPage" []
+                        , Type.namedWith [ "ErrorPage" ] "Msg" []
+                        , Type.namedWith [ "ErrorPage" ] "Model" []
                         ]
                         (Type.tuple
-                            (Type.namedWith [] "Model" [])
+                            (Type.namedWith [ "ErrorPage" ] "Model" [])
                             (Type.namedWith
-                                []
+                                [ "Effect" ]
                                 "Effect"
-                                [ Type.namedWith [] "Msg" [] ]
+                                [ Type.namedWith [ "ErrorPage" ] "Msg" [] ]
                             )
                         )
                     )
@@ -111,7 +119,7 @@ update updateArg updateArg0 updateArg1 =
         [ updateArg, updateArg0, updateArg1 ]
 
 
-{-| init: ErrorPage -> ( Model, Effect Msg ) -}
+{-| init: ErrorPage.ErrorPage -> ( ErrorPage.Model, Effect.Effect ErrorPage.Msg ) -}
 init : Elm.Expression -> Elm.Expression
 init initArg =
     Elm.apply
@@ -121,13 +129,13 @@ init initArg =
             , annotation =
                 Just
                     (Type.function
-                        [ Type.namedWith [] "ErrorPage" [] ]
+                        [ Type.namedWith [ "ErrorPage" ] "ErrorPage" [] ]
                         (Type.tuple
-                            (Type.namedWith [] "Model" [])
+                            (Type.namedWith [ "ErrorPage" ] "Model" [])
                             (Type.namedWith
-                                []
+                                [ "Effect" ]
                                 "Effect"
-                                [ Type.namedWith [] "Msg" [] ]
+                                [ Type.namedWith [ "ErrorPage" ] "Msg" [] ]
                             )
                         )
                     )
@@ -196,7 +204,7 @@ caseOf_ =
                 [ Elm.Case.branch0 "NotFound" errorPageTags.notFound
                 , Elm.Case.branch1
                     "InternalError"
-                    ( "string.String", Type.string )
+                    ( "stringString", Type.string )
                     errorPageTags.internalError
                 ]
     }
@@ -220,7 +228,8 @@ call_ =
                     , annotation =
                         Just
                             (Type.function
-                                [ Type.namedWith [] "ErrorPage" [] ]
+                                [ Type.namedWith [ "ErrorPage" ] "ErrorPage" []
+                                ]
                                 (Type.var "number")
                             )
                     }
@@ -235,13 +244,13 @@ call_ =
                     , annotation =
                         Just
                             (Type.function
-                                [ Type.namedWith [] "ErrorPage" []
-                                , Type.namedWith [] "Model" []
+                                [ Type.namedWith [ "ErrorPage" ] "ErrorPage" []
+                                , Type.namedWith [ "ErrorPage" ] "Model" []
                                 ]
                                 (Type.namedWith
-                                    []
+                                    [ "View" ]
                                     "View"
-                                    [ Type.namedWith [] "Msg" [] ]
+                                    [ Type.namedWith [ "ErrorPage" ] "Msg" [] ]
                                 )
                             )
                     }
@@ -257,7 +266,7 @@ call_ =
                         Just
                             (Type.function
                                 [ Type.string ]
-                                (Type.namedWith [] "ErrorPage" [])
+                                (Type.namedWith [ "ErrorPage" ] "ErrorPage" [])
                             )
                     }
                 )
@@ -271,16 +280,20 @@ call_ =
                     , annotation =
                         Just
                             (Type.function
-                                [ Type.namedWith [] "ErrorPage" []
-                                , Type.namedWith [] "Msg" []
-                                , Type.namedWith [] "Model" []
+                                [ Type.namedWith [ "ErrorPage" ] "ErrorPage" []
+                                , Type.namedWith [ "ErrorPage" ] "Msg" []
+                                , Type.namedWith [ "ErrorPage" ] "Model" []
                                 ]
                                 (Type.tuple
-                                    (Type.namedWith [] "Model" [])
+                                    (Type.namedWith [ "ErrorPage" ] "Model" [])
                                     (Type.namedWith
-                                        []
+                                        [ "Effect" ]
                                         "Effect"
-                                        [ Type.namedWith [] "Msg" [] ]
+                                        [ Type.namedWith
+                                            [ "ErrorPage" ]
+                                            "Msg"
+                                            []
+                                        ]
                                     )
                                 )
                             )
@@ -296,13 +309,18 @@ call_ =
                     , annotation =
                         Just
                             (Type.function
-                                [ Type.namedWith [] "ErrorPage" [] ]
+                                [ Type.namedWith [ "ErrorPage" ] "ErrorPage" []
+                                ]
                                 (Type.tuple
-                                    (Type.namedWith [] "Model" [])
+                                    (Type.namedWith [ "ErrorPage" ] "Model" [])
                                     (Type.namedWith
-                                        []
+                                        [ "Effect" ]
                                         "Effect"
-                                        [ Type.namedWith [] "Msg" [] ]
+                                        [ Type.namedWith
+                                            [ "ErrorPage" ]
+                                            "Msg"
+                                            []
+                                        ]
                                     )
                                 )
                             )
@@ -328,7 +346,7 @@ values_ =
             , annotation =
                 Just
                     (Type.function
-                        [ Type.namedWith [] "ErrorPage" [] ]
+                        [ Type.namedWith [ "ErrorPage" ] "ErrorPage" [] ]
                         (Type.var "number")
                     )
             }
@@ -339,10 +357,13 @@ values_ =
             , annotation =
                 Just
                     (Type.function
-                        [ Type.namedWith [] "ErrorPage" []
-                        , Type.namedWith [] "Model" []
+                        [ Type.namedWith [ "ErrorPage" ] "ErrorPage" []
+                        , Type.namedWith [ "ErrorPage" ] "Model" []
                         ]
-                        (Type.namedWith [] "View" [ Type.namedWith [] "Msg" [] ]
+                        (Type.namedWith
+                            [ "View" ]
+                            "View"
+                            [ Type.namedWith [ "ErrorPage" ] "Msg" [] ]
                         )
                     )
             }
@@ -354,14 +375,14 @@ values_ =
                 Just
                     (Type.function
                         [ Type.string ]
-                        (Type.namedWith [] "ErrorPage" [])
+                        (Type.namedWith [ "ErrorPage" ] "ErrorPage" [])
                     )
             }
     , notFound =
         Elm.value
             { importFrom = [ "ErrorPage" ]
             , name = "notFound"
-            , annotation = Just (Type.namedWith [] "ErrorPage" [])
+            , annotation = Just (Type.namedWith [ "ErrorPage" ] "ErrorPage" [])
             }
     , update =
         Elm.value
@@ -370,16 +391,16 @@ values_ =
             , annotation =
                 Just
                     (Type.function
-                        [ Type.namedWith [] "ErrorPage" []
-                        , Type.namedWith [] "Msg" []
-                        , Type.namedWith [] "Model" []
+                        [ Type.namedWith [ "ErrorPage" ] "ErrorPage" []
+                        , Type.namedWith [ "ErrorPage" ] "Msg" []
+                        , Type.namedWith [ "ErrorPage" ] "Model" []
                         ]
                         (Type.tuple
-                            (Type.namedWith [] "Model" [])
+                            (Type.namedWith [ "ErrorPage" ] "Model" [])
                             (Type.namedWith
-                                []
+                                [ "Effect" ]
                                 "Effect"
-                                [ Type.namedWith [] "Msg" [] ]
+                                [ Type.namedWith [ "ErrorPage" ] "Msg" [] ]
                             )
                         )
                     )
@@ -391,17 +412,15 @@ values_ =
             , annotation =
                 Just
                     (Type.function
-                        [ Type.namedWith [] "ErrorPage" [] ]
+                        [ Type.namedWith [ "ErrorPage" ] "ErrorPage" [] ]
                         (Type.tuple
-                            (Type.namedWith [] "Model" [])
+                            (Type.namedWith [ "ErrorPage" ] "Model" [])
                             (Type.namedWith
-                                []
+                                [ "Effect" ]
                                 "Effect"
-                                [ Type.namedWith [] "Msg" [] ]
+                                [ Type.namedWith [ "ErrorPage" ] "Msg" [] ]
                             )
                         )
                     )
             }
     }
-
-

@@ -1,7 +1,7 @@
 module Gen.Pages.PageUrl exposing (annotation_, call_, make_, moduleName_, parseQueryParams, toUrl, values_)
 
 {-| 
-@docs values_, call_, make_, annotation_, parseQueryParams, toUrl, moduleName_
+@docs moduleName_, toUrl, parseQueryParams, annotation_, make_, call_, values_
 -}
 
 
@@ -200,5 +200,3 @@ values_ =
                     )
             }
     }
-
-

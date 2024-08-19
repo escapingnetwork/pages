@@ -1,7 +1,7 @@
 module Gen.Head exposing (annotation_, appleTouchIcon, call_, canonicalLink, currentPageFullUrl, icon, manifestLink, metaName, metaProperty, metaRedirect, moduleName_, nonLoadingNode, raw, rootLanguage, rssLink, sitemapLink, structuredData, toJson, urlAttribute, values_)
 
 {-| 
-@docs values_, call_, annotation_, canonicalLink, toJson, icon, appleTouchIcon, raw, urlAttribute, currentPageFullUrl, structuredData, nonLoadingNode, manifestLink, rootLanguage, sitemapLink, rssLink, metaRedirect, metaProperty, metaName, moduleName_
+@docs moduleName_, metaName, metaProperty, metaRedirect, rssLink, sitemapLink, rootLanguage, manifestLink, nonLoadingNode, structuredData, currentPageFullUrl, urlAttribute, raw, appleTouchIcon, icon, toJson, canonicalLink, annotation_, call_, values_
 -}
 
 
@@ -1017,5 +1017,3 @@ values_ =
                     )
             }
     }
-
-

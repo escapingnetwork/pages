@@ -1,7 +1,7 @@
 module Gen.Route.PrivacyPolicy exposing (annotation_, make_, moduleName_, route, values_)
 
 {-| 
-@docs values_, make_, annotation_, route, moduleName_
+@docs moduleName_, route, annotation_, make_, values_
 -}
 
 
@@ -15,7 +15,7 @@ moduleName_ =
     [ "Route", "PrivacyPolicy" ]
 
 
-{-| route: StatelessRoute RouteParams Data ActionData -}
+{-| route: RouteBuilder.StatelessRoute Route.PrivacyPolicy.RouteParams Route.PrivacyPolicy.Data Route.PrivacyPolicy.ActionData -}
 route : Elm.Expression
 route =
     Elm.value
@@ -24,11 +24,17 @@ route =
         , annotation =
             Just
                 (Type.namedWith
-                    []
+                    [ "RouteBuilder" ]
                     "StatelessRoute"
-                    [ Type.namedWith [] "RouteParams" []
-                    , Type.namedWith [] "Data" []
-                    , Type.namedWith [] "ActionData" []
+                    [ Type.namedWith
+                        [ "Route", "PrivacyPolicy" ]
+                        "RouteParams"
+                        []
+                    , Type.namedWith [ "Route", "PrivacyPolicy" ] "Data" []
+                    , Type.namedWith
+                        [ "Route", "PrivacyPolicy" ]
+                        "ActionData"
+                        []
                     ]
                 )
         }
@@ -49,7 +55,9 @@ annotation_ =
             "Data"
             []
             (Type.record
-                [ ( "legal", Type.namedWith [ "Content", "Legals" ] "Legal" [] )
+                [ ( "minimal"
+                  , Type.namedWith [ "Content", "Minimal" ] "Minimal" []
+                  )
                 ]
             )
     , routeParams = Type.alias moduleName_ "RouteParams" [] (Type.record [])
@@ -60,7 +68,7 @@ annotation_ =
 
 make_ :
     { actionData : actionData -> Elm.Expression
-    , data : { legal : Elm.Expression } -> Elm.Expression
+    , data : { minimal : Elm.Expression } -> Elm.Expression
     , routeParams : routeParams -> Elm.Expression
     , model : model -> Elm.Expression
     }
@@ -83,13 +91,13 @@ make_ =
                     "Data"
                     []
                     (Type.record
-                        [ ( "legal"
-                          , Type.namedWith [ "Content", "Legals" ] "Legal" []
+                        [ ( "minimal"
+                          , Type.namedWith [ "Content", "Minimal" ] "Minimal" []
                           )
                         ]
                     )
                 )
-                (Elm.record [ Tuple.pair "legal" data_args.legal ])
+                (Elm.record [ Tuple.pair "minimal" data_args.minimal ])
     , routeParams =
         \routeParams_args ->
             Elm.withType
@@ -122,14 +130,18 @@ values_ =
             , annotation =
                 Just
                     (Type.namedWith
-                        []
+                        [ "RouteBuilder" ]
                         "StatelessRoute"
-                        [ Type.namedWith [] "RouteParams" []
-                        , Type.namedWith [] "Data" []
-                        , Type.namedWith [] "ActionData" []
+                        [ Type.namedWith
+                            [ "Route", "PrivacyPolicy" ]
+                            "RouteParams"
+                            []
+                        , Type.namedWith [ "Route", "PrivacyPolicy" ] "Data" []
+                        , Type.namedWith
+                            [ "Route", "PrivacyPolicy" ]
+                            "ActionData"
+                            []
                         ]
                     )
             }
     }
-
-

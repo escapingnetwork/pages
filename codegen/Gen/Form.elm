@@ -1,7 +1,7 @@
 module Gen.Form exposing (annotation_, call_, caseOf_, dynamic, errorsForField, field, form, hiddenField, hiddenKind, init, make_, mapMsg, methodToString, moduleName_, options, parse, renderHtml, renderStyledHtml, toResult, update, values_, withAction, withGetMethod, withInput, withOnSubmit, withServerResponse)
 
 {-| 
-@docs values_, call_, caseOf_, make_, annotation_, toResult, mapMsg, update, init, dynamic, hiddenKind, hiddenField, parse, methodToString, withGetMethod, withServerResponse, withOnSubmit, withAction, withInput, options, renderStyledHtml, renderHtml, errorsForField, field, form, moduleName_
+@docs moduleName_, form, field, errorsForField, renderHtml, renderStyledHtml, options, withInput, withAction, withOnSubmit, withServerResponse, withGetMethod, methodToString, parse, hiddenField, hiddenKind, dynamic, init, update, mapMsg, toResult, annotation_, make_, caseOf_, call_, values_
 -}
 
 
@@ -2030,8 +2030,8 @@ caseOf_ =
                     validatedTags.valid
                 , Elm.Case.branch2
                     "Invalid"
-                    ( "maybe.Maybe", Type.maybe (Type.var "value") )
-                    ( "dict.Dict"
+                    ( "maybeMaybe", Type.maybe (Type.var "value") )
+                    ( "dictDict"
                     , Type.namedWith
                         [ "Dict" ]
                         "Dict"
@@ -3628,5 +3628,3 @@ values_ =
                     )
             }
     }
-
-

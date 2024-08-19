@@ -1,7 +1,7 @@
 module Gen.BackendTask.Env exposing (annotation_, call_, caseOf_, expect, get, make_, moduleName_, values_)
 
 {-| 
-@docs values_, call_, caseOf_, make_, annotation_, expect, get, moduleName_
+@docs moduleName_, get, expect, annotation_, make_, caseOf_, call_, values_
 -}
 
 
@@ -122,7 +122,7 @@ caseOf_ =
                 (Type.namedWith [ "BackendTask", "Env" ] "Error" [])
                 [ Elm.Case.branch1
                     "MissingEnvVariable"
-                    ( "string.String", Type.string )
+                    ( "stringString", Type.string )
                     errorTags.missingEnvVariable
                 ]
     }
@@ -237,5 +237,3 @@ values_ =
                     )
             }
     }
-
-

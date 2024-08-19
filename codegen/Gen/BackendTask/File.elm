@@ -1,7 +1,7 @@
 module Gen.BackendTask.File exposing (annotation_, bodyWithFrontmatter, bodyWithoutFrontmatter, call_, caseOf_, jsonFile, make_, moduleName_, onlyFrontmatter, rawFile, values_)
 
 {-| 
-@docs values_, call_, caseOf_, make_, annotation_, rawFile, jsonFile, onlyFrontmatter, bodyWithoutFrontmatter, bodyWithFrontmatter, moduleName_
+@docs moduleName_, bodyWithFrontmatter, bodyWithoutFrontmatter, onlyFrontmatter, jsonFile, rawFile, annotation_, make_, caseOf_, call_, values_
 -}
 
 
@@ -529,7 +529,7 @@ caseOf_ =
                     fileReadErrorTags.fileDoesntExist
                 , Elm.Case.branch1
                     "FileReadError"
-                    ( "string.String", Type.string )
+                    ( "stringString", Type.string )
                     fileReadErrorTags.fileReadError
                 , Elm.Case.branch1
                     "DecodingError"
@@ -939,5 +939,3 @@ values_ =
                     )
             }
     }
-
-

@@ -1,7 +1,7 @@
 module Gen.Html.Lazy exposing (call_, lazy, lazy2, lazy3, lazy4, lazy5, lazy6, lazy7, lazy8, moduleName_, values_)
 
 {-| 
-@docs values_, call_, lazy8, lazy7, lazy6, lazy5, lazy4, lazy3, lazy2, lazy, moduleName_
+@docs moduleName_, lazy, lazy2, lazy3, lazy4, lazy5, lazy6, lazy7, lazy8, call_, values_
 -}
 
 
@@ -1158,5 +1158,3 @@ values_ =
                     )
             }
     }
-
-

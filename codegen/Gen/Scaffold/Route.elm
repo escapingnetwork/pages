@@ -1,7 +1,7 @@
 module Gen.Scaffold.Route exposing (addDeclarations, annotation_, buildNoState, buildWithLocalState, buildWithSharedState, call_, caseOf_, make_, moduleNameCliArg, moduleName_, preRender, serverRender, single, values_)
 
 {-| 
-@docs values_, call_, caseOf_, make_, annotation_, moduleNameCliArg, addDeclarations, single, preRender, serverRender, buildNoState, buildWithSharedState, buildWithLocalState, moduleName_
+@docs moduleName_, buildWithLocalState, buildWithSharedState, buildNoState, serverRender, preRender, single, addDeclarations, moduleNameCliArg, annotation_, make_, caseOf_, call_, values_
 -}
 
 
@@ -805,13 +805,13 @@ caseOf_ =
                 (Type.namedWith [ "Scaffold", "Route" ] "Type" [])
                 [ Elm.Case.branch1
                     "Alias"
-                    ( "elm.Annotation.Annotation"
+                    ( "elmAnnotationAnnotation"
                     , Type.namedWith [ "Elm", "Annotation" ] "Annotation" []
                     )
                     typeTags.alias
                 , Elm.Case.branch1
                     "Custom"
-                    ( "list.List"
+                    ( "listList"
                     , Type.list (Type.namedWith [ "Elm" ] "Variant" [])
                     )
                     typeTags.custom
@@ -1920,5 +1920,3 @@ values_ =
                     )
             }
     }
-
-

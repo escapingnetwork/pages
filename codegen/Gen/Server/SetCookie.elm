@@ -1,7 +1,7 @@
 module Gen.Server.SetCookie exposing (annotation_, call_, caseOf_, makeVisibleToJavaScript, make_, moduleName_, nonSecure, options, setCookie, toString, values_, withDomain, withExpiration, withImmediateExpiration, withMaxAge, withPath, withSameSite, withoutPath)
 
 {-| 
-@docs values_, call_, caseOf_, make_, annotation_, toString, withoutPath, withPath, withMaxAge, withExpiration, withDomain, nonSecure, makeVisibleToJavaScript, withImmediateExpiration, withSameSite, options, setCookie, moduleName_
+@docs moduleName_, setCookie, options, withSameSite, withImmediateExpiration, makeVisibleToJavaScript, nonSecure, withDomain, withExpiration, withMaxAge, withPath, withoutPath, toString, annotation_, make_, caseOf_, call_, values_
 -}
 
 
@@ -917,5 +917,3 @@ values_ =
                     )
             }
     }
-
-

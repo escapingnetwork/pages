@@ -1,7 +1,7 @@
 module Gen.Fetcher.Support exposing (call_, moduleName_, submit, values_)
 
 {-| 
-@docs values_, call_, submit, moduleName_
+@docs moduleName_, submit, call_, values_
 -}
 
 
@@ -16,7 +16,7 @@ moduleName_ =
 
 
 {-| submit: 
-    (Result Http.Error Route.Support.ActionData -> msg)
+    (Result.Result Http.Error Route.Support.ActionData -> msg)
     -> { fields : List ( String, String ), headers : List ( String, String ) }
     -> Pages.Fetcher.Fetcher msg
 -}
@@ -34,7 +34,7 @@ submit submitArg submitArg0 =
                     (Type.function
                         [ Type.function
                             [ Type.namedWith
-                                []
+                                [ "Result" ]
                                 "Result"
                                 [ Type.namedWith [ "Http" ] "Error" []
                                 , Type.namedWith
@@ -82,7 +82,7 @@ call_ =
                             (Type.function
                                 [ Type.function
                                     [ Type.namedWith
-                                        []
+                                        [ "Result" ]
                                         "Result"
                                         [ Type.namedWith [ "Http" ] "Error" []
                                         , Type.namedWith
@@ -126,7 +126,7 @@ values_ =
                     (Type.function
                         [ Type.function
                             [ Type.namedWith
-                                []
+                                [ "Result" ]
                                 "Result"
                                 [ Type.namedWith [ "Http" ] "Error" []
                                 , Type.namedWith
@@ -153,5 +153,3 @@ values_ =
                     )
             }
     }
-
-

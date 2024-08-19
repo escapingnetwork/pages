@@ -1,7 +1,7 @@
 module Gen.ApiRoute exposing (annotation_, call_, capture, getBuildTimeRoutes, getGlobalHeadTagsBackendTask, literal, moduleName_, preRender, preRenderWithFallback, serverRender, single, slash, succeed, toJson, values_, withGlobalHeadTags)
 
 {-| 
-@docs values_, call_, annotation_, getGlobalHeadTagsBackendTask, getBuildTimeRoutes, toJson, withGlobalHeadTags, succeed, slash, literal, capture, preRenderWithFallback, serverRender, preRender, single, moduleName_
+@docs moduleName_, single, preRender, serverRender, preRenderWithFallback, capture, literal, slash, succeed, withGlobalHeadTags, toJson, getBuildTimeRoutes, getGlobalHeadTagsBackendTask, annotation_, call_, values_
 -}
 
 
@@ -1334,5 +1334,3 @@ values_ =
                     )
             }
     }
-
-

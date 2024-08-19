@@ -1,7 +1,7 @@
 module Gen.Form.Handler exposing (annotation_, call_, init, moduleName_, run, values_, with)
 
 {-| 
-@docs values_, call_, annotation_, run, with, init, moduleName_
+@docs moduleName_, init, with, run, annotation_, call_, values_
 -}
 
 
@@ -400,5 +400,3 @@ values_ =
                     )
             }
     }
-
-

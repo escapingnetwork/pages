@@ -1,7 +1,7 @@
 module Gen.Pages.Manifest exposing (annotation_, call_, caseOf_, generator, init, make_, moduleName_, toJson, values_, withBackgroundColor, withCategories, withDisplayMode, withField, withIarcRatingId, withLang, withOrientation, withShortName, withThemeColor)
 
 {-| 
-@docs values_, call_, caseOf_, make_, annotation_, toJson, generator, withField, withThemeColor, withShortName, withOrientation, withLang, withIarcRatingId, withDisplayMode, withCategories, withBackgroundColor, init, moduleName_
+@docs moduleName_, init, withBackgroundColor, withCategories, withDisplayMode, withIarcRatingId, withLang, withOrientation, withShortName, withThemeColor, withField, generator, toJson, annotation_, make_, caseOf_, call_, values_
 -}
 
 
@@ -1322,5 +1322,3 @@ values_ =
                     )
             }
     }
-
-

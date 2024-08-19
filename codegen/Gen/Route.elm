@@ -1,7 +1,7 @@
 module Gen.Route exposing (annotation_, baseUrl, baseUrlAsPath, call_, caseOf_, link, make_, moduleName_, redirectTo, routeToPath, segmentsToRoute, toLink, toPath, toString, urlToRoute, values_, withoutBaseUrl)
 
 {-| 
-@docs values_, call_, caseOf_, make_, annotation_, segmentsToRoute, urlToRoute, baseUrl, routeToPath, baseUrlAsPath, toPath, toString, redirectTo, toLink, link, withoutBaseUrl, moduleName_
+@docs moduleName_, withoutBaseUrl, link, toLink, redirectTo, toString, toPath, baseUrlAsPath, routeToPath, baseUrl, urlToRoute, segmentsToRoute, annotation_, make_, caseOf_, call_, values_
 -}
 
 
@@ -34,7 +34,11 @@ withoutBaseUrl withoutBaseUrlArg =
 
 {-| {-| . -}
 
-link: List (Html.Attribute msg) -> List (Html.Html msg) -> Route -> Html.Html msg
+link: 
+    List (Html.Attribute msg)
+    -> List (Html.Html msg)
+    -> Route.Route
+    -> Html.Html msg
 -}
 link :
     List Elm.Expression
@@ -58,7 +62,7 @@ link linkArg linkArg0 linkArg1 =
                         , Type.list
                             (Type.namedWith [ "Html" ] "Html" [ Type.var "msg" ]
                             )
-                        , Type.namedWith [] "Route" []
+                        , Type.namedWith [ "Route" ] "Route" []
                         ]
                         (Type.namedWith [ "Html" ] "Html" [ Type.var "msg" ])
                     )
@@ -69,7 +73,7 @@ link linkArg linkArg0 linkArg1 =
 
 {-| {-| . -}
 
-toLink: (List (Html.Attribute msg) -> a) -> Route -> a
+toLink: (List (Html.Attribute msg) -> abc) -> Route.Route -> abc
 -}
 toLink : (Elm.Expression -> Elm.Expression) -> Elm.Expression -> Elm.Expression
 toLink toLinkArg toLinkArg0 =
@@ -88,10 +92,10 @@ toLink toLinkArg toLinkArg0 =
                                     [ Type.var "msg" ]
                                 )
                             ]
-                            (Type.var "a")
-                        , Type.namedWith [] "Route" []
+                            (Type.var "abc")
+                        , Type.namedWith [ "Route" ] "Route" []
                         ]
-                        (Type.var "a")
+                        (Type.var "abc")
                     )
             }
         )
@@ -100,7 +104,7 @@ toLink toLinkArg toLinkArg0 =
 
 {-| {-| . -}
 
-redirectTo: Route -> Server.Response.Response data error
+redirectTo: Route.Route -> Server.Response.Response data error
 -}
 redirectTo : Elm.Expression -> Elm.Expression
 redirectTo redirectToArg =
@@ -111,7 +115,7 @@ redirectTo redirectToArg =
             , annotation =
                 Just
                     (Type.function
-                        [ Type.namedWith [] "Route" [] ]
+                        [ Type.namedWith [ "Route" ] "Route" [] ]
                         (Type.namedWith
                             [ "Server", "Response" ]
                             "Response"
@@ -125,7 +129,7 @@ redirectTo redirectToArg =
 
 {-| {-| . -}
 
-toString: Route -> String
+toString: Route.Route -> String
 -}
 toString : Elm.Expression -> Elm.Expression
 toString toStringArg =
@@ -135,7 +139,10 @@ toString toStringArg =
             , name = "toString"
             , annotation =
                 Just
-                    (Type.function [ Type.namedWith [] "Route" [] ] Type.string)
+                    (Type.function
+                        [ Type.namedWith [ "Route" ] "Route" [] ]
+                        Type.string
+                    )
             }
         )
         [ toStringArg ]
@@ -143,7 +150,7 @@ toString toStringArg =
 
 {-| {-| . -}
 
-toPath: Route -> UrlPath.UrlPath
+toPath: Route.Route -> UrlPath.UrlPath
 -}
 toPath : Elm.Expression -> Elm.Expression
 toPath toPathArg =
@@ -154,7 +161,7 @@ toPath toPathArg =
             , annotation =
                 Just
                     (Type.function
-                        [ Type.namedWith [] "Route" [] ]
+                        [ Type.namedWith [ "Route" ] "Route" [] ]
                         (Type.namedWith [ "UrlPath" ] "UrlPath" [])
                     )
             }
@@ -177,7 +184,7 @@ baseUrlAsPath =
 
 {-| {-| . -}
 
-routeToPath: Route -> List String
+routeToPath: Route.Route -> List String
 -}
 routeToPath : Elm.Expression -> Elm.Expression
 routeToPath routeToPathArg =
@@ -188,7 +195,7 @@ routeToPath routeToPathArg =
             , annotation =
                 Just
                     (Type.function
-                        [ Type.namedWith [] "Route" [] ]
+                        [ Type.namedWith [ "Route" ] "Route" [] ]
                         (Type.list Type.string)
                     )
             }
@@ -211,7 +218,7 @@ baseUrl =
 
 {-| {-| . -}
 
-urlToRoute: { url | path : String } -> Maybe Route
+urlToRoute: { url | path : String } -> Maybe Route.Route
 -}
 urlToRoute : { url | path : String } -> Elm.Expression
 urlToRoute urlToRouteArg =
@@ -223,11 +230,7 @@ urlToRoute urlToRouteArg =
                 Just
                     (Type.function
                         [ Type.extensible "url" [ ( "path", Type.string ) ] ]
-                        (Type.namedWith
-                            []
-                            "Maybe"
-                            [ Type.namedWith [] "Route" [] ]
-                        )
+                        (Type.maybe (Type.namedWith [ "Route" ] "Route" []))
                     )
             }
         )
@@ -236,7 +239,7 @@ urlToRoute urlToRouteArg =
 
 {-| {-| . -}
 
-segmentsToRoute: List String -> Maybe Route
+segmentsToRoute: List String -> Maybe Route.Route
 -}
 segmentsToRoute : List String -> Elm.Expression
 segmentsToRoute segmentsToRouteArg =
@@ -248,11 +251,7 @@ segmentsToRoute segmentsToRouteArg =
                 Just
                     (Type.function
                         [ Type.list Type.string ]
-                        (Type.namedWith
-                            []
-                            "Maybe"
-                            [ Type.namedWith [] "Route" [] ]
-                        )
+                        (Type.maybe (Type.namedWith [ "Route" ] "Route" []))
                     )
             }
         )
@@ -266,16 +265,27 @@ annotation_ =
 
 make_ :
     { booking__TermsAndConditions : Elm.Expression
+    , host__CompleteRegistration : Elm.Expression
+    , host__CompleteRegistrationNew : Elm.Expression
+    , host__FullRegistration : Elm.Expression
+    , host__FullRegistrationNew : Elm.Expression
     , host__SignUp : Elm.Expression
+    , host__SignUpOld : Elm.Expression
     , partner__SignUp : Elm.Expression
     , student__SignUp : Elm.Expression
+    , student__SignUpOld : Elm.Expression
     , blog__Slug_ : Elm.Expression -> Elm.Expression
+    , host__SignUp_ : Elm.Expression -> Elm.Expression
     , services__Slug_ : Elm.Expression -> Elm.Expression
+    , student__SignUp_ : Elm.Expression -> Elm.Expression
+    , support__Support_ : Elm.Expression -> Elm.Expression
     , tags__Slug_ : Elm.Expression -> Elm.Expression
     , about : Elm.Expression
     , blog : Elm.Expression
     , privacyPolicy : Elm.Expression
+    , services : Elm.Expression
     , support : Elm.Expression
+    , supportOld : Elm.Expression
     , tags : Elm.Expression
     , index : Elm.Expression
     }
@@ -286,10 +296,40 @@ make_ =
             , name = "Booking__TermsAndConditions"
             , annotation = Just (Type.namedWith [] "Route" [])
             }
+    , host__CompleteRegistration =
+        Elm.value
+            { importFrom = [ "Route" ]
+            , name = "Host__CompleteRegistration"
+            , annotation = Just (Type.namedWith [] "Route" [])
+            }
+    , host__CompleteRegistrationNew =
+        Elm.value
+            { importFrom = [ "Route" ]
+            , name = "Host__CompleteRegistrationNew"
+            , annotation = Just (Type.namedWith [] "Route" [])
+            }
+    , host__FullRegistration =
+        Elm.value
+            { importFrom = [ "Route" ]
+            , name = "Host__FullRegistration"
+            , annotation = Just (Type.namedWith [] "Route" [])
+            }
+    , host__FullRegistrationNew =
+        Elm.value
+            { importFrom = [ "Route" ]
+            , name = "Host__FullRegistrationNew"
+            , annotation = Just (Type.namedWith [] "Route" [])
+            }
     , host__SignUp =
         Elm.value
             { importFrom = [ "Route" ]
             , name = "Host__SignUp"
+            , annotation = Just (Type.namedWith [] "Route" [])
+            }
+    , host__SignUpOld =
+        Elm.value
+            { importFrom = [ "Route" ]
+            , name = "Host__SignUpOld"
             , annotation = Just (Type.namedWith [] "Route" [])
             }
     , partner__SignUp =
@@ -304,6 +344,12 @@ make_ =
             , name = "Student__SignUp"
             , annotation = Just (Type.namedWith [] "Route" [])
             }
+    , student__SignUpOld =
+        Elm.value
+            { importFrom = [ "Route" ]
+            , name = "Student__SignUpOld"
+            , annotation = Just (Type.namedWith [] "Route" [])
+            }
     , blog__Slug_ =
         \ar0 ->
             Elm.apply
@@ -314,12 +360,42 @@ make_ =
                     }
                 )
                 [ ar0 ]
+    , host__SignUp_ =
+        \ar0 ->
+            Elm.apply
+                (Elm.value
+                    { importFrom = [ "Route" ]
+                    , name = "Host__SignUp_"
+                    , annotation = Just (Type.namedWith [] "Route" [])
+                    }
+                )
+                [ ar0 ]
     , services__Slug_ =
         \ar0 ->
             Elm.apply
                 (Elm.value
                     { importFrom = [ "Route" ]
                     , name = "Services__Slug_"
+                    , annotation = Just (Type.namedWith [] "Route" [])
+                    }
+                )
+                [ ar0 ]
+    , student__SignUp_ =
+        \ar0 ->
+            Elm.apply
+                (Elm.value
+                    { importFrom = [ "Route" ]
+                    , name = "Student__SignUp_"
+                    , annotation = Just (Type.namedWith [] "Route" [])
+                    }
+                )
+                [ ar0 ]
+    , support__Support_ =
+        \ar0 ->
+            Elm.apply
+                (Elm.value
+                    { importFrom = [ "Route" ]
+                    , name = "Support__Support_"
                     , annotation = Just (Type.namedWith [] "Route" [])
                     }
                 )
@@ -352,10 +428,22 @@ make_ =
             , name = "PrivacyPolicy"
             , annotation = Just (Type.namedWith [] "Route" [])
             }
+    , services =
+        Elm.value
+            { importFrom = [ "Route" ]
+            , name = "Services"
+            , annotation = Just (Type.namedWith [] "Route" [])
+            }
     , support =
         Elm.value
             { importFrom = [ "Route" ]
             , name = "Support"
+            , annotation = Just (Type.namedWith [] "Route" [])
+            }
+    , supportOld =
+        Elm.value
+            { importFrom = [ "Route" ]
+            , name = "SupportOld"
             , annotation = Just (Type.namedWith [] "Route" [])
             }
     , tags =
@@ -378,16 +466,27 @@ caseOf_ :
         Elm.Expression
         -> { routeTags_0_0
             | booking__TermsAndConditions : Elm.Expression
+            , host__CompleteRegistration : Elm.Expression
+            , host__CompleteRegistrationNew : Elm.Expression
+            , host__FullRegistration : Elm.Expression
+            , host__FullRegistrationNew : Elm.Expression
             , host__SignUp : Elm.Expression
+            , host__SignUpOld : Elm.Expression
             , partner__SignUp : Elm.Expression
             , student__SignUp : Elm.Expression
+            , student__SignUpOld : Elm.Expression
             , blog__Slug_ : Elm.Expression -> Elm.Expression
+            , host__SignUp_ : Elm.Expression -> Elm.Expression
             , services__Slug_ : Elm.Expression -> Elm.Expression
+            , student__SignUp_ : Elm.Expression -> Elm.Expression
+            , support__Support_ : Elm.Expression -> Elm.Expression
             , tags__Slug_ : Elm.Expression -> Elm.Expression
             , about : Elm.Expression
             , blog : Elm.Expression
             , privacyPolicy : Elm.Expression
+            , services : Elm.Expression
             , support : Elm.Expression
+            , supportOld : Elm.Expression
             , tags : Elm.Expression
             , index : Elm.Expression
         }
@@ -402,17 +501,45 @@ caseOf_ =
                 [ Elm.Case.branch0
                     "Booking__TermsAndConditions"
                     routeTags.booking__TermsAndConditions
+                , Elm.Case.branch0
+                    "Host__CompleteRegistration"
+                    routeTags.host__CompleteRegistration
+                , Elm.Case.branch0
+                    "Host__CompleteRegistrationNew"
+                    routeTags.host__CompleteRegistrationNew
+                , Elm.Case.branch0
+                    "Host__FullRegistration"
+                    routeTags.host__FullRegistration
+                , Elm.Case.branch0
+                    "Host__FullRegistrationNew"
+                    routeTags.host__FullRegistrationNew
                 , Elm.Case.branch0 "Host__SignUp" routeTags.host__SignUp
+                , Elm.Case.branch0 "Host__SignUpOld" routeTags.host__SignUpOld
                 , Elm.Case.branch0 "Partner__SignUp" routeTags.partner__SignUp
                 , Elm.Case.branch0 "Student__SignUp" routeTags.student__SignUp
+                , Elm.Case.branch0
+                    "Student__SignUpOld"
+                    routeTags.student__SignUpOld
                 , Elm.Case.branch1
                     "Blog__Slug_"
                     ( "one", Type.record [ ( "slug", Type.string ) ] )
                     routeTags.blog__Slug_
                 , Elm.Case.branch1
+                    "Host__SignUp_"
+                    ( "one", Type.record [ ( "signUp", Type.string ) ] )
+                    routeTags.host__SignUp_
+                , Elm.Case.branch1
                     "Services__Slug_"
                     ( "one", Type.record [ ( "slug", Type.string ) ] )
                     routeTags.services__Slug_
+                , Elm.Case.branch1
+                    "Student__SignUp_"
+                    ( "one", Type.record [ ( "signUp", Type.string ) ] )
+                    routeTags.student__SignUp_
+                , Elm.Case.branch1
+                    "Support__Support_"
+                    ( "one", Type.record [ ( "support", Type.string ) ] )
+                    routeTags.support__Support_
                 , Elm.Case.branch1
                     "Tags__Slug_"
                     ( "one", Type.record [ ( "slug", Type.string ) ] )
@@ -420,7 +547,9 @@ caseOf_ =
                 , Elm.Case.branch0 "About" routeTags.about
                 , Elm.Case.branch0 "Blog" routeTags.blog
                 , Elm.Case.branch0 "PrivacyPolicy" routeTags.privacyPolicy
+                , Elm.Case.branch0 "Services" routeTags.services
                 , Elm.Case.branch0 "Support" routeTags.support
+                , Elm.Case.branch0 "SupportOld" routeTags.supportOld
                 , Elm.Case.branch0 "Tags" routeTags.tags
                 , Elm.Case.branch0 "Index" routeTags.index
                 ]
@@ -472,7 +601,7 @@ call_ =
                                         "Html"
                                         [ Type.var "msg" ]
                                     )
-                                , Type.namedWith [] "Route" []
+                                , Type.namedWith [ "Route" ] "Route" []
                                 ]
                                 (Type.namedWith
                                     [ "Html" ]
@@ -500,10 +629,10 @@ call_ =
                                             [ Type.var "msg" ]
                                         )
                                     ]
-                                    (Type.var "a")
-                                , Type.namedWith [] "Route" []
+                                    (Type.var "abc")
+                                , Type.namedWith [ "Route" ] "Route" []
                                 ]
-                                (Type.var "a")
+                                (Type.var "abc")
                             )
                     }
                 )
@@ -517,7 +646,7 @@ call_ =
                     , annotation =
                         Just
                             (Type.function
-                                [ Type.namedWith [] "Route" [] ]
+                                [ Type.namedWith [ "Route" ] "Route" [] ]
                                 (Type.namedWith
                                     [ "Server", "Response" ]
                                     "Response"
@@ -536,7 +665,7 @@ call_ =
                     , annotation =
                         Just
                             (Type.function
-                                [ Type.namedWith [] "Route" [] ]
+                                [ Type.namedWith [ "Route" ] "Route" [] ]
                                 Type.string
                             )
                     }
@@ -551,7 +680,7 @@ call_ =
                     , annotation =
                         Just
                             (Type.function
-                                [ Type.namedWith [] "Route" [] ]
+                                [ Type.namedWith [ "Route" ] "Route" [] ]
                                 (Type.namedWith [ "UrlPath" ] "UrlPath" [])
                             )
                     }
@@ -566,7 +695,7 @@ call_ =
                     , annotation =
                         Just
                             (Type.function
-                                [ Type.namedWith [] "Route" [] ]
+                                [ Type.namedWith [ "Route" ] "Route" [] ]
                                 (Type.list Type.string)
                             )
                     }
@@ -585,10 +714,8 @@ call_ =
                                     "url"
                                     [ ( "path", Type.string ) ]
                                 ]
-                                (Type.namedWith
-                                    []
-                                    "Maybe"
-                                    [ Type.namedWith [] "Route" [] ]
+                                (Type.maybe
+                                    (Type.namedWith [ "Route" ] "Route" [])
                                 )
                             )
                     }
@@ -604,10 +731,8 @@ call_ =
                         Just
                             (Type.function
                                 [ Type.list Type.string ]
-                                (Type.namedWith
-                                    []
-                                    "Maybe"
-                                    [ Type.namedWith [] "Route" [] ]
+                                (Type.maybe
+                                    (Type.namedWith [ "Route" ] "Route" [])
                                 )
                             )
                     }
@@ -652,7 +777,7 @@ values_ =
                         , Type.list
                             (Type.namedWith [ "Html" ] "Html" [ Type.var "msg" ]
                             )
-                        , Type.namedWith [] "Route" []
+                        , Type.namedWith [ "Route" ] "Route" []
                         ]
                         (Type.namedWith [ "Html" ] "Html" [ Type.var "msg" ])
                     )
@@ -672,10 +797,10 @@ values_ =
                                     [ Type.var "msg" ]
                                 )
                             ]
-                            (Type.var "a")
-                        , Type.namedWith [] "Route" []
+                            (Type.var "abc")
+                        , Type.namedWith [ "Route" ] "Route" []
                         ]
-                        (Type.var "a")
+                        (Type.var "abc")
                     )
             }
     , redirectTo =
@@ -685,7 +810,7 @@ values_ =
             , annotation =
                 Just
                     (Type.function
-                        [ Type.namedWith [] "Route" [] ]
+                        [ Type.namedWith [ "Route" ] "Route" [] ]
                         (Type.namedWith
                             [ "Server", "Response" ]
                             "Response"
@@ -699,7 +824,10 @@ values_ =
             , name = "toString"
             , annotation =
                 Just
-                    (Type.function [ Type.namedWith [] "Route" [] ] Type.string)
+                    (Type.function
+                        [ Type.namedWith [ "Route" ] "Route" [] ]
+                        Type.string
+                    )
             }
     , toPath =
         Elm.value
@@ -708,7 +836,7 @@ values_ =
             , annotation =
                 Just
                     (Type.function
-                        [ Type.namedWith [] "Route" [] ]
+                        [ Type.namedWith [ "Route" ] "Route" [] ]
                         (Type.namedWith [ "UrlPath" ] "UrlPath" [])
                     )
             }
@@ -725,7 +853,7 @@ values_ =
             , annotation =
                 Just
                     (Type.function
-                        [ Type.namedWith [] "Route" [] ]
+                        [ Type.namedWith [ "Route" ] "Route" [] ]
                         (Type.list Type.string)
                     )
             }
@@ -743,11 +871,7 @@ values_ =
                 Just
                     (Type.function
                         [ Type.extensible "url" [ ( "path", Type.string ) ] ]
-                        (Type.namedWith
-                            []
-                            "Maybe"
-                            [ Type.namedWith [] "Route" [] ]
-                        )
+                        (Type.maybe (Type.namedWith [ "Route" ] "Route" []))
                     )
             }
     , segmentsToRoute =
@@ -758,13 +882,7 @@ values_ =
                 Just
                     (Type.function
                         [ Type.list Type.string ]
-                        (Type.namedWith
-                            []
-                            "Maybe"
-                            [ Type.namedWith [] "Route" [] ]
-                        )
+                        (Type.maybe (Type.namedWith [ "Route" ] "Route" []))
                     )
             }
     }
-
-

@@ -1,7 +1,7 @@
 module Gen.SharedTemplate exposing (annotation_, make_, moduleName_)
 
 {-| 
-@docs make_, annotation_, moduleName_
+@docs moduleName_, annotation_, make_
 -}
 
 
@@ -37,48 +37,51 @@ annotation_ =
                 (Type.record
                     [ ( "init"
                       , Type.function
-                            [ Type.namedWith [] "Flags" []
-                            , Type.namedWith
-                                []
-                                "Maybe"
-                                [ Type.record
+                            [ Type.namedWith [ "Pages", "Flags" ] "Flags" []
+                            , Type.maybe
+                                (Type.record
                                     [ ( "path"
                                       , Type.record
                                             [ ( "path"
-                                              , Type.namedWith [] "UrlPath" []
+                                              , Type.namedWith
+                                                    [ "UrlPath" ]
+                                                    "UrlPath"
+                                                    []
                                               )
                                             , ( "query"
-                                              , Type.namedWith
-                                                    []
-                                                    "Maybe"
-                                                    [ Type.string ]
+                                              , Type.maybe Type.string
                                               )
                                             , ( "fragment"
-                                              , Type.namedWith
-                                                    []
-                                                    "Maybe"
-                                                    [ Type.string ]
+                                              , Type.maybe Type.string
                                               )
                                             ]
                                       )
                                     , ( "metadata"
-                                      , Type.namedWith
-                                            []
-                                            "Maybe"
-                                            [ Type.namedWith [] "Route" [] ]
+                                      , Type.maybe
+                                            (Type.namedWith
+                                                [ "Route" ]
+                                                "Route"
+                                                []
+                                            )
                                       )
                                     , ( "pageUrl"
-                                      , Type.namedWith
-                                            []
-                                            "Maybe"
-                                            [ Type.namedWith [] "PageUrl" [] ]
+                                      , Type.maybe
+                                            (Type.namedWith
+                                                [ "Pages", "PageUrl" ]
+                                                "PageUrl"
+                                                []
+                                            )
                                       )
                                     ]
-                                ]
+                                )
                             ]
                             (Type.tuple
                                 (Type.var "sharedModel")
-                                (Type.namedWith [] "Effect" [ Type.var "msg" ])
+                                (Type.namedWith
+                                    [ "Effect" ]
+                                    "Effect"
+                                    [ Type.var "msg" ]
+                                )
                             )
                       )
                     , ( "update"
@@ -86,32 +89,39 @@ annotation_ =
                             [ Type.var "msg", Type.var "sharedModel" ]
                             (Type.tuple
                                 (Type.var "sharedModel")
-                                (Type.namedWith [] "Effect" [ Type.var "msg" ])
+                                (Type.namedWith
+                                    [ "Effect" ]
+                                    "Effect"
+                                    [ Type.var "msg" ]
+                                )
                             )
                       )
                     , ( "view"
                       , Type.function
                             [ Type.var "sharedData"
                             , Type.record
-                                [ ( "path", Type.namedWith [] "UrlPath" [] )
+                                [ ( "path"
+                                  , Type.namedWith [ "UrlPath" ] "UrlPath" []
+                                  )
                                 , ( "route"
-                                  , Type.namedWith
-                                        []
-                                        "Maybe"
-                                        [ Type.namedWith [] "Route" [] ]
+                                  , Type.maybe
+                                        (Type.namedWith [ "Route" ] "Route" [])
                                   )
                                 ]
                             , Type.var "sharedModel"
                             , Type.function
                                 [ Type.var "msg" ]
                                 (Type.var "mappedMsg")
-                            , Type.namedWith [] "View" [ Type.var "mappedMsg" ]
+                            , Type.namedWith
+                                [ "View" ]
+                                "View"
+                                [ Type.var "mappedMsg" ]
                             ]
                             (Type.record
                                 [ ( "body"
                                   , Type.list
                                         (Type.namedWith
-                                            []
+                                            [ "Html" ]
                                             "Html"
                                             [ Type.var "mappedMsg" ]
                                         )
@@ -124,40 +134,37 @@ annotation_ =
                       , Type.namedWith
                             [ "BackendTask" ]
                             "BackendTask"
-                            [ Type.namedWith [] "FatalError" []
+                            [ Type.namedWith [ "FatalError" ] "FatalError" []
                             , Type.var "sharedData"
                             ]
                       )
                     , ( "subscriptions"
                       , Type.function
-                            [ Type.namedWith [] "UrlPath" []
+                            [ Type.namedWith [ "UrlPath" ] "UrlPath" []
                             , Type.var "sharedModel"
                             ]
-                            (Type.namedWith [] "Sub" [ Type.var "msg" ])
+                            (Type.namedWith
+                                [ "SharedTemplate" ]
+                                "Sub"
+                                [ Type.var "msg" ]
+                            )
                       )
                     , ( "onPageChange"
-                      , Type.namedWith
-                            []
-                            "Maybe"
-                            [ Type.function
+                      , Type.maybe
+                            (Type.function
                                 [ Type.record
-                                    [ ( "path", Type.namedWith [] "UrlPath" [] )
-                                    , ( "query"
+                                    [ ( "path"
                                       , Type.namedWith
+                                            [ "UrlPath" ]
+                                            "UrlPath"
                                             []
-                                            "Maybe"
-                                            [ Type.string ]
                                       )
-                                    , ( "fragment"
-                                      , Type.namedWith
-                                            []
-                                            "Maybe"
-                                            [ Type.string ]
-                                      )
+                                    , ( "query", Type.maybe Type.string )
+                                    , ( "fragment", Type.maybe Type.string )
                                     ]
                                 ]
                                 (Type.var "msg")
-                            ]
+                            )
                       )
                     ]
                 )
@@ -190,53 +197,48 @@ make_ =
                     (Type.record
                         [ ( "init"
                           , Type.function
-                                [ Type.namedWith [] "Flags" []
-                                , Type.namedWith
-                                    []
-                                    "Maybe"
-                                    [ Type.record
+                                [ Type.namedWith [ "Pages", "Flags" ] "Flags" []
+                                , Type.maybe
+                                    (Type.record
                                         [ ( "path"
                                           , Type.record
                                                 [ ( "path"
                                                   , Type.namedWith
-                                                        []
+                                                        [ "UrlPath" ]
                                                         "UrlPath"
                                                         []
                                                   )
                                                 , ( "query"
-                                                  , Type.namedWith
-                                                        []
-                                                        "Maybe"
-                                                        [ Type.string ]
+                                                  , Type.maybe Type.string
                                                   )
                                                 , ( "fragment"
-                                                  , Type.namedWith
-                                                        []
-                                                        "Maybe"
-                                                        [ Type.string ]
+                                                  , Type.maybe Type.string
                                                   )
                                                 ]
                                           )
                                         , ( "metadata"
-                                          , Type.namedWith
-                                                []
-                                                "Maybe"
-                                                [ Type.namedWith [] "Route" [] ]
+                                          , Type.maybe
+                                                (Type.namedWith
+                                                    [ "Route" ]
+                                                    "Route"
+                                                    []
+                                                )
                                           )
                                         , ( "pageUrl"
-                                          , Type.namedWith
-                                                []
-                                                "Maybe"
-                                                [ Type.namedWith [] "PageUrl" []
-                                                ]
+                                          , Type.maybe
+                                                (Type.namedWith
+                                                    [ "Pages", "PageUrl" ]
+                                                    "PageUrl"
+                                                    []
+                                                )
                                           )
                                         ]
-                                    ]
+                                    )
                                 ]
                                 (Type.tuple
                                     (Type.var "sharedModel")
                                     (Type.namedWith
-                                        []
+                                        [ "Effect" ]
                                         "Effect"
                                         [ Type.var "msg" ]
                                     )
@@ -248,7 +250,7 @@ make_ =
                                 (Type.tuple
                                     (Type.var "sharedModel")
                                     (Type.namedWith
-                                        []
+                                        [ "Effect" ]
                                         "Effect"
                                         [ Type.var "msg" ]
                                     )
@@ -258,12 +260,19 @@ make_ =
                           , Type.function
                                 [ Type.var "sharedData"
                                 , Type.record
-                                    [ ( "path", Type.namedWith [] "UrlPath" [] )
-                                    , ( "route"
+                                    [ ( "path"
                                       , Type.namedWith
+                                            [ "UrlPath" ]
+                                            "UrlPath"
                                             []
-                                            "Maybe"
-                                            [ Type.namedWith [] "Route" [] ]
+                                      )
+                                    , ( "route"
+                                      , Type.maybe
+                                            (Type.namedWith
+                                                [ "Route" ]
+                                                "Route"
+                                                []
+                                            )
                                       )
                                     ]
                                 , Type.var "sharedModel"
@@ -271,7 +280,7 @@ make_ =
                                     [ Type.var "msg" ]
                                     (Type.var "mappedMsg")
                                 , Type.namedWith
-                                    []
+                                    [ "View" ]
                                     "View"
                                     [ Type.var "mappedMsg" ]
                                 ]
@@ -279,7 +288,7 @@ make_ =
                                     [ ( "body"
                                       , Type.list
                                             (Type.namedWith
-                                                []
+                                                [ "Html" ]
                                                 "Html"
                                                 [ Type.var "mappedMsg" ]
                                             )
@@ -292,42 +301,40 @@ make_ =
                           , Type.namedWith
                                 [ "BackendTask" ]
                                 "BackendTask"
-                                [ Type.namedWith [] "FatalError" []
+                                [ Type.namedWith
+                                    [ "FatalError" ]
+                                    "FatalError"
+                                    []
                                 , Type.var "sharedData"
                                 ]
                           )
                         , ( "subscriptions"
                           , Type.function
-                                [ Type.namedWith [] "UrlPath" []
+                                [ Type.namedWith [ "UrlPath" ] "UrlPath" []
                                 , Type.var "sharedModel"
                                 ]
-                                (Type.namedWith [] "Sub" [ Type.var "msg" ])
+                                (Type.namedWith
+                                    [ "SharedTemplate" ]
+                                    "Sub"
+                                    [ Type.var "msg" ]
+                                )
                           )
                         , ( "onPageChange"
-                          , Type.namedWith
-                                []
-                                "Maybe"
-                                [ Type.function
+                          , Type.maybe
+                                (Type.function
                                     [ Type.record
                                         [ ( "path"
-                                          , Type.namedWith [] "UrlPath" []
-                                          )
-                                        , ( "query"
                                           , Type.namedWith
+                                                [ "UrlPath" ]
+                                                "UrlPath"
                                                 []
-                                                "Maybe"
-                                                [ Type.string ]
                                           )
-                                        , ( "fragment"
-                                          , Type.namedWith
-                                                []
-                                                "Maybe"
-                                                [ Type.string ]
-                                          )
+                                        , ( "query", Type.maybe Type.string )
+                                        , ( "fragment", Type.maybe Type.string )
                                         ]
                                     ]
                                     (Type.var "msg")
-                                ]
+                                )
                           )
                         ]
                     )
@@ -344,5 +351,3 @@ make_ =
                     ]
                 )
     }
-
-

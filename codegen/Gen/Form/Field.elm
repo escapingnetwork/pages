@@ -1,7 +1,7 @@
 module Gen.Form.Field exposing (annotation_, call_, caseOf_, checkbox, date, email, exactValue, float, int, make_, map, moduleName_, password, range, required, search, select, telephone, text, textarea, time, url, validateMap, values_, withInitialValue, withMax, withMaxLength, withMin, withMinLength, withOptionalInitialValue, withStep)
 
 {-| 
-@docs values_, call_, caseOf_, make_, annotation_, withStep, withMaxLength, withMinLength, withMax, withMin, range, textarea, url, telephone, search, password, email, map, validateMap, required, exactValue, withOptionalInitialValue, withInitialValue, time, date, select, float, int, checkbox, text, moduleName_
+@docs moduleName_, text, checkbox, int, float, select, date, time, withInitialValue, withOptionalInitialValue, exactValue, required, validateMap, map, email, password, search, telephone, url, textarea, range, withMin, withMax, withMinLength, withMaxLength, withStep, annotation_, make_, caseOf_, call_, values_
 -}
 
 
@@ -3748,5 +3748,3 @@ values_ =
                     )
             }
     }
-
-

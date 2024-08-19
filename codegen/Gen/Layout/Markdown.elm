@@ -1,7 +1,7 @@
 module Gen.Layout.Markdown exposing (blogpostToHtml, call_, moduleName_, toHtml, values_)
 
 {-| 
-@docs values_, call_, blogpostToHtml, toHtml, moduleName_
+@docs moduleName_, toHtml, blogpostToHtml, call_, values_
 -}
 
 
@@ -15,7 +15,7 @@ moduleName_ =
     [ "Layout", "Markdown" ]
 
 
-{-| toHtml: String -> List (Html msg) -}
+{-| toHtml: String -> List (Html.Html msg) -}
 toHtml : String -> Elm.Expression
 toHtml toHtmlArg =
     Elm.apply
@@ -26,7 +26,9 @@ toHtml toHtmlArg =
                 Just
                     (Type.function
                         [ Type.string ]
-                        (Type.list (Type.namedWith [] "Html" [ Type.var "msg" ])
+                        (Type.list
+                            (Type.namedWith [ "Html" ] "Html" [ Type.var "msg" ]
+                            )
                         )
                     )
             }
@@ -34,7 +36,7 @@ toHtml toHtmlArg =
         [ Elm.string toHtmlArg ]
 
 
-{-| blogpostToHtml: String -> List (Html msg) -}
+{-| blogpostToHtml: String -> List (Html.Html msg) -}
 blogpostToHtml : String -> Elm.Expression
 blogpostToHtml blogpostToHtmlArg =
     Elm.apply
@@ -45,7 +47,9 @@ blogpostToHtml blogpostToHtmlArg =
                 Just
                     (Type.function
                         [ Type.string ]
-                        (Type.list (Type.namedWith [] "Html" [ Type.var "msg" ])
+                        (Type.list
+                            (Type.namedWith [ "Html" ] "Html" [ Type.var "msg" ]
+                            )
                         )
                     )
             }
@@ -69,7 +73,10 @@ call_ =
                             (Type.function
                                 [ Type.string ]
                                 (Type.list
-                                    (Type.namedWith [] "Html" [ Type.var "msg" ]
+                                    (Type.namedWith
+                                        [ "Html" ]
+                                        "Html"
+                                        [ Type.var "msg" ]
                                     )
                                 )
                             )
@@ -87,7 +94,10 @@ call_ =
                             (Type.function
                                 [ Type.string ]
                                 (Type.list
-                                    (Type.namedWith [] "Html" [ Type.var "msg" ]
+                                    (Type.namedWith
+                                        [ "Html" ]
+                                        "Html"
+                                        [ Type.var "msg" ]
                                     )
                                 )
                             )
@@ -107,7 +117,9 @@ values_ =
                 Just
                     (Type.function
                         [ Type.string ]
-                        (Type.list (Type.namedWith [] "Html" [ Type.var "msg" ])
+                        (Type.list
+                            (Type.namedWith [ "Html" ] "Html" [ Type.var "msg" ]
+                            )
                         )
                     )
             }
@@ -119,10 +131,10 @@ values_ =
                 Just
                     (Type.function
                         [ Type.string ]
-                        (Type.list (Type.namedWith [] "Html" [ Type.var "msg" ])
+                        (Type.list
+                            (Type.namedWith [ "Html" ] "Html" [ Type.var "msg" ]
+                            )
                         )
                     )
             }
     }
-
-

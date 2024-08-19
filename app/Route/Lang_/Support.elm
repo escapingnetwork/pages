@@ -304,7 +304,7 @@ action routeParams request =
                 (Env.get "SUPABASE_URL"
                     |> BackendTask.map (Maybe.withDefault "http://localhost:1234")
                 )
-                |> BackendTask.andThen (sendRequest formResponse userResult)
+                |> BackendTask.andThen (sendRequest routeParams.lang formResponse userResult)
 
 
 contactToJSON : Contact -> Encode.Value
@@ -318,8 +318,8 @@ contactToJSON contact =
         ]
 
 
-sendRequest : Form.ServerResponse String -> Form.Validated String Contact -> EnvVariables -> BackendTask.BackendTask FatalError.FatalError (Server.Response.Response ActionData ErrorPage.ErrorPage)
-sendRequest formResponse userResult envVariables =
+sendRequest : String -> Form.ServerResponse String -> Form.Validated String Contact -> EnvVariables -> BackendTask.BackendTask FatalError.FatalError (Server.Response.Response ActionData ErrorPage.ErrorPage)
+sendRequest lang formResponse userResult envVariables =
     let
         requestBody =
             contactToJSON
@@ -367,8 +367,8 @@ sendRequest formResponse userResult envVariables =
                             |> Result.withDefault emptyForm
                 in
                 if Dict.isEmpty response.formResponse.serverSideErrors then
-                    Route.Support__Support_
-                        { support = contact.forename }
+                    Route.Lang___Support__Support_
+                        { lang = lang, support = contact.forename }
                         |> Route.redirectTo
 
                 else

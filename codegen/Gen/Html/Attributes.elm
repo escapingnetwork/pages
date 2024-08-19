@@ -1,7 +1,7 @@
 module Gen.Html.Attributes exposing (accept, acceptCharset, accesskey, action, align, alt, attribute, autocomplete, autofocus, autoplay, call_, checked, cite, class, classList, cols, colspan, contenteditable, contextmenu, controls, coords, datetime, default, dir, disabled, download, draggable, dropzone, enctype, for, form, headers, height, hidden, href, hreflang, id, ismap, itemprop, kind, lang, list, loop, manifest, map, max, maxlength, media, method, min, minlength, moduleName_, multiple, name, novalidate, pattern, ping, placeholder, poster, preload, property, pubdate, readonly, rel, required, reversed, rows, rowspan, sandbox, scope, selected, shape, size, spellcheck, src, srcdoc, srclang, start, step, style, tabindex, target, title, type_, usemap, value, values_, width, wrap)
 
 {-| 
-@docs values_, call_, manifest, pubdate, datetime, cite, tabindex, spellcheck, lang, itemprop, dropzone, draggable, dir, contextmenu, contenteditable, accesskey, scope, headers, rowspan, colspan, align, start, reversed, srcdoc, sandbox, srclang, kind, default, poster, preload, loop, controls, autoplay, alt, width, height, src, coords, shape, usemap, ismap, rel, ping, media, hreflang, download, target, href, wrap, rows, cols, step, min, max, form, for, size, required, readonly, pattern, novalidate, name, multiple, method, minlength, maxlength, list, enctype, disabled, autofocus, autocomplete, action, acceptCharset, accept, selected, placeholder, checked, value, type_, hidden, title, id, classList, class, map, attribute, property, style, moduleName_
+@docs moduleName_, style, property, attribute, map, class, classList, id, title, hidden, type_, value, checked, placeholder, selected, accept, acceptCharset, action, autocomplete, autofocus, disabled, enctype, list, maxlength, minlength, method, multiple, name, novalidate, pattern, readonly, required, size, for, form, max, min, step, cols, rows, wrap, href, target, download, hreflang, media, ping, rel, ismap, usemap, shape, coords, src, height, width, alt, autoplay, controls, loop, preload, poster, default, kind, srclang, sandbox, srcdoc, reversed, start, align, colspan, rowspan, headers, scope, accesskey, contenteditable, contextmenu, dir, draggable, dropzone, itemprop, lang, spellcheck, tabindex, cite, datetime, pubdate, manifest, call_, values_
 -}
 
 
@@ -5421,5 +5421,3 @@ values_ =
                     )
             }
     }
-
-
