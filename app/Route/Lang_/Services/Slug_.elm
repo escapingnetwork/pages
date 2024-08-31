@@ -13,6 +13,7 @@ import ErrorPage
 import FatalError exposing (FatalError)
 import Head
 import I18n exposing (I18n)
+import I18nUtils
 import Layout.Service
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
@@ -76,7 +77,8 @@ subscriptions routeParams path shared model =
 
 
 type alias Data =
-    { service : Service
+    { translation : I18n
+    , service : Service
     }
 
 
@@ -86,7 +88,8 @@ type alias ActionData =
 
 data : RouteParams -> BackendTask FatalError Data
 data routeParams =
-    BackendTask.map Data
+    BackendTask.map2 Data
+        (I18nUtils.loadLanguage routeParams.lang)
         (Content.Services.serviceFromLangSlug routeParams.lang routeParams.slug)
 
 
@@ -101,7 +104,7 @@ view :
     -> View (PagesMsg Msg)
 view app model =
     { title = "Capybara House - " ++ app.data.service.metadata.title
-    , body = [ Layout.Service.viewService model.i18n app.data.service ]
+    , body = [ Layout.Service.viewService app.data.translation app.data.service ]
     }
 
 

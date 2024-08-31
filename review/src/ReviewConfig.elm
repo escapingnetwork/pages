@@ -18,6 +18,7 @@ import NoDebug.TodoOrToString
 import NoExposingEverything
 import NoImportingEverything
 import NoMissingTypeAnnotation
+import NoMissingTypeAnnotationInLetIn
 import NoMissingTypeExpose
 import NoPrematureLetComputation
 import NoSimpleLetBody
@@ -42,6 +43,7 @@ config =
     , NoExposingEverything.rule
     , NoImportingEverything.rule []
     , NoMissingTypeAnnotation.rule
+    , NoMissingTypeAnnotationInLetIn.rule
     , NoMissingTypeExpose.rule
     , NoSimpleLetBody.rule
     , NoPrematureLetComputation.rule
@@ -54,5 +56,3 @@ config =
     , NoUnused.Variables.rule
     , Simplify.rule Simplify.defaults
     ]
-        |> List.map (Rule.ignoreErrorsForDirectories [ ".elm-pages/", "app/" ])
-

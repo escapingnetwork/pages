@@ -15,6 +15,7 @@ import Head.Seo as Seo
 import Html
 import Html.Attributes as Attrs
 import I18n as Translations exposing (..)
+import I18nUtils
 import LanguageTag.Language as Language
 import LanguageTag.Region as Country
 import Layout
@@ -43,7 +44,8 @@ type alias RouteParams =
 
 
 type alias Data =
-    { serviceMetadata : List Metadata
+    { translations : I18n
+    , serviceMetadata : List Metadata
     }
 
 
@@ -76,16 +78,18 @@ route =
 
 data : RouteParams -> BackendTask FatalError Data
 data r =
-    Content.Services.allServicesLang
+    (Content.Services.allServicesLang
         |> BackendTask.map (List.filter (\allServices -> allServices.language == r.lang))
         |> BackendTask.map
             (\allServicesLang ->
                 List.map .service allServicesLang
                     |> (\allServices ->
                             List.map .metadata allServices
-                                |> (\metadata -> { serviceMetadata = metadata })
+                                |> (\metadata -> metadata)
                        )
             )
+    )
+        |> BackendTask.map2 Data (I18nUtils.loadLanguage r.lang)
 
 
 
@@ -110,7 +114,7 @@ view app model =
             [ Html.h1
                 [ Attrs.class "text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14 text-center"
                 ]
-                [ Html.text <| Translations.buttonServices model.i18n ]
+                [ Html.text <| Translations.buttonServices app.data.translations ]
             ]
         , Html.div
             [ Attrs.class "mx-auto max-w-none dark:prose-invert xl:col-span-2 xl:max-w-5xl xl:px-0  overflow-hidden " ]

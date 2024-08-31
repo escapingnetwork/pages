@@ -20,27 +20,6 @@ import Svg.Attributes as SvgAttr
 -- VIEW
 
 
-authorImages : List { a | image : String } -> Html msg
-authorImages authors =
-    List.map
-        (\{ image } ->
-            Html.img
-                [ Attrs.alt "avatar"
-                , Attrs.attribute "loading" "lazy"
-                , Attrs.width 38
-                , Attrs.height 38
-                , Attrs.attribute "decoding" "async"
-                , Attrs.attribute "data-nimg" "1"
-                , Attrs.class "h-12 w-12 rounded-full hidden sm:block"
-                , Attrs.style "color" "transparent"
-                , Attrs.src image
-                ]
-                []
-        )
-        authors
-        |> Html.div [ Attrs.class "flex -space-x-2" ]
-
-
 viewService : I18n -> Service -> Html msg
 viewService translation { metadata, body, previousService, nextService } =
     let

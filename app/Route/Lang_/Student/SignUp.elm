@@ -26,6 +26,7 @@ import Html exposing (Html)
 import Html.Attributes as Attrs exposing (height)
 import Html.Attributes.Autocomplete exposing (DetailedCompletion(..))
 import I18n as Translations
+import I18nUtils
 import Json.Encode as Encode
 import Json.Encode.Extra as EncodeExtra
 import Layout.Minimal
@@ -71,7 +72,8 @@ route =
 
 
 type alias Data =
-    { minimal : Content.Minimal.Minimal
+    { translation : Translations.I18n
+    , minimal : Content.Minimal.Minimal
     }
 
 
@@ -83,14 +85,10 @@ type alias ActionData =
 
 data : RouteParams -> Request -> BackendTask.BackendTask FatalError (Server.Response.Response Data ErrorPage)
 data routeParams request =
-    mdText routeParams.lang |> BackendTask.map Server.Response.render
-
-
-mdText : String -> BackendTask.BackendTask FatalError Data
-mdText lang =
-    Content.Minimal.accommodation lang
+    Content.Minimal.accommodation routeParams.lang
         |> BackendTask.allowFatal
-        |> BackendTask.map Data
+        |> BackendTask.map2 Data (I18nUtils.loadLanguage routeParams.lang)
+        |> BackendTask.map Server.Response.render
 
 
 head : RouteBuilder.App Data ActionData RouteParams -> List Head.Tag

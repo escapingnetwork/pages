@@ -15,6 +15,7 @@ import Head
 import Html
 import Html.Attributes as Attrs exposing (height)
 import I18n
+import I18nUtils
 import Layout.Minimal
 import PagesMsg
 import RouteBuilder exposing (App, StatelessRoute)
@@ -53,7 +54,9 @@ pages =
 
 
 type alias Data =
-    { minimal : Content.Minimal.Minimal }
+    { translation : I18n.I18n
+    , minimal : Content.Minimal.Minimal
+    }
 
 
 type alias ActionData =
@@ -64,7 +67,7 @@ data : RouteParams -> BackendTask.BackendTask FatalError Data
 data r =
     Content.Minimal.partners r.lang
         |> BackendTask.allowFatal
-        |> BackendTask.map Data
+        |> BackendTask.map2 Data (I18nUtils.loadLanguage r.lang)
 
 
 head : RouteBuilder.App Data ActionData RouteParams -> List Head.Tag

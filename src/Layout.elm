@@ -4,6 +4,7 @@ module Layout exposing (seoHeaders, view)
 -- import Pages.Url as Url
 -- import Phosphor
 
+import ErrorPage exposing (Msg)
 import Head exposing (Tag)
 import Head.Seo as Seo
 import Html exposing (Html, footer)
@@ -348,77 +349,28 @@ viewMenu path translation showMenu onMenuToggle onLanguageChange =
                     [ Attrs.class "text-2xl font-bold tracking-widest text-gray-900 dark:text-gray-100 mb-2"
                     ]
                     [ Html.text <| Translations.footerLanguage translation ]
-                , Html.div [ Attrs.class "grid grid-flow-col gap-2 text-lg font-bold tracking-widest text-gray-900 dark:text-gray-100" ]
-                    [ Html.div
-                        []
-                        [ Html.button
-                            [ Attrs.class "hover:underline"
-                            , Events.onClick (onLanguageChange Translations.En)
-                            ]
-                            [ Html.a
-                                [ Attrs.href <| changeLanguageUrlPath path Translations.En
-                                , Attrs.hreflang <| Translations.languageToString Translations.En
-                                , if Translations.currentLanguage translation == Translations.En then
-                                    Attrs.class "text-primary-500"
+                , Html.div [ Attrs.class "grid grid-flow-col gap-2 text-lg font-bold tracking-widest text-gray-900 dark:text-gray-100" ] <|
+                    List.map
+                        (\lang ->
+                            Html.div []
+                                [ Html.button
+                                    [ Attrs.class "hover:underline"
+                                    , Events.onClick (onLanguageChange lang)
+                                    ]
+                                    [ Html.a
+                                        [ Attrs.href <| changeLanguageUrlPath path lang
+                                        , Attrs.hreflang <| Translations.languageToString lang
+                                        , if Translations.currentLanguage translation == lang then
+                                            Attrs.class "text-primary-500"
 
-                                  else
-                                    Attrs.class "text-gray-500"
+                                          else
+                                            Attrs.class "text-gray-500"
+                                        ]
+                                        [ Html.text <| String.toUpper <| Translations.languageToString lang ]
+                                    ]
                                 ]
-                                [ Html.text "EN" ]
-                            ]
-                        ]
-                    , Html.div []
-                        [ Html.button
-                            [ Attrs.class "hover:underline"
-                            , Events.onClick (onLanguageChange Translations.Es)
-                            ]
-                            [ Html.a
-                                [ Attrs.href <| changeLanguageUrlPath path Translations.Es
-                                , Attrs.hreflang <| Translations.languageToString Translations.Es
-                                , if Translations.currentLanguage translation == Translations.Es then
-                                    Attrs.class "text-primary-500"
-
-                                  else
-                                    Attrs.class "text-gray-500"
-                                ]
-                                [ Html.text "ES" ]
-                            ]
-                        ]
-                    , Html.div []
-                        [ Html.button
-                            [ Attrs.class "hover:underline"
-                            , Events.onClick (onLanguageChange Translations.Pt)
-                            ]
-                            [ Html.a
-                                [ Attrs.href <| changeLanguageUrlPath path Translations.Pt
-                                , Attrs.hreflang <| Translations.languageToString Translations.Pt
-                                , if Translations.currentLanguage translation == Translations.Pt then
-                                    Attrs.class "text-primary-500"
-
-                                  else
-                                    Attrs.class "text-gray-500"
-                                ]
-                                [ Html.text "PT" ]
-                            ]
-                        ]
-                    , Html.div []
-                        [ Html.button
-                            [ Attrs.class "hover:underline"
-                            , Events.onClick (onLanguageChange Translations.De)
-                            ]
-                            [ Html.a
-                                [ Attrs.href <| changeLanguageUrlPath path Translations.De
-                                , Attrs.hreflang <| Translations.languageToString Translations.De
-                                , if Translations.currentLanguage translation == Translations.De then
-                                    Attrs.class "text-primary-500"
-
-                                  else
-                                    Attrs.class "text-gray-500"
-                                ]
-                                [ Html.text "DE" ]
-                            ]
-                        ]
-                    ]
+                        )
+                        Translations.languages
                 ]
     in
     Html.nav
@@ -490,9 +442,8 @@ view path translation showMenu onMenuToggle onLanguageChange body =
                 [ Attrs.class "flex items-center justify-between py-2"
                 ]
                 [ Html.div [ Attrs.class "text-black" ]
-                    [ Html.a
+                    [ Route.link
                         [ Attrs.attribute "aria-label" Settings.title
-                        , Attrs.href "/"
                         ]
                         [ Html.div
                             [ Attrs.class "flex items-center justify-between"
@@ -504,6 +455,9 @@ view path translation showMenu onMenuToggle onLanguageChange body =
                                 [ Html.text Settings.title ]
                             ]
                         ]
+                        (Route.Lang_
+                            { lang = Translations.languageToString <| Translations.currentLanguage translation }
+                        )
                     ]
                 , viewMenu path translation showMenu onMenuToggle onLanguageChange
                 ]
@@ -528,15 +482,17 @@ footer path translation onLanguageChange =
                 [ Html.div
                     [ Attrs.class "mb-6 md:mb-0"
                     ]
-                    [ Html.a
-                        [ Attrs.href "/"
-                        , Attrs.class "flex items-center"
+                    [ Route.link
+                        [ Attrs.class "flex items-center"
                         ]
                         [ Html.span
                             [ Attrs.class "self-center text-2xl font-semibold whitespace-nowrap text-primary-500 hover:text-primary-600 dark:text-white"
                             ]
                             [ Html.text "Capybara House" ]
                         ]
+                        (Route.Lang_
+                            { lang = Translations.languageToString <| Translations.currentLanguage translation }
+                        )
                     ]
                 , Html.div
                     [ Attrs.class "grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-2"
@@ -625,83 +581,7 @@ footer path translation onLanguageChange =
                                     )
                                 ]
                             ]
-                        , Html.div [ Attrs.class "mt-6" ]
-                            [ Html.h2
-                                [ Attrs.class "mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white"
-                                ]
-                                [ Html.text <| Translations.footerLanguage translation ]
-                            , Html.div [ Attrs.class "grid grid-flow-col align-baseline font-normal" ]
-                                [ Html.div
-                                    []
-                                    [ Html.button
-                                        [ Attrs.class "hover:underline"
-                                        , Events.onClick (onLanguageChange Translations.En)
-                                        ]
-                                        [ Html.a
-                                            [ Attrs.href <| changeLanguageUrlPath path Translations.En
-                                            , Attrs.hreflang <| Translations.languageToString Translations.En
-                                            , if Translations.currentLanguage translation == Translations.En then
-                                                Attrs.class "text-primary-500"
-
-                                              else
-                                                Attrs.class "text-gray-500"
-                                            ]
-                                            [ Html.text "EN" ]
-                                        ]
-                                    ]
-                                , Html.div []
-                                    [ Html.button
-                                        [ Attrs.class "hover:underline"
-                                        , Events.onClick (onLanguageChange Translations.Es)
-                                        ]
-                                        [ Html.a
-                                            [ Attrs.href <| changeLanguageUrlPath path Translations.Es
-                                            , Attrs.hreflang <| Translations.languageToString Translations.Es
-                                            , if Translations.currentLanguage translation == Translations.Es then
-                                                Attrs.class "text-primary-500"
-
-                                              else
-                                                Attrs.class "text-gray-500"
-                                            ]
-                                            [ Html.text "ES" ]
-                                        ]
-                                    ]
-                                , Html.div []
-                                    [ Html.button
-                                        [ Attrs.class "hover:underline"
-                                        , Events.onClick (onLanguageChange Translations.Pt)
-                                        ]
-                                        [ Html.a
-                                            [ Attrs.href <| changeLanguageUrlPath path Translations.Pt
-                                            , Attrs.hreflang <| Translations.languageToString Translations.Pt
-                                            , if Translations.currentLanguage translation == Translations.Pt then
-                                                Attrs.class "text-primary-500"
-
-                                              else
-                                                Attrs.class "text-gray-500"
-                                            ]
-                                            [ Html.text "PT" ]
-                                        ]
-                                    ]
-                                , Html.div []
-                                    [ Html.button
-                                        [ Attrs.class "hover:underline"
-                                        , Events.onClick (onLanguageChange Translations.De)
-                                        ]
-                                        [ Html.a
-                                            [ Attrs.href <| changeLanguageUrlPath path Translations.De
-                                            , Attrs.hreflang <| Translations.languageToString Translations.De
-                                            , if Translations.currentLanguage translation == Translations.De then
-                                                Attrs.class "text-primary-500"
-
-                                              else
-                                                Attrs.class "text-gray-500"
-                                            ]
-                                            [ Html.text "DE" ]
-                                        ]
-                                    ]
-                                ]
-                            ]
+                        , footerLanguages path translation onLanguageChange
                         ]
                     ]
                 ]
@@ -732,6 +612,38 @@ footer path translation onLanguageChange =
         ]
 
 
+footerLanguages : UrlPath.UrlPath -> I18n -> (Language -> msg) -> Html msg
+footerLanguages path translation onLanguageChange =
+    Html.div [ Attrs.class "mt-6" ]
+        [ Html.h2
+            [ Attrs.class "mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white"
+            ]
+            [ Html.text <| Translations.footerLanguage translation ]
+        , Html.div [ Attrs.class "grid grid-flow-col align-baseline font-normal" ] <|
+            List.map
+                (\lang ->
+                    Html.div []
+                        [ Html.button
+                            [ Attrs.class "hover:underline"
+                            , Events.onClick (onLanguageChange lang)
+                            ]
+                            [ Html.a
+                                [ Attrs.href <| changeLanguageUrlPath path lang
+                                , Attrs.hreflang <| Translations.languageToString lang
+                                , if Translations.currentLanguage translation == lang then
+                                    Attrs.class "text-primary-500"
+
+                                  else
+                                    Attrs.class "text-gray-500"
+                                ]
+                                [ Html.text <| String.toUpper <| Translations.languageToString lang ]
+                            ]
+                        ]
+                )
+                Translations.languages
+        ]
+
+
 changeLanguageUrlPath : UrlPath.UrlPath -> Language -> String
 changeLanguageUrlPath path lang =
     let
@@ -747,4 +659,4 @@ changeLanguageUrlPath path lang =
                 toString <| Pages.Url.fromPath <| Translations.languageToString lang :: segments
 
         _ ->
-            toString <| Pages.Url.fromPath path
+            toString <| Pages.Url.fromPath <| Translations.languageToString lang :: segments

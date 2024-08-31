@@ -24,6 +24,7 @@ import Head
 import Html exposing (Html, u)
 import Html.Attributes as Attrs exposing (height)
 import I18n as Translations exposing (..)
+import I18nUtils
 import Json.Encode as Encode
 import Layout.Minimal
 import Pages.Form
@@ -69,7 +70,8 @@ route =
 
 
 type alias Data =
-    { minimal : Content.Minimal.Minimal
+    { translation : I18n
+    , minimal : Content.Minimal.Minimal
     }
 
 
@@ -80,16 +82,12 @@ type alias ActionData =
 
 
 data : RouteParams -> Request -> BackendTask.BackendTask FatalError (Server.Response.Response Data ErrorPage)
-data routeParams request =
-    mdText routeParams.lang
-        |> BackendTask.map Server.Response.render
-
-
-mdText : String -> BackendTask.BackendTask FatalError Data
-mdText lang =
-    Content.Minimal.support lang
+data r request =
+    Content.Minimal.support r.lang
         |> BackendTask.allowFatal
-        |> BackendTask.map Data
+        |> BackendTask.map2 Data
+            (I18nUtils.loadLanguage r.lang)
+        |> BackendTask.map Server.Response.render
 
 
 head : RouteBuilder.App Data ActionData RouteParams -> List Head.Tag
@@ -248,7 +246,7 @@ view app shared =
     , body =
         [ Html.div [ Attrs.class "mx-auto prose max-w-none pb-8 pt-8 dark:prose-invert xl:col-span-2 xl:max-w-5xl xl:px-0" ]
             [ Layout.Minimal.view app.data.minimal
-            , form (Just shared.i18n)
+            , form (Just app.data.translation)
                 |> Pages.Form.renderHtml
                     [ Attrs.class "max-w-sm mx-auto"
                     ]

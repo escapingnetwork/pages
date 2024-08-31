@@ -10,15 +10,12 @@ module Content.Services exposing
 import Array
 import Array.Extra
 import BackendTask exposing (BackendTask)
-import BackendTask.Env
 import BackendTask.File as File
 import BackendTask.Glob as Glob
 import Dict exposing (Dict)
 import FatalError exposing (FatalError)
-import I18n as Translations exposing (..)
 import Json.Decode as Decode exposing (Decoder)
 import Json.Decode.Extra as Decode
-import List.Extra
 import String.Normalize
 
 

@@ -7,6 +7,7 @@ import FatalError exposing (FatalError)
 import Html exposing (Html)
 import Http
 import I18n as Translations exposing (..)
+import I18nUtils
 import Layout
 import List.Extra
 import Pages.Flags
@@ -36,7 +37,7 @@ type Msg
 
 
 type alias Data =
-    { baseUrl : String }
+    ()
 
 
 type SharedMsg
@@ -76,7 +77,7 @@ init _ pageData =
 
         model =
             { showMenu = False
-            , i18n = Translations.init { lang = lang, path = "https://capybara.house" ++ "/i18n" }
+            , i18n = Translations.init { lang = lang, path = "http://localhost:1234" ++ "/i18n" }
             , language = lang
             }
     in
@@ -136,9 +137,7 @@ subscriptions _ _ =
 
 data : BackendTask FatalError Data
 data =
-    Env.get "BASE_URL"
-        |> BackendTask.map (Maybe.withDefault "http://localhost:1234")
-        |> BackendTask.map Data
+    BackendTask.succeed ()
 
 
 view :
@@ -151,7 +150,7 @@ view :
     -> (Msg -> msg)
     -> View msg
     -> { body : List (Html msg), title : String }
-view _ { path, route } model toMsg pageView =
+view app { path, route } model toMsg pageView =
     { body = Layout.view path model.i18n model.showMenu (toMsg MenuClicked) (\lang -> toMsg (ChangeLanguage lang)) pageView.body
     , title = pageView.title
     }

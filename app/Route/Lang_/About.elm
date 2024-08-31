@@ -6,6 +6,7 @@ import FatalError exposing (FatalError)
 import Head
 import Head.Seo as Seo
 import I18n exposing (I18n)
+import I18nUtils
 import Layout.About
 import Pages.Url
 import PagesMsg exposing (PagesMsg)
@@ -28,7 +29,9 @@ type alias RouteParams =
 
 
 type alias Data =
-    { author : Author }
+    { translation : I18n
+    , author : Author
+    }
 
 
 type alias ActionData =
@@ -54,7 +57,8 @@ data : RouteParams -> BackendTask.BackendTask FatalError Data
 data r =
     Content.About.defaultAuthor r.lang
         |> BackendTask.allowFatal
-        |> BackendTask.map Data
+        |> BackendTask.map2 Data
+            (I18nUtils.loadLanguage r.lang)
 
 
 head :
@@ -71,7 +75,7 @@ view :
 view app model =
     { title = "Capybara House - About"
     , body =
-        [ Layout.About.view model.i18n
+        [ Layout.About.view app.data.translation
             (case model.language of
                 I18n.En ->
                     app.data.author

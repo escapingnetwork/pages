@@ -7,6 +7,8 @@ import Head
 import Head.Seo as Seo
 import Html
 import Html.Attributes as Attrs
+import I18n exposing (I18n)
+import I18nUtils
 import LanguageTag.Language as Language
 import LanguageTag.Region as Region
 import Layout
@@ -34,7 +36,7 @@ type alias RouteParams =
 
 
 type alias Data =
-    { blogpostMetadata : List Metadata
+    { translation : I18n
     }
 
 
@@ -53,8 +55,8 @@ route =
 
 data : BackendTask FatalError Data
 data =
-    Content.Blogpost.allBlogposts
-        |> BackendTask.map (\allBlogposts -> List.map .metadata allBlogposts |> (\allMetadata -> { blogpostMetadata = allMetadata }))
+    I18nUtils.loadLanguage "en"
+        |> BackendTask.map Data
 
 
 head :
@@ -71,11 +73,6 @@ view :
 view app model =
     { title = Settings.title
     , body =
-        --TODO move to layout part
-        [ -- [ Html.div [ Attrs.class "space-y-2 pb-8 pt-6 md:space-y-5" ]
-          --     [ Html.h1 [ Attrs.class "text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14" ] [ Html.text "Latest" ]
-          --     , Html.p [ Attrs.class "text-lg leading-7 text-gray-500 dark:text-gray-400" ] [ Html.text Settings.subtitle ]
-          --     ]
-          Html.div [ Attrs.class "mx-auto" ] <| [ Layout.Home.view model.i18n ] -- List.map Layout.Blogpost.viewListItem app.data.blogpostMetadata
+        [ Html.div [ Attrs.class "mx-auto" ] <| [ Layout.Home.view app.data.translation ] -- List.map Layout.Blogpost.viewListItem app.data.blogpostMetadata
         ]
     }

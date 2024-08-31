@@ -1,13 +1,16 @@
 module Route.Lang_ exposing (ActionData, Data, Model, Msg, RouteParams, route)
 
 import BackendTask exposing (BackendTask)
+import BackendTask.Http
 import Content.Blogpost exposing (Metadata)
 import FatalError exposing (FatalError)
 import Head
 import Head.Seo as Seo
 import Html
 import Html.Attributes as Attrs
+import Http
 import I18n
+import I18nUtils
 import LanguageTag.Language as Language
 import LanguageTag.Region as Region
 import Layout
@@ -35,7 +38,7 @@ type alias RouteParams =
 
 
 type alias Data =
-    {}
+    { translation : I18n.I18n }
 
 
 type alias ActionData =
@@ -59,7 +62,8 @@ pages =
 
 data : RouteParams -> BackendTask FatalError Data
 data r =
-    BackendTask.succeed {}
+    I18nUtils.loadLanguage r.lang
+        |> BackendTask.map Data
 
 
 head :
@@ -81,6 +85,6 @@ view app model =
           --     [ Html.h1 [ Attrs.class "text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14" ] [ Html.text "Latest" ]
           --     , Html.p [ Attrs.class "text-lg leading-7 text-gray-500 dark:text-gray-400" ] [ Html.text Settings.subtitle ]
           --     ]
-          Html.div [ Attrs.class "mx-auto" ] <| [ Layout.Home.view model.i18n ] -- List.map Layout.Blogpost.viewListItem app.data.blogpostMetadata
+          Html.div [ Attrs.class "mx-auto" ] <| [ Layout.Home.view app.data.translation ] -- List.map Layout.Blogpost.viewListItem app.data.blogpostMetadata
         ]
     }
