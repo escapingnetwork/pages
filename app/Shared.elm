@@ -1,13 +1,11 @@
 module Shared exposing (Data, Model, Msg(..), SharedMsg(..), template)
 
 import BackendTask exposing (BackendTask)
-import BackendTask.Env as Env
 import Effect exposing (Effect)
 import FatalError exposing (FatalError)
 import Html exposing (Html)
 import Http
 import I18n as Translations exposing (..)
-import I18nUtils
 import Layout
 import List.Extra
 import Pages.Flags

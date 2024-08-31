@@ -1,4 +1,7 @@
-module Route.Support exposing (..)
+module Route.Support exposing
+    ( Model, Msg, RouteParams, route, Data, ActionData
+    , Contact, EnvVariables
+    )
 
 {-|
 
@@ -8,11 +11,9 @@ module Route.Support exposing (..)
 
 import BackendTask
 import BackendTask.Env as Env
-import BackendTask.Http exposing (emptyBody, jsonBody)
+import BackendTask.Http exposing (jsonBody)
 import Content.Minimal
-import Date exposing (Date)
 import Dict
-import Effect
 import ErrorPage exposing (ErrorPage)
 import FatalError exposing (FatalError)
 import Form
@@ -21,22 +22,18 @@ import Form.FieldView
 import Form.Handler
 import Form.Validation as Validation
 import Head
-import Html exposing (Html, u)
-import Html.Attributes as Attrs exposing (height)
+import Html exposing (Html)
+import Html.Attributes as Attrs
 import I18n as Translations exposing (..)
 import Json.Encode as Encode
 import Layout.Minimal
 import Pages.Form
-import Pages.FormData
 import PagesMsg exposing (PagesMsg)
-import Phosphor exposing (userRectangle)
 import Route
 import RouteBuilder exposing (App, StatelessRoute)
 import Server.Request as Request exposing (Request)
 import Server.Response
 import Shared
-import Time
-import UrlPath
 import View
 
 
@@ -349,24 +346,22 @@ sendRequest formResponse userResult envVariables =
             )
         )
         |> BackendTask.onError
-            (\{ recoverable } ->
-                case recoverable of
-                    _ ->
-                        BackendTask.succeed
-                            (ActionData
-                                emptyForm
-                                { formResponse | serverSideErrors = Dict.singleton "ERROR" [ "ERROR" ] }
-                            )
+            (\_ ->
+                BackendTask.succeed
+                    (ActionData
+                        emptyForm
+                        { formResponse | serverSideErrors = Dict.singleton "ERROR" [ "ERROR" ] }
+                    )
             )
         |> BackendTask.map
             (\response ->
-                let
-                    contact =
-                        userResult
-                            |> Form.toResult
-                            |> Result.withDefault emptyForm
-                in
                 if Dict.isEmpty response.formResponse.serverSideErrors then
+                    let
+                        contact =
+                            userResult
+                                |> Form.toResult
+                                |> Result.withDefault emptyForm
+                    in
                     Route.Support__Support_
                         { support = contact.forename }
                         |> Route.redirectTo

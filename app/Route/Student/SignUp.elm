@@ -1,4 +1,7 @@
-module Route.Student.SignUp exposing (..)
+module Route.Student.SignUp exposing
+    ( Model, Msg, RouteParams, route, Data, ActionData
+    , Accommodation, EnvVariables, Service(..), Sex(..)
+    )
 
 {-|
 
@@ -8,29 +11,27 @@ module Route.Student.SignUp exposing (..)
 
 import BackendTask
 import BackendTask.Env as Env
-import BackendTask.Http exposing (emptyBody, jsonBody)
+import BackendTask.Http exposing (jsonBody)
 import Content.Minimal
 import Countries
 import Date exposing (Date)
 import Dict
-import Effect
 import ErrorPage exposing (ErrorPage)
 import FatalError exposing (FatalError)
-import Form exposing (ServerResponse)
+import Form
 import Form.Field as Field
 import Form.FieldView
 import Form.Handler
 import Form.Validation as Validation
 import Head
 import Html exposing (Html)
-import Html.Attributes as Attrs exposing (height)
+import Html.Attributes as Attrs
 import Html.Attributes.Autocomplete exposing (DetailedCompletion(..))
 import I18n as Translations
 import Json.Encode as Encode
 import Json.Encode.Extra as EncodeExtra
 import Layout.Minimal
 import Pages.Form
-import Pages.FormData
 import PagesMsg exposing (PagesMsg)
 import Route
 import RouteBuilder exposing (App, StatelessRoute)
@@ -38,7 +39,6 @@ import Server.Request as Request exposing (Request)
 import Server.Response
 import Shared
 import Time
-import UrlPath
 import View
 
 
@@ -528,19 +528,11 @@ sendRequest formResponse userResult envVariables =
             (\{ recoverable } ->
                 case recoverable of
                     BackendTask.Http.BadStatus metadata string ->
-                        if metadata.statusCode == 401 || metadata.statusCode == 403 || metadata.statusCode == 404 then
-                            BackendTask.succeed
-                                (ActionData
-                                    emptyForm
-                                    { formResponse | serverSideErrors = Dict.singleton string [ metadata.statusText ] }
-                                )
-
-                        else
-                            BackendTask.succeed
-                                (ActionData
-                                    emptyForm
-                                    { formResponse | serverSideErrors = Dict.singleton string [ metadata.statusText ] }
-                                )
+                        BackendTask.succeed
+                            (ActionData
+                                emptyForm
+                                { formResponse | serverSideErrors = Dict.singleton string [ metadata.statusText ] }
+                            )
 
                     _ ->
                         BackendTask.succeed

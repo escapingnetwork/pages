@@ -8,21 +8,16 @@ module Route.Lang_.Partner.SignUp exposing (Model, Msg, RouteParams, route, Data
 
 import BackendTask
 import Content.Minimal
-import Effect
-import ErrorPage
 import FatalError exposing (FatalError)
 import Head
 import Html
-import Html.Attributes as Attrs exposing (height)
+import Html.Attributes as Attrs
 import I18n
 import I18nUtils
 import Layout.Minimal
 import PagesMsg
 import RouteBuilder exposing (App, StatelessRoute)
-import Server.Request
-import Server.Response
 import Shared
-import UrlPath
 import View
 
 
@@ -86,11 +81,3 @@ view app shared =
             [ Layout.Minimal.view app.data.minimal ]
         ]
     }
-
-
-action :
-    RouteParams
-    -> Server.Request.Request
-    -> BackendTask.BackendTask FatalError.FatalError (Server.Response.Response ActionData ErrorPage.ErrorPage)
-action routeParams request =
-    BackendTask.succeed (Server.Response.render {})

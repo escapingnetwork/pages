@@ -8,18 +8,12 @@ module Route.Booking.TermsAndConditions exposing (Model, Msg, RouteParams, route
 
 import BackendTask
 import Content.Minimal
-import Effect
-import ErrorPage
 import FatalError exposing (FatalError)
 import Head
-import Html
 import Layout.Minimal
 import PagesMsg
-import RouteBuilder exposing (App, StatelessRoute)
-import Server.Request
-import Server.Response
+import RouteBuilder exposing (App)
 import Shared
-import UrlPath
 import View
 
 
@@ -42,11 +36,6 @@ route =
         , data = data
         }
         |> RouteBuilder.buildNoState { view = view }
-
-
-subscriptions : RouteParams -> UrlPath.UrlPath -> Shared.Model -> Model -> Sub Msg
-subscriptions routeParams path shared model =
-    Sub.none
 
 
 type alias Data =
@@ -75,11 +64,3 @@ view :
     -> View.View (PagesMsg.PagesMsg Msg)
 view app _ =
     { title = "Capybara House - Privacy Policy", body = [ Layout.Minimal.view app.data.minimal ] }
-
-
-action :
-    RouteParams
-    -> Server.Request.Request
-    -> BackendTask.BackendTask FatalError.FatalError (Server.Response.Response ActionData ErrorPage.ErrorPage)
-action routeParams request =
-    BackendTask.succeed (Server.Response.render {})

@@ -10,10 +10,9 @@ import BackendTask
 import Content.Minimal
 import Effect exposing (Effect)
 import ErrorPage
-import FatalError exposing (FatalError)
-import Head
+import FatalError
 import Html
-import Html.Attributes as Attrs exposing (height)
+import Html.Attributes as Attrs
 import I18n as Translations
 import I18nUtils
 import Layout.Minimal
@@ -22,7 +21,6 @@ import RouteBuilder exposing (App, StatefulRoute)
 import Server.Request
 import Server.Response
 import Shared
-import UrlPath
 import View
 
 
@@ -67,9 +65,7 @@ update :
     -> Model
     -> ( Model, Effect Msg )
 update app shared msg model =
-    case msg of
-        _ ->
-            ( model, Effect.none )
+    ( model, Effect.none )
 
 
 type alias Data =
@@ -88,11 +84,6 @@ data routeParams request =
         |> BackendTask.allowFatal
         |> BackendTask.map2 Data (I18nUtils.loadLanguage routeParams.lang)
         |> BackendTask.map Server.Response.render
-
-
-head : RouteBuilder.App Data ActionData RouteParams -> List Head.Tag
-head app =
-    []
 
 
 view :

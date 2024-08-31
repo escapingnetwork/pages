@@ -2,7 +2,6 @@ module Layout.Service exposing
     ( viewLangListItem
     , viewListItem
     , viewService
-    , viewServiceList
     )
 
 import Content.Services exposing (Metadata, Service)
@@ -12,8 +11,6 @@ import Html.Extra
 import I18n as Translations exposing (..)
 import Layout.Markdown as Markdown
 import Route
-import Svg exposing (path, svg)
-import Svg.Attributes as SvgAttr
 
 
 
@@ -153,37 +150,6 @@ viewService translation { metadata, body, previousService, nextService } =
         ]
 
 
-viewServiceMetadata : Metadata -> Html msg
-viewServiceMetadata metadata =
-    Html.article
-        [ Attrs.class "space-y-2 flex flex-col xl:space-y-0"
-        ]
-        [ Html.div
-            [ Attrs.class "space-y-3"
-            ]
-            [ Html.div []
-                [ Html.h2
-                    [ Attrs.class "text-2xl font-bold leading-8 tracking-tight"
-                    ]
-                    [ Route.Services__Slug_ { slug = metadata.slug }
-                        |> Route.link
-                            [ Attrs.class "text-gray-900 hover:underline decoration-primary-600 dark:text-gray-100"
-                            ]
-                            [ Html.text metadata.title ]
-                    ]
-                ]
-            , Html.Extra.viewMaybe
-                (\description ->
-                    Html.div
-                        [ Attrs.class "prose max-w-none text-gray-500 dark:text-gray-400"
-                        ]
-                        [ Html.text description ]
-                )
-                metadata.description
-            ]
-        ]
-
-
 viewListItem : I18n -> Metadata -> Html.Html msg
 viewListItem translation metadata =
     Html.div
@@ -272,32 +238,3 @@ viewLangListItem translation metadata =
                     [ Html.text <| Translations.servicesReadmore translation ++ "..." ]
             ]
         ]
-
-
-viewServiceList : List Metadata -> List (Html msg)
-viewServiceList metadata =
-    let
-        header =
-            Html.h1
-                [ Attrs.class "sm:hidden text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14"
-                ]
-                [ Html.text "All Posts" ]
-
-        allPostsLink =
-            Html.h3
-                [ Attrs.class "text-primary-700 dark:text-primary-500 font-bold uppercase"
-                ]
-                [ Html.text "All Posts" ]
-    in
-    [ Html.div [ Attrs.class "pb-6 pt-6" ] [ header ]
-    , Html.div [ Attrs.class "flex sm:space-x-2 md:space-x-12" ]
-        [ Html.div [ Attrs.class "hidden max-h-screen h-full sm:flex flex-wrap bg-gray-50 dark:bg-gray-900/70 shadow-md pt-5 dark:shadow-gray-800/40 rounded min-w-[280px] max-w-[280px] overflow-auto" ]
-            [ Html.div
-                [ Attrs.class "py-4 px-6"
-                ]
-                [ allPostsLink
-                ]
-            ]
-        , Html.div [] [ Html.ul [] <| List.map (\article -> Html.li [ Attrs.class "py-5" ] [ viewServiceMetadata article ]) metadata ]
-        ]
-    ]

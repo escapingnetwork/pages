@@ -8,25 +8,17 @@ module Route.Lang_.Services exposing (Model, Msg, RouteParams, route, Data, Acti
 
 import BackendTask exposing (BackendTask)
 import Content.Services exposing (Metadata)
-import Effect exposing (Effect)
 import FatalError exposing (FatalError)
 import Head
-import Head.Seo as Seo
 import Html
 import Html.Attributes as Attrs
 import I18n as Translations exposing (..)
 import I18nUtils
-import LanguageTag.Language as Language
-import LanguageTag.Region as Country
 import Layout
-import Layout.Home
 import Layout.Service
-import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
-import Settings
 import Shared
-import UrlPath
 import View exposing (View)
 
 
@@ -51,14 +43,6 @@ type alias Data =
 
 type alias ActionData =
     {}
-
-
-init :
-    RouteBuilder.App Data ActionData RouteParams
-    -> Shared.Model
-    -> ( Model, Effect.Effect Msg )
-init app shared =
-    ( {}, Effect.none )
 
 
 pages : BackendTask FatalError (List RouteParams)

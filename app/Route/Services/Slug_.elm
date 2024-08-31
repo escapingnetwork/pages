@@ -8,17 +8,12 @@ module Route.Services.Slug_ exposing (Model, Msg, RouteParams, route, Data, Acti
 
 import BackendTask exposing (BackendTask)
 import Content.Services exposing (Service)
-import Effect
-import ErrorPage
 import FatalError exposing (FatalError)
 import Head
 import Layout.Service
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
-import Server.Request
-import Server.Response
 import Shared
-import UrlPath
 import View exposing (View)
 
 
@@ -53,19 +48,6 @@ pages =
             )
 
 
-init :
-    RouteBuilder.App Data ActionData RouteParams
-    -> Shared.Model
-    -> ( Model, Effect.Effect Msg )
-init app shared =
-    ( {}, Effect.none )
-
-
-subscriptions : RouteParams -> UrlPath.UrlPath -> Shared.Model -> Model -> Sub Msg
-subscriptions routeParams path shared model =
-    Sub.none
-
-
 type alias Data =
     { service : Service
     }
@@ -94,11 +76,3 @@ view app model =
     { title = "Capybara House - " ++ app.data.service.metadata.title
     , body = [ Layout.Service.viewService model.i18n app.data.service ]
     }
-
-
-action :
-    RouteParams
-    -> Server.Request.Request
-    -> BackendTask.BackendTask FatalError.FatalError (Server.Response.Response ActionData ErrorPage.ErrorPage)
-action routeParams request =
-    BackendTask.succeed (Server.Response.render {})

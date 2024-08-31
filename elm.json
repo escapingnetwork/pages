@@ -26,7 +26,6 @@
             "elm-community/html-extra": "3.4.0",
             "elm-community/json-extra": "4.3.0",
             "elm-community/list-extra": "8.7.0",
-            "gribouille/elm-select-tailwind": "1.2.0",
             "justinmimbs/date": "4.0.1",
             "kuon/elm-string-normalize": "1.0.5",
             "pablohirafuji/elm-syntax-highlight": "3.5.0",

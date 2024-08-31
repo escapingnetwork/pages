@@ -4,21 +4,19 @@ module Layout exposing (seoHeaders, view)
 -- import Pages.Url as Url
 -- import Phosphor
 
-import ErrorPage exposing (Msg)
 import Head exposing (Tag)
 import Head.Seo as Seo
-import Html exposing (Html, footer)
+import Html exposing (Html)
 import Html.Attributes as Attrs
 import Html.Events as Events
 import I18n as Translations exposing (..)
 import LanguageTag.Language as Language
 import LanguageTag.Region as Region
-import List exposing (length)
-import List.Extra
+import List
 import Pages.Url exposing (fromPath, toString)
 import Route exposing (Route)
 import Settings
-import Svg exposing (path)
+import Svg
 import Svg.Attributes as SvgAttr
 import UrlPath
 
@@ -286,48 +284,6 @@ viewSideMainMenuItem onMenuToggle translation { label, route } =
             )
             [ Html.text label ]
             route
-        ]
-
-
-background : Html msg
-background =
-    Html.div
-        [ Attrs.class "absolute z-20 top-0 inset-x-0 flex justify-center overflow-hidden pointer-events-none"
-        ]
-        [ Html.div
-            [ Attrs.class "w-[108rem] flex-none flex justify-end"
-            ]
-            [ Html.node "picture"
-                []
-                [ Html.source
-                    [ Attrs.attribute "srcset" "/media/docs@30.8b9a76a2.avif"
-                    , Attrs.type_ "image/avif"
-                    ]
-                    []
-                , Html.img
-                    [ Attrs.src "/media/docs@tinypng.d9e4dcdc.png"
-                    , Attrs.alt ""
-                    , Attrs.class "w-[71.75rem] flex-none max-w-none dark:hidden"
-                    , Attrs.attribute "decoding" "async"
-                    ]
-                    []
-                ]
-            , Html.node "picture"
-                []
-                [ Html.source
-                    [ Attrs.attribute "srcset" "/media/docs-dark@30.1a9f8cbf.avif"
-                    , Attrs.type_ "image/avif"
-                    ]
-                    []
-                , Html.img
-                    [ Attrs.src "/media/docs-dark@tinypng.1bbe175e.png"
-                    , Attrs.alt ""
-                    , Attrs.class "w-[90rem] flex-none max-w-none hidden dark:block"
-                    , Attrs.attribute "decoding" "async"
-                    ]
-                    []
-                ]
-            ]
         ]
 
 

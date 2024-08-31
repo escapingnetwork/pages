@@ -8,19 +8,13 @@ module Route.Lang_.Booking.TermsAndConditions exposing (Model, Msg, RouteParams,
 
 import BackendTask
 import Content.Minimal
-import Effect
-import ErrorPage
 import FatalError exposing (FatalError)
 import Head
-import Html
 import I18n
 import Layout.Minimal
 import PagesMsg
 import RouteBuilder exposing (App, StatelessRoute)
-import Server.Request
-import Server.Response
 import Shared
-import UrlPath
 import View
 
 
@@ -51,11 +45,6 @@ pages =
     BackendTask.succeed <| List.map (\lang -> I18n.languageToString lang |> RouteParams) I18n.languages
 
 
-subscriptions : RouteParams -> UrlPath.UrlPath -> Shared.Model -> Model -> Sub Msg
-subscriptions routeParams path shared model =
-    Sub.none
-
-
 type alias Data =
     { minimal : Content.Minimal.Minimal }
 
@@ -82,11 +71,3 @@ view :
     -> View.View (PagesMsg.PagesMsg Msg)
 view app _ =
     { title = "Capybara House - Privacy Policy", body = [ Layout.Minimal.view app.data.minimal ] }
-
-
-action :
-    RouteParams
-    -> Server.Request.Request
-    -> BackendTask.BackendTask FatalError.FatalError (Server.Response.Response ActionData ErrorPage.ErrorPage)
-action routeParams request =
-    BackendTask.succeed (Server.Response.render {})

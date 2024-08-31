@@ -2,7 +2,6 @@ module Content.Minimal exposing (Minimal, accommodation, completeRegistration, h
 
 import BackendTask exposing (BackendTask)
 import BackendTask.File as File
-import BackendTask.Glob as Glob
 import FatalError exposing (FatalError)
 import Json.Decode as Decode
 
@@ -13,24 +12,6 @@ type alias Minimal =
     , company : String
     , slug : String
     }
-
-
-minimalFiles : BackendTask error (List { filePath : String, language : String, slug : String })
-minimalFiles =
-    Glob.succeed
-        (\filePath language fileName ->
-            { filePath = filePath
-            , language = language
-            , slug = fileName
-            }
-        )
-        |> Glob.captureFilePath
-        |> Glob.match (Glob.literal "content/")
-        |> Glob.capture Glob.wildcard
-        |> Glob.match (Glob.literal "/")
-        |> Glob.capture Glob.wildcard
-        |> Glob.match (Glob.literal ".md")
-        |> Glob.toBackendTask
 
 
 minimalDecoder : String -> String -> Decode.Decoder Minimal

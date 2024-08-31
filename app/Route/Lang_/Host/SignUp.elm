@@ -1,4 +1,7 @@
-module Route.Lang_.Host.SignUp exposing (Model, Msg, RouteParams, route, Data, ActionData)
+module Route.Lang_.Host.SignUp exposing
+    ( Model, Msg, RouteParams, route, Data, ActionData
+    , ContactMethod, Host, Service
+    )
 
 {-|
 
@@ -8,10 +11,9 @@ module Route.Lang_.Host.SignUp exposing (Model, Msg, RouteParams, route, Data, A
 
 import BackendTask
 import BackendTask.Env as Env
-import BackendTask.Http exposing (emptyBody, jsonBody)
+import BackendTask.Http exposing (jsonBody)
 import Content.Minimal
 import Dict
-import Effect
 import ErrorPage exposing (ErrorPage)
 import FatalError exposing (FatalError)
 import Form
@@ -21,10 +23,9 @@ import Form.Handler
 import Form.Validation as Validation
 import Head
 import Html exposing (Html)
-import Html.Attributes as Attrs exposing (height)
+import Html.Attributes as Attrs
 import I18n as Translations
 import Json.Encode as Encode
-import Json.Encode.Extra as EncodeExtra
 import Layout.Minimal
 import Pages.Form
 import PagesMsg exposing (PagesMsg)
@@ -33,7 +34,6 @@ import RouteBuilder exposing (App, StatelessRoute)
 import Server.Request as Request exposing (Request)
 import Server.Response
 import Shared
-import UrlPath
 import View
 
 
@@ -443,14 +443,12 @@ sendRequest lang formResponse userResult envVariables =
             )
         )
         |> BackendTask.onError
-            (\{ recoverable } ->
-                case recoverable of
-                    _ ->
-                        BackendTask.succeed
-                            (ActionData
-                                emptyForm
-                                { formResponse | serverSideErrors = Dict.singleton "ERROR" [ "ERROR" ] }
-                            )
+            (\_ ->
+                BackendTask.succeed
+                    (ActionData
+                        emptyForm
+                        { formResponse | serverSideErrors = Dict.singleton "ERROR" [ "ERROR" ] }
+                    )
             )
     )
         |> BackendTask.map

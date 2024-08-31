@@ -10,21 +10,14 @@ import BackendTask exposing (BackendTask)
 import Content.Services exposing (Metadata)
 import FatalError exposing (FatalError)
 import Head
-import Head.Seo as Seo
 import Html
 import Html.Attributes as Attrs
-import I18n as Translations exposing (..)
-import LanguageTag.Language as Language
-import LanguageTag.Region as Country
+import I18n as Translations
 import Layout
-import Layout.Home
 import Layout.Service
-import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
-import Settings
 import Shared
-import UrlPath
 import View exposing (View)
 
 

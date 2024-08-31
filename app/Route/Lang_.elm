@@ -1,27 +1,18 @@
 module Route.Lang_ exposing (ActionData, Data, Model, Msg, RouteParams, route)
 
 import BackendTask exposing (BackendTask)
-import BackendTask.Http
-import Content.Blogpost exposing (Metadata)
 import FatalError exposing (FatalError)
 import Head
-import Head.Seo as Seo
 import Html
 import Html.Attributes as Attrs
-import Http
 import I18n
 import I18nUtils
-import LanguageTag.Language as Language
-import LanguageTag.Region as Region
 import Layout
-import Layout.Blogpost
 import Layout.Home
-import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
 import Settings
 import Shared
-import UrlPath
 import View exposing (View)
 
 

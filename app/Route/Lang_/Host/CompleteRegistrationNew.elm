@@ -1,4 +1,7 @@
-module Route.Lang_.Host.CompleteRegistrationNew exposing (Model, Msg, RouteParams, route, Data, ActionData)
+module Route.Lang_.Host.CompleteRegistrationNew exposing
+    ( Model, Msg, RouteParams, route, Data, ActionData
+    , Host
+    )
 
 {-|
 
@@ -7,35 +10,22 @@ module Route.Lang_.Host.CompleteRegistrationNew exposing (Model, Msg, RouteParam
 -}
 
 import BackendTask
-import BackendTask.Env as Env
-import BackendTask.Http exposing (emptyBody, jsonBody)
 import Content.Minimal
 import Dict
-import Effect
-import ErrorPage
 import FatalError exposing (FatalError)
 import Form
 import Form.Field as Field
 import Form.FieldView
-import Form.Handler
 import Form.Validation as Validation
 import Head
-import Html exposing (Html, address)
-import Html.Attributes as Attrs exposing (height)
-import Html.Attributes.Autocomplete exposing (DetailedCompletion(..))
+import Html exposing (Html)
+import Html.Attributes as Attrs
 import I18n
-import Json.Encode as Encode
-import Json.Encode.Extra as EncodeExtra
-import LanguageTag.Region exposing (ci)
 import Layout.Minimal
 import Pages.Form
 import PagesMsg exposing (PagesMsg)
-import Route
 import RouteBuilder exposing (App, StatelessRoute)
-import Server.Request as Request exposing (Request)
-import Server.Response
 import Shared
-import UrlPath
 import View
 
 
@@ -49,12 +39,6 @@ type alias Msg =
 
 type alias RouteParams =
     { lang : String }
-
-
-type alias EnvVariables =
-    { supabaseKey : String
-    , siteUrl : String
-    }
 
 
 route : StatelessRoute RouteParams Data ActionData
@@ -93,76 +77,6 @@ data r =
 head : RouteBuilder.App Data ActionData RouteParams -> List Head.Tag
 head app =
     []
-
-
-type ContactMethod
-    = Email
-    | Phone
-    | WhatsApp
-
-
-contactMethodToString : ContactMethod -> String
-contactMethodToString contactMethod =
-    case contactMethod of
-        Email ->
-            "Email"
-
-        Phone ->
-            "Phone"
-
-        WhatsApp ->
-            "WhatsApp"
-
-
-maybeContactMethodToString : Maybe ContactMethod -> String
-maybeContactMethodToString contactMethod =
-    case contactMethod of
-        Just Email ->
-            "Email"
-
-        Just Phone ->
-            "Phone"
-
-        Just WhatsApp ->
-            "WhatsApp"
-
-        _ ->
-            ""
-
-
-type Service
-    = HalfBoard
-    | SelfCatering
-    | Hostel
-
-
-serviceToString : Service -> String
-serviceToString service =
-    case service of
-        HalfBoard ->
-            "Half-Board"
-
-        SelfCatering ->
-            "Self-Catering"
-
-        Hostel ->
-            "Hostel"
-
-
-maybeServiceToString : Maybe Service -> String
-maybeServiceToString service =
-    case service of
-        Just HalfBoard ->
-            "Half-Board"
-
-        Just SelfCatering ->
-            "Self-Catering"
-
-        Just Hostel ->
-            "Hostel"
-
-        _ ->
-            ""
 
 
 type alias Host =
@@ -369,87 +283,3 @@ view app shared =
             ]
         ]
     }
-
-
-action :
-    RouteParams
-    -> Request.Request
-    -> BackendTask.BackendTask FatalError.FatalError (Server.Response.Response ActionData ErrorPage.ErrorPage)
-action routeParams request =
-    case request |> Request.formData (form |> Form.Handler.init identity) of
-        Nothing ->
-            "Expected form submission."
-                |> FatalError.fromString
-                |> BackendTask.fail
-
-        Just ( formResponse, userResult ) ->
-            BackendTask.map2 EnvVariables
-                (Env.expect "SUPABASE_KEY" |> BackendTask.allowFatal)
-                (Env.get "SUPABASE_URL"
-                    |> BackendTask.map (Maybe.withDefault "http://localhost:1234")
-                )
-                |> BackendTask.andThen (sendRequest formResponse userResult)
-
-
-hostRequestToJSON : Host -> Encode.Value
-hostRequestToJSON hostRequest =
-    Encode.object
-        [ ( "email", Encode.string hostRequest.email )
-        ]
-
-
-sendRequest : Form.ServerResponse String -> Form.Validated String Host -> EnvVariables -> BackendTask.BackendTask FatalError.FatalError (Server.Response.Response ActionData ErrorPage.ErrorPage)
-sendRequest formResponse userResult envVariables =
-    let
-        host =
-            userResult
-                |> Form.toResult
-                |> Result.withDefault emptyForm
-
-        requestBody =
-            hostRequestToJSON
-                host
-                |> jsonBody
-
-        param =
-            "?email=eq." ++ host.email
-    in
-    BackendTask.Http.request
-        { method = "POST"
-        , headers =
-            [ ( "Content-Type", "application/json" )
-            , ( "Prefer", "return=minimal" )
-            , ( "apikey", envVariables.supabaseKey )
-            , ( "Authorization", "Bearer " ++ envVariables.supabaseKey )
-            ]
-        , url = envVariables.siteUrl ++ "/rest/v1/host_form" ++ param
-        , body = requestBody
-        , retries = Nothing
-        , timeoutInMs = Nothing
-        }
-        (BackendTask.Http.expectWhatever
-            (ActionData
-                emptyForm
-                formResponse
-            )
-        )
-        |> BackendTask.onError
-            (\{ recoverable } ->
-                case recoverable of
-                    _ ->
-                        BackendTask.succeed
-                            (ActionData
-                                emptyForm
-                                { formResponse | serverSideErrors = Dict.singleton "ERROR" [ "ERROR" ] }
-                            )
-            )
-        |> BackendTask.map
-            (\response ->
-                if Dict.isEmpty response.formResponse.serverSideErrors then
-                    Route.Host__SignUp_
-                        { signUp = host.email }
-                        |> Route.redirectTo
-
-                else
-                    Server.Response.render response
-            )

@@ -1,6 +1,5 @@
 module Settings exposing
-    ( author
-    , canonicalUrl
+    ( canonicalUrl
     , locale
     , subtitle
     , title
@@ -28,8 +27,3 @@ title =
 subtitle : String
 subtitle =
     "Accommodation Solutions for Students in Dublin"
-
-
-author : String
-author =
-    "Tranquera LLC"

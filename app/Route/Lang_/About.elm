@@ -4,15 +4,12 @@ import BackendTask
 import Content.About exposing (Author)
 import FatalError exposing (FatalError)
 import Head
-import Head.Seo as Seo
 import I18n exposing (I18n)
 import I18nUtils
 import Layout.About
-import Pages.Url
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
-import Shared exposing (Msg(..))
-import UrlPath
+import Shared
 import View exposing (View)
 
 
