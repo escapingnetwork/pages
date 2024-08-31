@@ -249,7 +249,6 @@ view app shared =
                     ]
                     (Form.options "support-form"
                         |> Form.withInput emptyForm
-                        |> Form.withAction "/support"
                         |> Form.withServerResponse (app.action |> Maybe.map .formResponse)
                     )
                     app
