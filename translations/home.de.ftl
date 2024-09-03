@@ -1,3 +1,4 @@
+navbar-home = Startseite
 navbar-services = Unsere Dienstleistungen
 navbar-host = Werden Sie Gastgeber
 navbar-partner = Werden Sie Partner

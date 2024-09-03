@@ -294,7 +294,11 @@ viewMenu path translation showMenu onMenuToggle onLanguageChange =
             List.map viewMainMenuItem (menu translation)
 
         sideMenuItems =
-            { label = "Home", route = Route.Index }
+            { label = Translations.navbarHome translation
+            , route =
+                Route.Lang_
+                    { lang = Translations.languageToString <| Translations.currentLanguage translation }
+            }
                 :: { label = Translations.buttonRequestAccommodation translation, route = Route.Lang___Student__SignUp { lang = Translations.languageToString <| Translations.currentLanguage translation } }
                 :: menu translation
                 |> List.map (viewSideMainMenuItem onMenuToggle translation)

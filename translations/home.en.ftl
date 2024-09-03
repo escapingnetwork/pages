@@ -1,3 +1,4 @@
+navbar-home = Home
 navbar-services = Our Services
 navbar-host = Become a Host
 navbar-partner = Become a Partner

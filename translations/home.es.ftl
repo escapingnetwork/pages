@@ -1,3 +1,4 @@
+navbar-home = Inicio
 navbar-services = Nuestros Servicios
 navbar-host = Conviértete en Anfitrión
 navbar-partner = Conviértete en Socio
