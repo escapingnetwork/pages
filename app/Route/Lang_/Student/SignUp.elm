@@ -10,8 +10,10 @@ module Route.Lang_.Student.SignUp exposing
 -}
 
 import BackendTask
+import BackendTask.Custom
 import BackendTask.Env as Env
 import BackendTask.Http exposing (jsonBody)
+import Captcha exposing (Captcha)
 import Content.Minimal
 import Countries
 import Date exposing (Date)
@@ -73,6 +75,7 @@ route =
 
 type alias Data =
     { translation : Translations.I18n
+    , captcha : Captcha
     , minimal : Content.Minimal.Minimal
     }
 
@@ -87,7 +90,13 @@ data : RouteParams -> Request -> BackendTask.BackendTask FatalError (Server.Resp
 data routeParams request =
     Content.Minimal.accommodation routeParams.lang
         |> BackendTask.allowFatal
-        |> BackendTask.map2 Data (I18nUtils.loadLanguage routeParams.lang)
+        |> BackendTask.map3 Data
+            (I18nUtils.loadLanguage routeParams.lang)
+            (BackendTask.Custom.run "captcha"
+                Encode.null
+                Captcha.decoder
+                |> BackendTask.allowFatal
+            )
         |> BackendTask.map Server.Response.render
 
 
@@ -102,17 +111,17 @@ type Sex
     | Other
 
 
-sexToString : Sex -> String
-sexToString sex =
+sexToString : Sex -> Translations.I18n -> String
+sexToString sex t =
     case sex of
         Male ->
-            "Male"
+            Translations.formsSexMale t
 
         Female ->
-            "Female"
+            Translations.formsSexFemale t
 
         Other ->
-            "Other"
+            Translations.formsSexOther t
 
 
 maybeSexToMaybeString : Maybe Sex -> Maybe String
@@ -137,17 +146,17 @@ type Service
     | Hostel
 
 
-serviceToString : Service -> String
-serviceToString service =
+serviceToString : Service -> Translations.I18n -> String
+serviceToString service t =
     case service of
         HalfBoard ->
-            "Half-Board"
+            Translations.servicesHalfBoard t
 
         SelfCatering ->
-            "Self-Catering"
+            Translations.servicesSelfCatering t
 
         Hostel ->
-            "Hostel"
+            Translations.servicesHostels t
 
 
 maybeServiceToMaybeString : Maybe Service -> Maybe String
@@ -179,6 +188,8 @@ type alias Accommodation =
     , from : Date
     , to : Date
     , message : Maybe String
+    , captcha : String
+    , hiddenCaptcha : String
     }
 
 
@@ -196,13 +207,15 @@ emptyForm =
     , from = Date.fromCalendarDate 1969 Time.Jul 20
     , to = Date.fromCalendarDate 1969 Time.Jul 20
     , message = Nothing
+    , captcha = ""
+    , hiddenCaptcha = ""
     }
 
 
-form : Translations.I18n -> Form.HtmlForm String Accommodation Accommodation (PagesMsg Msg)
-form t =
+form : Translations.I18n -> Captcha -> Form.HtmlForm String Accommodation Accommodation (PagesMsg Msg)
+form t captchaData =
     Form.form
-        (\forename surname email phoneNumber nationality age sex institution service from to message ->
+        (\forename surname email phoneNumber nationality age sex institution service from to message captcha hiddenCaptcha ->
             { combine =
                 Validation.succeed Accommodation
                     |> Validation.andMap forename
@@ -217,6 +230,20 @@ form t =
                     |> Validation.andMap from
                     |> Validation.andMap to
                     |> Validation.andMap message
+                    |> Validation.andMap
+                        (Validation.map2
+                            (\captchaValue hCaptchaValue ->
+                                if captchaValue == hCaptchaValue then
+                                    Validation.succeed captchaValue
+
+                                else
+                                    Validation.fail (Translations.formsErrorCaptcha t) captcha
+                            )
+                            captcha
+                            hiddenCaptcha
+                            |> Validation.andThen identity
+                        )
+                    |> Validation.andMap hiddenCaptcha
             , view =
                 \formState ->
                     let
@@ -263,7 +290,7 @@ form t =
                                     [ Html.text (label ++ " ")
                                     , field
                                         |> Form.FieldView.select [ Attrs.class "bg-gray-50 mt-2 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" ]
-                                            (\entry -> ( [], sexToString entry ))
+                                            (\entry -> ( [], sexToString entry t ))
                                     ]
                                 , errorsView field
                                 ]
@@ -275,7 +302,7 @@ form t =
                                     [ Html.text (label ++ " ")
                                     , field
                                         |> Form.FieldView.select [ Attrs.class "bg-gray-50 mt-2 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" ]
-                                            (\entry -> ( [], serviceToString entry ))
+                                            (\entry -> ( [], serviceToString entry t ))
                                     ]
                                 , errorsView field
                                 ]
@@ -291,9 +318,19 @@ form t =
                                     ]
                                 , errorsView field
                                 ]
+
+                        fieldViewCaptcha : String -> Captcha -> Validation.Field String parsed Form.FieldView.Input -> Html msg
+                        fieldViewCaptcha label captchaSvg field =
+                            Html.div [ Attrs.class "mb-5" ]
+                                [ Html.label [ Attrs.class "block mb-2 text-lg font-semibold text-gray-900 dark:text-white" ]
+                                    [ Html.text (label ++ " ")
+                                    , captchaSvg |> Captcha.toSvg
+                                    , field |> Form.FieldView.input [ Attrs.class "bg-gray-50 mt-2 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" ]
+                                    ]
+                                , errorsView field
+                                ]
                     in
-                    [ Html.input [ Attrs.type_ "hidden", Attrs.attribute "name" "form-name", Attrs.attribute "value" "student-form-netlify" ] []
-                    , fieldView (Translations.formsForename t) forename
+                    [ fieldView (Translations.formsForename t) forename
                     , fieldView (Translations.formsSurname t) surname
                     , fieldView (Translations.formsEmail t) email
                     , fieldView (Translations.formsPhone t) phoneNumber
@@ -305,6 +342,7 @@ form t =
                     , fieldView (Translations.formsFrom t) from
                     , fieldView (Translations.formsTo t) to
                     , fieldView (Translations.formsMessage t) message
+                    , fieldViewCaptcha "Captcha" captchaData captcha
                     , Html.button
                         [ Attrs.class "text-white bg-primary-500 hover:bg-primary-600 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
                         , Attrs.type_ "submit"
@@ -322,17 +360,17 @@ form t =
         )
         |> Form.field "forename"
             (Field.text
-                |> Field.required "Required"
+                |> Field.required (Translations.formsErrorRequired t)
                 |> Field.withInitialValue .forename
             )
         |> Form.field "surname"
             (Field.text
-                |> Field.required "Required"
+                |> Field.required (Translations.formsErrorRequired t)
                 |> Field.withInitialValue .surname
             )
         |> Form.field "email"
             (Field.text
-                |> Field.required "Required"
+                |> Field.required (Translations.formsErrorRequired t)
                 |> Field.withInitialValue .email
              --|> Form.withServerValidation
              --    (\username ->
@@ -346,7 +384,7 @@ form t =
         |> Form.field "phoneNumber"
             (Field.text
                 |> Field.telephone
-                |> Field.required "Required"
+                |> Field.required (Translations.formsErrorRequired t)
                 |> Field.withInitialValue .phoneNumber
             )
         |> Form.field "nationality"
@@ -374,7 +412,7 @@ form t =
             )
         |> Form.field "institution"
             (Field.text
-                |> Field.required "Required"
+                |> Field.required (Translations.formsErrorRequired t)
                 |> Field.withInitialValue .institution
             )
         |> Form.field "service"
@@ -388,13 +426,13 @@ form t =
         |> Form.field "from"
             (Field.date
                 { invalid = \_ -> "Invalid" }
-                |> Field.required "Required"
+                |> Field.required (Translations.formsErrorRequired t)
              -- |> Field.withMin today ("Must be after " ++ Date.toIsoString today)
             )
         |> Form.field "to"
             (Field.date
                 { invalid = \_ -> "Invalid" }
-                |> Field.required "Required"
+                |> Field.required (Translations.formsErrorRequired t)
             )
         |> Form.field "message"
             (Field.text
@@ -402,6 +440,16 @@ form t =
                     { rows = Just 5
                     , cols = Just 20
                     }
+            )
+        |> Form.field "captcha"
+            (Field.text
+                |> Field.required (Translations.formsErrorRequired t)
+                |> Field.withInitialValue .captcha
+            )
+        |> Form.hiddenField "hiddenCaptcha"
+            (Field.text
+                |> Field.required (Translations.formsErrorRequired t)
+                |> Field.withInitialValue .hiddenCaptcha
             )
 
 
@@ -414,12 +462,12 @@ view app shared =
     , body =
         [ Html.div [ Attrs.class "mx-auto prose max-w-none pb-8 pt-8 xl:col-span-2 xl:max-w-5xl xl:px-0" ]
             [ Layout.Minimal.view app.data.minimal
-            , form shared.i18n
+            , form shared.i18n app.data.captcha
                 |> Pages.Form.renderHtml
                     [ Attrs.class "max-w-sm mx-auto"
                     ]
                     (Form.options "student-form-netlify"
-                        |> Form.withInput emptyForm
+                        |> Form.withInput { emptyForm | hiddenCaptcha = app.data.captcha.text }
                         |> Form.withServerResponse (app.action |> Maybe.map .formResponse)
                     )
                     app
@@ -457,19 +505,30 @@ action :
     -> Request.Request
     -> BackendTask.BackendTask FatalError.FatalError (Server.Response.Response ActionData ErrorPage.ErrorPage)
 action routeParams request =
-    case request |> Request.formData (form (Translations.init { lang = Translations.En, path = "https://capybara.house" ++ "/i18n" }) |> Form.Handler.init identity) of
+    case request |> Request.formData (form (Translations.init { lang = Translations.En, path = "https://capybara.house" ++ "/i18n" }) Captcha.default |> Form.Handler.init identity) of
         Nothing ->
             "Expected form submission."
                 |> FatalError.fromString
                 |> BackendTask.fail
 
-        Just ( formResponse, userResult ) ->
-            BackendTask.map2 EnvVariables
-                (Env.expect "SUPABASE_KEY" |> BackendTask.allowFatal)
-                (Env.get "SUPABASE_URL"
-                    |> BackendTask.map (Maybe.withDefault "http://localhost:1234")
-                )
-                |> BackendTask.andThen (sendRequest routeParams.lang formResponse userResult)
+        Just ( formResponse, parsedForm ) ->
+            case parsedForm of
+                Form.Valid _ ->
+                    BackendTask.map2 EnvVariables
+                        (Env.expect "SUPABASE_KEY" |> BackendTask.allowFatal)
+                        (Env.get "SUPABASE_URL"
+                            |> BackendTask.map (Maybe.withDefault "http://localhost:1234")
+                        )
+                        |> BackendTask.andThen (sendRequest routeParams.lang formResponse parsedForm)
+
+                Form.Invalid _ _ ->
+                    BackendTask.succeed
+                        (Server.Response.render
+                            (ActionData
+                                emptyForm
+                                formResponse
+                            )
+                        )
 
 
 accommodationRequestToJSON : Accommodation -> Encode.Value

@@ -10,8 +10,10 @@ module Route.Host.SignUp exposing
 -}
 
 import BackendTask
+import BackendTask.Custom
 import BackendTask.Env as Env
 import BackendTask.Http exposing (jsonBody)
+import Captcha exposing (Captcha)
 import Content.Minimal
 import Dict
 import ErrorPage exposing (ErrorPage)
@@ -66,7 +68,9 @@ route =
 
 
 type alias Data =
-    { minimal : Content.Minimal.Minimal }
+    { captcha : Captcha
+    , minimal : Content.Minimal.Minimal
+    }
 
 
 type alias ActionData =
@@ -84,7 +88,12 @@ mdText : BackendTask.BackendTask FatalError Data
 mdText =
     Content.Minimal.hosts ""
         |> BackendTask.allowFatal
-        |> BackendTask.map Data
+        |> BackendTask.map2 Data
+            (BackendTask.Custom.run "captcha"
+                Encode.null
+                Captcha.decoder
+                |> BackendTask.allowFatal
+            )
 
 
 head : RouteBuilder.App Data ActionData RouteParams -> List Head.Tag
@@ -169,6 +178,8 @@ type alias Host =
     , phoneNumber : String
     , service : Maybe Service
     , contactMethod : Maybe ContactMethod
+    , captcha : String
+    , hiddenCaptcha : String
     }
 
 
@@ -180,13 +191,15 @@ emptyForm =
     , phoneNumber = ""
     , service = Nothing
     , contactMethod = Nothing
+    , captcha = ""
+    , hiddenCaptcha = ""
     }
 
 
-form : Translations.I18n -> Form.HtmlForm String Host Host (PagesMsg Msg)
-form t =
+form : Translations.I18n -> Captcha -> Form.HtmlForm String Host Host (PagesMsg Msg)
+form t captchaData =
     Form.form
-        (\forename surname email phoneNumber service contactMethod ->
+        (\forename surname email phoneNumber service contactMethod captcha hiddenCaptcha ->
             { combine =
                 Validation.succeed Host
                     |> Validation.andMap forename
@@ -195,6 +208,20 @@ form t =
                     |> Validation.andMap phoneNumber
                     |> Validation.andMap service
                     |> Validation.andMap contactMethod
+                    |> Validation.andMap
+                        (Validation.map2
+                            (\captchaValue hCaptchaValue ->
+                                if captchaValue == hCaptchaValue then
+                                    Validation.succeed captchaValue
+
+                                else
+                                    Validation.fail (Translations.formsErrorCaptcha t) captcha
+                            )
+                            captcha
+                            hiddenCaptcha
+                            |> Validation.andThen identity
+                        )
+                    |> Validation.andMap hiddenCaptcha
             , view =
                 \formState ->
                     let
@@ -261,14 +288,25 @@ form t =
                                     ]
                                 , errorsView field
                                 ]
+
+                        fieldViewCaptcha : String -> Captcha -> Validation.Field String parsed Form.FieldView.Input -> Html msg
+                        fieldViewCaptcha label captchaSvg field =
+                            Html.div [ Attrs.class "mb-5" ]
+                                [ Html.label [ Attrs.class "block mb-2 text-lg font-semibold text-gray-900 dark:text-white" ]
+                                    [ Html.text (label ++ " ")
+                                    , captchaSvg |> Captcha.toSvg
+                                    , field |> Form.FieldView.input [ Attrs.class "bg-gray-50 mt-2 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" ]
+                                    ]
+                                , errorsView field
+                                ]
                     in
-                    [ Html.input [ Attrs.type_ "hidden", Attrs.attribute "name" "form-name", Attrs.attribute "value" "host-form" ] []
-                    , fieldView (Translations.formsForename t) forename
+                    [ fieldView (Translations.formsForename t) forename
                     , fieldView (Translations.formsSurname t) surname
                     , fieldView (Translations.formsEmail t) email
                     , fieldView (Translations.formsPhone t) phoneNumber
                     , fieldViewServiceSelect (Translations.formsService t) service
                     , fieldViewContactMethodSelect (Translations.formsContact t) contactMethod
+                    , fieldViewCaptcha "Captcha" captchaData captcha
                     , Html.button
                         [ Attrs.class "text-white bg-primary-500 hover:bg-primary-600 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
                         , Attrs.attribute "type" "submit"
@@ -329,6 +367,16 @@ form t =
                 ]
                 (\_ -> "Invalid")
             )
+        |> Form.field "captcha"
+            (Field.text
+                |> Field.required (Translations.formsErrorRequired t)
+                |> Field.withInitialValue .captcha
+            )
+        |> Form.hiddenField "hiddenCaptcha"
+            (Field.text
+                |> Field.required (Translations.formsErrorRequired t)
+                |> Field.withInitialValue .hiddenCaptcha
+            )
 
 
 view :
@@ -340,12 +388,12 @@ view app shared =
     , body =
         [ Html.div [ Attrs.class "mx-auto prose max-w-none pb-8 pt-8 dark:prose-invert xl:col-span-2 xl:max-w-5xl xl:px-0" ]
             [ Layout.Minimal.view app.data.minimal
-            , form shared.i18n
+            , form shared.i18n app.data.captcha
                 |> Pages.Form.renderHtml
                     [ Attrs.class "max-w-sm mx-auto"
                     ]
                     (Form.options "host-form"
-                        |> Form.withInput emptyForm
+                        |> Form.withInput { emptyForm | hiddenCaptcha = app.data.captcha.text }
                         |> Form.withServerResponse (app.action |> Maybe.map .formResponse)
                     )
                     app
@@ -383,19 +431,30 @@ action :
     -> Request.Request
     -> BackendTask.BackendTask FatalError.FatalError (Server.Response.Response ActionData ErrorPage.ErrorPage)
 action routeParams request =
-    case request |> Request.formData (form (Translations.init { lang = Translations.En, path = "https://capybara.house" ++ "/i18n" }) |> Form.Handler.init identity) of
+    case request |> Request.formData (form (Translations.init { lang = Translations.En, path = "https://capybara.house" ++ "/i18n" }) Captcha.default |> Form.Handler.init identity) of
         Nothing ->
             "Expected form submission."
                 |> FatalError.fromString
                 |> BackendTask.fail
 
-        Just ( formResponse, userResult ) ->
-            BackendTask.map2 EnvVariables
-                (Env.expect "SUPABASE_KEY" |> BackendTask.allowFatal)
-                (Env.get "SUPABASE_URL"
-                    |> BackendTask.map (Maybe.withDefault "http://localhost:1234")
-                )
-                |> BackendTask.andThen (sendRequest formResponse userResult)
+        Just ( formResponse, parsedForm ) ->
+            case parsedForm of
+                Form.Valid _ ->
+                    BackendTask.map2 EnvVariables
+                        (Env.expect "SUPABASE_KEY" |> BackendTask.allowFatal)
+                        (Env.get "SUPABASE_URL"
+                            |> BackendTask.map (Maybe.withDefault "http://localhost:1234")
+                        )
+                        |> BackendTask.andThen (sendRequest formResponse parsedForm)
+
+                Form.Invalid _ _ ->
+                    BackendTask.succeed
+                        (Server.Response.render
+                            (ActionData
+                                emptyForm
+                                formResponse
+                            )
+                        )
 
 
 hostRequestToJSON : Host -> Encode.Value

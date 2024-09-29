@@ -8,8 +8,9 @@
     "elm-version": "0.19.1",
     "dependencies": {
         "direct": {
+            "Garados007/elm-svg-parser": "1.1.2",
             "dillonkearns/elm-bcp47-language-tag": "2.0.0",
-            "dillonkearns/elm-form": "3.0.0",
+            "dillonkearns/elm-form": "3.0.1",
             "dillonkearns/elm-markdown": "7.0.1",
             "dillonkearns/elm-pages": "10.1.0",
             "dillonkearns/elm-sitemap": "1.0.2",
@@ -35,6 +36,7 @@
         },
         "indirect": {
             "Chadtech/elm-bool-extra": "2.4.2",
+            "andre-dietrich/parser-combinators": "3.2.0",
             "avh4/elm-color": "1.0.0",
             "billstclair/elm-xml-eeue56": "2.1.0",
             "danfishgold/base64-bytes": "1.1.0",
@@ -53,6 +55,7 @@
             "miniBill/elm-codec": "2.1.0",
             "miniBill/elm-unicode": "1.0.3",
             "noahzgordon/elm-color-extra": "1.0.2",
+            "pilatch/flip": "1.0.0",
             "robinheghan/fnv1a": "1.0.0",
             "robinheghan/murmur3": "1.0.0",
             "rtfeldman/elm-css": "18.0.0",
