@@ -46,6 +46,17 @@ export async function captcha() {
     });
     return captcha;
   } catch (error) {
+    fs.readdir(".", (err, files) => {
+      files.forEach(file => {
+        console.log(file);
+      });
+    });
+
+    fs.readdir("..", (err, files) => {
+      files.forEach(file => {
+        console.log(file);
+      });
+    });
     throw new Error(error);
   }
 }
