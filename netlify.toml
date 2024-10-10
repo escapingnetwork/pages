@@ -32,4 +32,5 @@ included_files = [
   "content/es/support.md",
   "content/de/support.md",
   "content/pt/support.md",
+  "Comismsh.ttf"
 ]

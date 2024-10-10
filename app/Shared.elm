@@ -75,7 +75,7 @@ init _ pageData =
 
         model =
             { showMenu = False
-            , i18n = Translations.init { lang = lang, path = "http://localhost:1234" ++ "/i18n" }
+            , i18n = Translations.init { lang = lang, path = "https://capybara.house" ++ "/i18n" }
             , language = lang
             }
     in

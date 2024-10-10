@@ -22,9 +22,9 @@ export default async function run({
     ensureDirSync("functions/fonts");
     ensureDirSync("functions/render/fonts");
     ensureDirSync("functions/server-render/fonts");
-    fs.copyFileSync("./fonts/Comismsh.ttf", "./functions/fonts/Comismsh.ttf");
-    fs.copyFileSync("./fonts/Comismsh.ttf", "./functions/render/fonts/Comismsh.ttf");
-    fs.copyFileSync("./fonts/Comismsh.ttf", "./functions/server-render/fonts/Comismsh.ttf");
+    fs.copyFileSync("./Comismsh.ttf", "./functions/fonts/Comismsh.ttf");
+    fs.copyFileSync("./Comismsh.ttf", "./functions/render/fonts/Comismsh.ttf");
+    fs.copyFileSync("./Comismsh.ttf", "./functions/server-render/fonts/Comismsh.ttf");
 
     fs.writeFileSync("./functions/render/index.mjs", rendererCode(true));
     fs.writeFileSync("./functions/server-render/index.mjs", rendererCode(false));
