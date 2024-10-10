@@ -1,6 +1,7 @@
 import kleur from 'kleur';
 import svgCaptcha from 'svg-captcha';
 import Path from 'path'
+import fs from 'fs'
 
 export async function environmentVariable(name) {
   const result = process.env[name];
@@ -18,6 +19,21 @@ export async function environmentVariable(name) {
 export async function captcha() {
   try {
     const fontUrl = Path.resolve(Path.dirname('./'), "Comismsh.ttf");
+    
+    console.log("fontPath: " + fontUrl)
+
+    fs.readdir(".", (err, files) => {
+      files.forEach(file => {
+        console.log(file);
+      });
+    });
+
+    fs.readdir("..", (err, files) => {
+      files.forEach(file => {
+        console.log(file);
+      });
+    });
+    
     svgCaptcha.loadFont(fontUrl);
     const captcha = svgCaptcha.create({
       size: 6,
