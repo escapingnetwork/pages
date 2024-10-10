@@ -11,7 +11,6 @@ framework = "#custom"
 
 [functions]
 node_bundler = "esbuild"
-# Includes all Markdown files inside the "files/" directory.
 included_files = [
   "content/accommodation.md",
   "content/en/accommodation.md",
@@ -33,4 +32,5 @@ included_files = [
   "content/de/support.md",
   "content/pt/support.md",
   "Comismsh.ttf"
+  "functions/fonts/Comismsh.ttf"
 ]
