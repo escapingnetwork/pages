@@ -10,6 +10,7 @@ import I18nUtils
 import Layout
 import Layout.Home
 import PagesMsg exposing (PagesMsg)
+import ReviewUtils exposing (Review, getReviews)
 import RouteBuilder exposing (App, StatelessRoute)
 import Settings
 import Shared
@@ -29,7 +30,9 @@ type alias RouteParams =
 
 
 type alias Data =
-    { translation : I18n.I18n }
+    { reviews : List Review
+    , translation : I18n.I18n
+    }
 
 
 type alias ActionData =
@@ -54,7 +57,7 @@ pages =
 data : RouteParams -> BackendTask FatalError Data
 data r =
     I18nUtils.loadLanguage r.lang
-        |> BackendTask.map Data
+        |> BackendTask.map2 Data getReviews
 
 
 head :
@@ -76,6 +79,6 @@ view app model =
           --     [ Html.h1 [ Attrs.class "text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14" ] [ Html.text "Latest" ]
           --     , Html.p [ Attrs.class "text-lg leading-7 text-gray-500 dark:text-gray-400" ] [ Html.text Settings.subtitle ]
           --     ]
-          Html.div [ Attrs.class "mx-auto" ] <| [ Layout.Home.view app.data.translation ] -- List.map Layout.Blogpost.viewListItem app.data.blogpostMetadata
+          Html.div [ Attrs.class "mx-auto" ] <| [ Layout.Home.view app.data.translation app.data.reviews ] -- List.map Layout.Blogpost.viewListItem app.data.blogpostMetadata
         ]
     }

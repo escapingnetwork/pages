@@ -1,4 +1,4 @@
-module Content.Minimal exposing (Minimal, accommodation, completeRegistration, hosts, partners, privacyPolicy, support, termsAndConditions)
+module Content.Minimal exposing (Minimal, accommodation, completeRegistration, hosts, partners, privacyPolicy, review, support, termsAndConditions)
 
 import BackendTask exposing (BackendTask)
 import BackendTask.File as File
@@ -85,6 +85,19 @@ support lang =
                 "content/" ++ lang ++ "/support.md"
     in
     File.bodyWithFrontmatter (minimalDecoder "support") path
+
+
+review : String -> BackendTask { fatal : FatalError, recoverable : File.FileReadError Decode.Error } Minimal
+review lang =
+    let
+        path =
+            if lang == "" then
+                "content/en/review.md"
+
+            else
+                "content/" ++ lang ++ "/review.md"
+    in
+    File.bodyWithFrontmatter (minimalDecoder "review") path
 
 
 accommodation : String -> BackendTask { fatal : FatalError, recoverable : File.FileReadError Decode.Error } Minimal

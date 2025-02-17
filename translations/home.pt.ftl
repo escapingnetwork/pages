@@ -60,3 +60,18 @@ forms-error = Ocorreu um erro ao enviar sua solicitação!
 forms-error-contact = Por favor, entre em contato
 forms-success =  Obrigado(a)
 forms-success-contact = Voltaremos a entrar em contato em breve!
+
+forms-rating = Avaliação
+forms-content = Conteúdo
+
+reviews-title = Avaliações
+reviews-subtitle = O que nossos clientes dizem sobre nós
+reviews-see-more = Ver mais avaliações
+reviews-user-type-student = Estudante
+reviews-user-type-host = Anfitrião
+reviews-translated = Traduzido de
+
+languages-en = Inglês
+languages-de = Alemão
+languages-es = Espanhol
+languages-pt = Português

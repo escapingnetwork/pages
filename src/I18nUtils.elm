@@ -1,8 +1,9 @@
-module I18nUtils exposing (loadLanguage)
+module I18nUtils exposing (languageToTranslatedLanguage, loadLanguage)
 
 import BackendTask exposing (BackendTask)
 import BackendTask.Http
 import FatalError exposing (FatalError)
+import Html.Attributes exposing (lang)
 import I18n
 
 
@@ -23,3 +24,22 @@ loadLanguage langString =
         (I18n.decodeHome lang)
         |> BackendTask.allowFatal
         |> BackendTask.map (\l -> l langInit)
+
+
+languageToTranslatedLanguage : I18n.I18n -> String -> String
+languageToTranslatedLanguage translation language =
+    case language of
+        "en" ->
+            I18n.languagesEn translation
+
+        "de" ->
+            I18n.languagesDe translation
+
+        "es" ->
+            I18n.languagesEs translation
+
+        "pt" ->
+            I18n.languagesPt translation
+
+        _ ->
+            I18n.languagesEn translation
