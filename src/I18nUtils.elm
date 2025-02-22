@@ -5,6 +5,7 @@ import BackendTask.Http
 import FatalError exposing (FatalError)
 import Html.Attributes exposing (lang)
 import I18n
+import LanguageTag.Language exposing (de)
 
 
 loadLanguage : String -> BackendTask FatalError I18n.I18n
@@ -40,6 +41,12 @@ languageToTranslatedLanguage translation language =
 
         "pt" ->
             I18n.languagesPt translation
+
+        "fr" ->
+            I18n.languagesFr translation
+
+        "it" ->
+            I18n.languagesIt translation
 
         _ ->
             I18n.languagesEn translation

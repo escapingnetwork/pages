@@ -61,8 +61,14 @@ forms-error-contact = Por favor contactá
 forms-success = Gracias
 forms-success-contact = Volveremos a contactarte pronto!
 
-forms-rating = Calificación
-forms-content = Contenido
+forms-rating-capybara = Por favor, califica tu experiencia con Capybara House:
+forms-rating-user = Por favor, califica tu experiencia con el estudiante/anfitrión:
+forms-rating-not-recommended = No recomendado
+forms-rating-highly-recommended = Altamente recomendado
+forms-content-capybara = Comparte una reseña sobre Capybara House:
+forms-content-user = Comparte una reseña sobre el estudiante/anfitrión:
+forms-review-success = ¡Gracias por tu reseña!
+forms-review-message = Agradecemos tus comentarios.
 
 reviews-title = Reseñas
 reviews-subtitle = Lo que nuestros clientes dicen sobre nosotros
@@ -75,3 +81,5 @@ languages-en = Inglés
 languages-de = Alemán
 languages-es = Español
 languages-pt = Portugués
+languages-it = Italiano
+languages-fr = Francés

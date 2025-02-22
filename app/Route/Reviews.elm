@@ -8,7 +8,7 @@ import Html.Attributes as Attrs
 import I18n exposing (I18n)
 import I18nUtils
 import Layout
-import Layout.Reviews
+import Layout.Reviews exposing (view)
 import PagesMsg exposing (PagesMsg)
 import ReviewUtils exposing (Review, getReviews)
 import RouteBuilder exposing (App, StatelessRoute)

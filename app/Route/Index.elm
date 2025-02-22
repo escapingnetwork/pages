@@ -10,7 +10,7 @@ import I18nUtils
 import Layout
 import Layout.Home
 import PagesMsg exposing (PagesMsg)
-import ReviewUtils exposing (Review, getReviews)
+import ReviewUtils exposing (Review, getHomeReviews)
 import RouteBuilder exposing (App, StatelessRoute)
 import Settings
 import Shared
@@ -51,7 +51,7 @@ route =
 data : BackendTask FatalError Data
 data =
     I18nUtils.loadLanguage "en"
-        |> BackendTask.map2 Data getReviews
+        |> BackendTask.map2 Data getHomeReviews
 
 
 head :

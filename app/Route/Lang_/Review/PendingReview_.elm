@@ -1,4 +1,4 @@
-module Route.Review.PendingReview_ exposing (..)
+module Route.Lang_.Review.PendingReview_ exposing (..)
 
 {-|
 
@@ -47,7 +47,7 @@ type alias Msg =
 
 
 type alias RouteParams =
-    { pendingReview : String }
+    { lang : String, pendingReview : String }
 
 
 type alias EnvVariables =
@@ -82,7 +82,7 @@ type alias ActionData =
 
 data : RouteParams -> Request -> BackendTask.BackendTask FatalError (Server.Response.Response Data ErrorPage)
 data routeParams request =
-    Content.Minimal.review ""
+    Content.Minimal.review routeParams.lang
         |> BackendTask.allowFatal
         |> BackendTask.map4 Data
             (BackendTask.Custom.run "captcha"
@@ -91,7 +91,7 @@ data routeParams request =
                 |> BackendTask.allowFatal
             )
             (getReview routeParams.pendingReview)
-            (I18nUtils.loadLanguage "en")
+            (I18nUtils.loadLanguage routeParams.lang)
         |> BackendTask.map Server.Response.render
 
 
@@ -104,6 +104,7 @@ type alias ReviewForm =
     { id : String
     , content : String
     , rating : Maybe RatingEnum
+    , language : String
     , captcha : String
     , hiddenCaptcha : String
     }
@@ -114,6 +115,7 @@ emptyForm =
     { id = ""
     , content = ""
     , rating = Nothing
+    , language = ""
     , captcha = ""
     , hiddenCaptcha = ""
     }
@@ -168,12 +170,13 @@ rtingToInt rting =
 form : I18n -> Captcha -> Form.HtmlForm String ReviewForm ReviewForm (PagesMsg Msg)
 form t captchaData =
     Form.form
-        (\id content rating captcha hiddenCaptcha ->
+        (\id content rating language captcha hiddenCaptcha ->
             { combine =
                 Validation.succeed ReviewForm
                     |> Validation.andMap id
                     |> Validation.andMap content
                     |> Validation.andMap rating
+                    |> Validation.andMap language
                     |> Validation.andMap
                         (Validation.map2
                             (\captchaValue hCaptchaValue ->
@@ -302,6 +305,11 @@ form t captchaData =
                 (\_ -> "Invalid")
                 |> Field.withInitialValue (\_ -> Five)
             )
+        |> Form.hiddenField "language"
+            (Field.text
+                |> Field.required (Translations.formsErrorRequired t)
+                |> Field.withInitialValue .language
+            )
         |> Form.field "captcha"
             (Field.text
                 |> Field.required (Translations.formsErrorRequired t)
@@ -323,22 +331,22 @@ view app shared =
     , body =
         [ Html.div [ Attrs.class "mx-auto prose max-w-none pb-8 pt-8 dark:prose-invert xl:col-span-2 xl:max-w-5xl xl:px-0" ]
             [ Layout.Minimal.view app.data.minimal
-            , if (app.data.pendingReview |> .status) /= ReviewUtils.ReviewStatusPending then
-                Html.div [ Attrs.class "text-center" ]
-                    [ Html.h2 [] [ Html.text <| Translations.formsReviewSuccess app.data.translation ]
-                    , Html.p [] [ Html.text <| Translations.formsReviewMessage app.data.translation ]
-                    ]
-
-              else
+            , if (app.data.pendingReview |> .status) == ReviewUtils.ReviewStatusPending then
                 form app.data.translation app.data.captcha
                     |> Pages.Form.renderHtml
                         [ Attrs.class "max-w-sm mx-auto"
                         ]
                         (Form.options "review-form"
-                            |> Form.withInput { emptyForm | id = app.data.pendingReview |> .id, hiddenCaptcha = app.data.captcha.text }
+                            |> Form.withInput { emptyForm | id = app.data.pendingReview |> .id, language = Translations.languageToString <| Translations.currentLanguage app.data.translation, hiddenCaptcha = app.data.captcha.text }
                             |> Form.withServerResponse (app.action |> Maybe.map .formResponse)
                         )
                         app
+
+              else
+                Html.div [ Attrs.class "text-center" ]
+                    [ Html.h2 [] [ Html.text <| Translations.formsReviewSuccess app.data.translation ]
+                    , Html.p [] [ Html.text <| Translations.formsReviewMessage app.data.translation ]
+                    ]
             , if Dict.isEmpty <| Maybe.withDefault Dict.empty ((app.action |> Maybe.map .formResponse) |> Maybe.map .serverSideErrors) then
                 Html.text ""
 
@@ -404,7 +412,7 @@ reviewToJSON review =
     Encode.object
         [ ( "content", Encode.string review.content )
         , ( "rating", Encode.int <| rtingToInt <| Maybe.withDefault One review.rating )
-        , ( "language", Encode.string "en" )
+        , ( "language", Encode.string review.language )
         , ( "status", Encode.string <| reviewStatusEnumToString ReviewUtils.ReviewStatusUnderReview )
         ]
 
@@ -462,7 +470,7 @@ sendRequest formResponse userResult envVariables =
                                 |> Form.toResult
                                 |> Result.withDefault emptyForm
                     in
-                    Route.Review__PendingReview_ { pendingReview = review.id }
+                    Route.Lang___Review__PendingReview_ { lang = review.language, pendingReview = review.id }
                         |> Route.redirectTo
 
                 else

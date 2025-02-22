@@ -74,7 +74,9 @@ view translation reviews =
                         [ Html.h2 [ Attrs.class "text-3xl font-bold mb-6 text-center text-black" ]
                             [ Html.text <| Translations.reviewsTitle translation ]
                         ]
-                        Route.Reviews
+                        (Route.Lang___Reviews
+                            { lang = Translations.languageToString <| Translations.currentLanguage translation }
+                        )
                     , Html.div [ Attrs.class "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" ] (List.map (showReview translation) reviews)
                     ]
                 ]

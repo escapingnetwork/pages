@@ -5,7 +5,7 @@ import BackendTask.Env as Env
 import BackendTask.Http
 import Date exposing (Date)
 import FatalError exposing (FatalError)
-import Html exposing (Html)
+import Html exposing (Html, tr)
 import Html.Attributes as Attrs exposing (name)
 import I18n as Translations exposing (I18n)
 import I18nUtils exposing (languageToTranslatedLanguage)
@@ -157,6 +157,41 @@ getTranslation language translations =
             ""
 
 
+getHomeReviews : BackendTask FatalError (List Review)
+getHomeReviews =
+    BackendTask.map2 EnvVariables
+        (Env.expect "SUPABASE_KEY" |> BackendTask.allowFatal)
+        (Env.get "SUPABASE_URL"
+            |> BackendTask.map (Maybe.withDefault "http://localhost:1234")
+        )
+        |> BackendTask.andThen (sendGetHomeReviewsRequest 3)
+
+
+sendGetHomeReviewsRequest : Int -> EnvVariables -> BackendTask FatalError (List Review)
+sendGetHomeReviewsRequest limit envVariables =
+    BackendTask.Http.request
+        { method = "GET"
+        , headers =
+            [ ( "Content-Type", "application/json" )
+            , ( "Prefer", "return=minimal" )
+            , ( "apikey", envVariables.supabaseKey )
+            , ( "Authorization", "Bearer " ++ envVariables.supabaseKey )
+            ]
+        , body = BackendTask.Http.emptyBody
+        , url = envVariables.siteUrl ++ "/rest/v1/review?status=eq.approved&select=*,user(forename,role),review_translation(language,content)&limit=" ++ String.fromInt limit
+        , retries = Nothing
+        , timeoutInMs = Nothing
+        }
+        (BackendTask.Http.expectJson
+            decodeReviews
+        )
+        |> BackendTask.onError
+            (\_ ->
+                BackendTask.succeed
+                    []
+            )
+
+
 getReviews : BackendTask FatalError (List Review)
 getReviews =
     BackendTask.map2 EnvVariables
@@ -286,7 +321,7 @@ showReview translation review =
                     ]
             ]
         ]
-        (Route.Reviews__Review_ { review = review.id })
+        (Route.Lang___Reviews { lang = Translations.languageToString <| Translations.currentLanguage translation })
 
 
 showFullReview : I18n -> Review -> Html msg
