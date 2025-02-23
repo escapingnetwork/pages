@@ -487,7 +487,7 @@ view app shared =
                         , Html.text <| Translations.formsErrorContact shared.i18n ++ " "
                         , Html.a
                             [ Attrs.href "mailto:info@capybara.house"
-                            , Attrs.class "hover:underline "
+                            , Attrs.class "hover:text-primary-600 "
                             ]
                             [ Html.text "info@capybara.house" ]
                         ]

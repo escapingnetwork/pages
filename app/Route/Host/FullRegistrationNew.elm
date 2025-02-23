@@ -382,7 +382,7 @@ view app shared =
                         , Html.text "Please contact "
                         , Html.a
                             [ Attrs.href "mailto:info@capybara.house"
-                            , Attrs.class "hover:underline "
+                            , Attrs.class "hover:text-primary-600 "
                             ]
                             [ Html.text "info@capybara.house" ]
                         ]

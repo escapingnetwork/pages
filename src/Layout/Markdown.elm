@@ -104,7 +104,7 @@ blogpostRenderer =
                         , Attrs.class "not-prose group "
                         , Attrs.attribute "aria-label" <| "Permalink for " ++ rawText
                         ]
-                        [ Html.span [ Attrs.class "group-hover:underline decoration-primary-500" ] children
+                        [ Html.span [ Attrs.class "group-hover:text-primary-600 decoration-primary-500" ] children
                         , Phosphor.link Phosphor.Thin
                             |> Phosphor.toHtml [ SvgAttrs.class "text-primary-300 inline-block text-xl ml-2" ]
                         ]

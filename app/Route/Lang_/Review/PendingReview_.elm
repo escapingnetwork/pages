@@ -233,23 +233,23 @@ form t captchaData =
                         fieldViewRating : String -> Validation.Field String parsed (Form.FieldView.Options RatingEnum) -> Html msg
                         fieldViewRating label field =
                             Html.div [ Attrs.class "mb-5" ]
-                                [ Html.label [ Attrs.class "block mb-2 text-lg font-semibold text-gray-900 dark:text-white" ]
+                                [ Html.label [ Attrs.class "mb-2 text-lg font-semibold text-gray-900 dark:text-white" ]
                                     [ Html.text (label ++ " ")
-                                    , Html.div [ Attrs.class "inline space-x-2 mt-2" ]
-                                        [ Form.FieldView.radio []
+                                    , Html.div [ Attrs.class "mt-2 max-w-sm max-auto" ]
+                                        [ Form.FieldView.radio [ Attrs.class "flex justify-between" ]
                                             (\enum toRadio ->
-                                                Html.label [ Attrs.class "review-cell inline-flex space-x-4 mt-2" ]
+                                                Html.label [ Attrs.class "review-cell mt-2" ]
                                                     [ toRadio [ Attrs.class "hidden peer" ]
                                                     , Html.div
-                                                        [ Attrs.class "w-12 h-12 rounded-lg bg-gray-200 flex items-center justify-center cursor-pointer transition duration-300 ease-in-out hover:bg-gray-300 peer-checked:bg-primary-500 peer-checked:text-white" ]
+                                                        [ Attrs.class "w-12 h-12 rounded-lg bg-gray-200 flex items-center justify-center cursor-pointer transition duration-300 ease-in-out hover:bg-primary-600 hover:text-white peer-checked:bg-primary-500 peer-checked:text-white" ]
                                                         [ Html.text (ratingToString enum) ]
                                                     ]
                                             )
                                             field
                                         ]
                                     , Html.div [ Attrs.class "mt-2 text-xs text-gray-600 dark:text-gray-400 flex justify-between" ]
-                                        [ Html.span [] [ Html.text <| Translations.formsRatingNotRecommended t ]
-                                        , Html.span [] [ Html.text <| Translations.formsRatingHighlyRecommended t ]
+                                        [ Html.span [] [ Html.text <| Translations.formsRatingVeryUnsatisfied t ]
+                                        , Html.span [] [ Html.text <| Translations.formsRatingVerySatisfied t ]
                                         ]
                                     ]
                                 , errorsView field
@@ -327,7 +327,7 @@ view :
     -> Shared.Model
     -> View.View (PagesMsg.PagesMsg Msg)
 view app shared =
-    { title = "Capybara House - Review"
+    { title = "Capybara House - " ++ Translations.reviewsTitle shared.i18n
     , body =
         [ Html.div [ Attrs.class "mx-auto prose max-w-none pb-8 pt-8 dark:prose-invert xl:col-span-2 xl:max-w-5xl xl:px-0" ]
             [ Layout.Minimal.view app.data.minimal
@@ -366,7 +366,7 @@ view app shared =
                         , Html.text <| Translations.formsErrorContact app.data.translation ++ " "
                         , Html.a
                             [ Attrs.href "mailto:info@capybara.house"
-                            , Attrs.class "hover:underline "
+                            , Attrs.class "hover:text-primary-600 "
                             ]
                             [ Html.text "info@capybara.house" ]
                         ]
@@ -381,7 +381,7 @@ action :
     -> Request.Request
     -> BackendTask.BackendTask FatalError.FatalError (Server.Response.Response ActionData ErrorPage.ErrorPage)
 action routeParams request =
-    case request |> Request.formData (form (Translations.init { lang = Translations.En, path = "https://capybara.house" ++ "/i18n" }) Captcha.default |> Form.Handler.init identity) of
+    case request |> Request.formData (form (Translations.init { lang = Maybe.withDefault Translations.En (Translations.languageFromString routeParams.lang), path = "https://capybara.house" ++ "/i18n" }) Captcha.default |> Form.Handler.init identity) of
         Nothing ->
             "Expected form submission."
                 |> FatalError.fromString

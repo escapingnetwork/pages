@@ -10,6 +10,7 @@ import BackendTask
 import Content.Minimal
 import FatalError exposing (FatalError)
 import Head
+import I18n as Translations
 import Layout.Minimal
 import PagesMsg
 import RouteBuilder exposing (App)
@@ -62,5 +63,5 @@ view :
     App Data ActionData RouteParams
     -> Shared.Model
     -> View.View (PagesMsg.PagesMsg Msg)
-view app _ =
-    { title = "Capybara House - Privacy Policy", body = [ Layout.Minimal.view app.data.minimal ] }
+view app shared =
+    { title = "Capybara House - " ++ Translations.footerTermsConditions shared.i18n, body = [ Layout.Minimal.view app.data.minimal ] }

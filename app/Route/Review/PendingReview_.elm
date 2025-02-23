@@ -221,7 +221,7 @@ form t captchaData =
                         fieldView label field =
                             Html.div [ Attrs.class "mb-5" ]
                                 [ Html.label [ Attrs.class "block mb-2 text-lg font-semibold text-gray-900 dark:text-white" ]
-                                    [ Html.text (label ++ " ")
+                                    [ Html.text label
                                     , field |> Form.FieldView.input [ Attrs.class "bg-gray-50 mt-2 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" ]
                                     ]
                                 , errorsView field
@@ -230,23 +230,23 @@ form t captchaData =
                         fieldViewRating : String -> Validation.Field String parsed (Form.FieldView.Options RatingEnum) -> Html msg
                         fieldViewRating label field =
                             Html.div [ Attrs.class "mb-5" ]
-                                [ Html.label [ Attrs.class "block mb-2 text-lg font-semibold text-gray-900 dark:text-white" ]
-                                    [ Html.text (label ++ " ")
-                                    , Html.div [ Attrs.class "inline space-x-2 mt-2" ]
-                                        [ Form.FieldView.radio []
+                                [ Html.label [ Attrs.class "mb-2 text-lg font-semibold text-gray-900 dark:text-white" ]
+                                    [ Html.text label
+                                    , Html.div [ Attrs.class "mt-2 max-w-sm max-auto" ]
+                                        [ Form.FieldView.radio [ Attrs.class "flex justify-between" ]
                                             (\enum toRadio ->
-                                                Html.label [ Attrs.class "review-cell inline-flex space-x-4 mt-2" ]
+                                                Html.label [ Attrs.class "review-cell mt-2" ]
                                                     [ toRadio [ Attrs.class "hidden peer" ]
                                                     , Html.div
-                                                        [ Attrs.class "w-12 h-12 rounded-lg bg-gray-200 flex items-center justify-center cursor-pointer transition duration-300 ease-in-out hover:bg-gray-300 peer-checked:bg-primary-500 peer-checked:text-white" ]
+                                                        [ Attrs.class "w-12 h-12 rounded-lg bg-gray-200 flex items-center justify-center cursor-pointer transition duration-300 ease-in-out hover:bg-primary-600 hover:text-white peer-checked:bg-primary-500 peer-checked:text-white" ]
                                                         [ Html.text (ratingToString enum) ]
                                                     ]
                                             )
                                             field
                                         ]
                                     , Html.div [ Attrs.class "mt-2 text-xs text-gray-600 dark:text-gray-400 flex justify-between" ]
-                                        [ Html.span [] [ Html.text <| Translations.formsRatingNotRecommended t ]
-                                        , Html.span [] [ Html.text <| Translations.formsRatingHighlyRecommended t ]
+                                        [ Html.span [] [ Html.text <| Translations.formsRatingVeryUnsatisfied t ]
+                                        , Html.span [] [ Html.text <| Translations.formsRatingVerySatisfied t ]
                                         ]
                                     ]
                                 , errorsView field
@@ -256,7 +256,7 @@ form t captchaData =
                         fieldViewCaptcha label captchaSvg field =
                             Html.div [ Attrs.class "mb-5" ]
                                 [ Html.label [ Attrs.class "block mb-2 text-lg font-semibold text-gray-900 dark:text-white" ]
-                                    [ Html.text (label ++ " ")
+                                    [ Html.text label
                                     , captchaSvg |> Captcha.toSvg
                                     , field |> Form.FieldView.input [ Attrs.class "bg-gray-50 mt-2 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" ]
                                     ]
@@ -358,7 +358,7 @@ view app shared =
                         , Html.text <| Translations.formsErrorContact app.data.translation ++ " "
                         , Html.a
                             [ Attrs.href "mailto:info@capybara.house"
-                            , Attrs.class "hover:underline "
+                            , Attrs.class "hover:text-primary-600 "
                             ]
                             [ Html.text "info@capybara.house" ]
                         ]

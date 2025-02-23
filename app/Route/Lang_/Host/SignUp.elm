@@ -413,7 +413,7 @@ view app shared =
                         , Html.text "Please contact "
                         , Html.a
                             [ Attrs.href "mailto:info@capybara.house"
-                            , Attrs.class "hover:underline "
+                            , Attrs.class "hover:text-primary-600 "
                             ]
                             [ Html.text "info@capybara.house" ]
                         ]
@@ -428,7 +428,7 @@ action :
     -> Request.Request
     -> BackendTask.BackendTask FatalError.FatalError (Server.Response.Response ActionData ErrorPage.ErrorPage)
 action routeParams request =
-    case request |> Request.formData (form (Translations.init { lang = Translations.En, path = "https://capybara.house" ++ "/i18n" }) Captcha.default |> Form.Handler.init identity) of
+    case request |> Request.formData (form (Translations.init { lang = Maybe.withDefault Translations.En (Translations.languageFromString routeParams.lang), path = "https://capybara.house" ++ "/i18n" }) Captcha.default |> Form.Handler.init identity) of
         Nothing ->
             "Expected form submission."
                 |> FatalError.fromString

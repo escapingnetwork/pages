@@ -257,11 +257,15 @@ logo =
         ]
 
 
-viewMainMenuItem : { label : String, route : Route } -> Html msg
-viewMainMenuItem { label, route } =
+viewMainMenuItem : I18n -> { label : String, route : Route } -> Html msg
+viewMainMenuItem translation { label, route } =
     Route.link
-        [ Attrs.class "hidden sm:block font-medium text-gray-900 dark:text-gray-100 hover:underline decoration-primary-500"
-        ]
+        (if label == Translations.buttonRequestAccommodation translation then
+            [ Attrs.class "hidden sm:block font-bold tracking-widest text-primary-500 dark:text-gray-100 hover:text-primary-600" ]
+
+         else
+            [ Attrs.class "hidden sm:block font-medium text-gray-900 dark:text-gray-100  hover:text-primary-600 decoration-primary-500" ]
+        )
         [ Html.text label ]
         route
 
@@ -291,7 +295,9 @@ viewMenu : UrlPath.UrlPath -> I18n -> Bool -> msg -> (Language -> msg) -> Html m
 viewMenu path translation showMenu onMenuToggle onLanguageChange =
     let
         mainMenuItems =
-            List.map viewMainMenuItem (menu translation)
+            { label = Translations.buttonRequestAccommodation translation, route = Route.Lang___Student__SignUp { lang = Translations.languageToString <| Translations.currentLanguage translation } }
+                :: menu translation
+                |> List.map (viewMainMenuItem translation)
 
         sideMenuItems =
             { label = Translations.navbarHome translation
@@ -314,7 +320,7 @@ viewMenu path translation showMenu onMenuToggle onLanguageChange =
                         (\lang ->
                             Html.div []
                                 [ Html.button
-                                    [ Attrs.class "hover:underline"
+                                    [ Attrs.class "hover:text-primary-600"
                                     , Events.onClick (onLanguageChange lang)
                                     ]
                                     [ Html.a
@@ -469,7 +475,7 @@ footer path translation onLanguageChange =
                                 [ Attrs.class "mb-4"
                                 ]
                                 [ Route.link
-                                    [ Attrs.class "hover:underline "
+                                    [ Attrs.class "hover:text-primary-600 "
                                     ]
                                     [ Html.text <| Translations.footerSupport translation ]
                                     (Route.Lang___Support
@@ -481,7 +487,7 @@ footer path translation onLanguageChange =
                                 ]
                                 [ Html.a
                                     [ Attrs.href "mailto:info@capybara.house"
-                                    , Attrs.class "hover:underline "
+                                    , Attrs.class "hover:text-primary-600 "
                                     ]
                                     [ Html.text "info@capybara.house" ]
                                 ]
@@ -490,7 +496,7 @@ footer path translation onLanguageChange =
                                 ]
                                 [ Html.a
                                     [ Attrs.href "https://calendly.com/capybarahouse"
-                                    , Attrs.class "hover:underline flex align-middle"
+                                    , Attrs.class "hover:text-primary-600 flex align-middle"
                                     ]
                                     [ Html.text "📅"
                                     , Html.text <| Translations.footerMeeting translation
@@ -499,14 +505,14 @@ footer path translation onLanguageChange =
                             , Html.li [ Attrs.class "mb-4" ]
                                 [ Html.a
                                     [ Attrs.href "tel:+35314434958"
-                                    , Attrs.class "hover:underline"
+                                    , Attrs.class "hover:text-primary-600"
                                     ]
                                     [ Html.text "🇮🇪 +353 1 443 4958" ]
                                 ]
                             , Html.li [ Attrs.class "mb-4" ]
                                 [ Html.a
                                     [ Attrs.href "tel:+17207380798"
-                                    , Attrs.class "hover:underline"
+                                    , Attrs.class "hover:text-primary-600"
                                     ]
                                     [ Html.text "🇺🇸 +1 720 738 0798" ]
                                 ]
@@ -524,7 +530,7 @@ footer path translation onLanguageChange =
                                 [ Attrs.class "mb-4"
                                 ]
                                 [ Route.link
-                                    [ Attrs.class "hover:underline"
+                                    [ Attrs.class "hover:text-primary-600"
                                     ]
                                     [ Html.text <| Translations.footerPrivacyPolicy translation ]
                                     (Route.Lang___PrivacyPolicy
@@ -533,7 +539,7 @@ footer path translation onLanguageChange =
                                 ]
                             , Html.li []
                                 [ Route.link
-                                    [ Attrs.class "hover:underline"
+                                    [ Attrs.class "hover:text-primary-600"
                                     ]
                                     [ Html.text <| Translations.footerTermsConditions translation ]
                                     (Route.Lang___Booking__TermsAndConditions
@@ -558,7 +564,7 @@ footer path translation onLanguageChange =
                     [ Html.text "© 2024"
                     , Html.a
                         [ Attrs.href "https://tranquera.co/"
-                        , Attrs.class "hover:underline"
+                        , Attrs.class "hover:text-primary-600"
                         ]
                         [ Html.text "Tranquera LLC" ]
                     , Html.text <| ". " ++ Translations.footerCopyright translation
@@ -584,17 +590,17 @@ footerLanguages path translation onLanguageChange =
                 (\lang ->
                     Html.div []
                         [ Html.button
-                            [ Attrs.class "hover:underline"
+                            [ Attrs.class "hover:text-primary-600"
                             , Events.onClick (onLanguageChange lang)
                             ]
                             [ Html.a
                                 [ Attrs.href <| changeLanguageUrlPath path lang
                                 , Attrs.hreflang <| Translations.languageToString lang
                                 , if Translations.currentLanguage translation == lang then
-                                    Attrs.class "text-primary-500"
+                                    Attrs.class "text-primary-500 hover:text-primary-600 font-bold"
 
                                   else
-                                    Attrs.class "text-gray-500"
+                                    Attrs.class "text-gray-500 hover:text-primary-600"
                                 ]
                                 [ Html.text <| String.toUpper <| Translations.languageToString lang ]
                             ]

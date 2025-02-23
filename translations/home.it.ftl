@@ -61,14 +61,14 @@ forms-error-contact = Per favore contatta
 forms-success = Grazie
 forms-success-contact = Ti ricontatteremo presto!
 
-forms-rating-capybara = Per favore valuta la tua esperienza con Capybara House:
-forms-rating-user = Per favore valuta la tua esperienza con lo studente/ospite:
-forms-content-capybara = Condividi una recensione su Capybara House:
-forms-content-user = Condividi una recensione su lo studente/ospite:
+forms-rating-capybara = Valuta la tua esperienza con Capybara House
+forms-rating-user = Valuta la tua esperienza con lo studente/ospite
+forms-content-capybara = Condividi una recensione su Capybara House
+forms-content-user = Condividi una recensione su lo studente/ospite
 forms-review-success = Grazie per la tua recensione!
 forms-review-message = Apprezziamo il tuo feedback.
-forms-rating-not-recommended = Non raccomandato
-forms-rating-highly-recommended = Altamente raccomandato
+forms-rating-very-unsatisfied = Molto insoddisfatto
+forms-rating-very-satisfied = Molto soddisfatto
 
 reviews-title = Recensioni
 reviews-subtitle = Cosa dicono i nostri clienti di noi

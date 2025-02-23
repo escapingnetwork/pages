@@ -10,7 +10,7 @@ import BackendTask
 import Content.Minimal
 import FatalError exposing (FatalError)
 import Head
-import I18n
+import I18n as Translations
 import Layout.Minimal
 import PagesMsg
 import RouteBuilder exposing (App, StatelessRoute)
@@ -42,7 +42,7 @@ route =
 
 pages : BackendTask.BackendTask FatalError (List RouteParams)
 pages =
-    BackendTask.succeed <| List.map (\lang -> I18n.languageToString lang |> RouteParams) I18n.languages
+    BackendTask.succeed <| List.map (\lang -> Translations.languageToString lang |> RouteParams) Translations.languages
 
 
 type alias Data =
@@ -69,5 +69,5 @@ view :
     App Data ActionData RouteParams
     -> Shared.Model
     -> View.View (PagesMsg.PagesMsg Msg)
-view app _ =
-    { title = "Privacy Policy", body = [ Layout.Minimal.view app.data.minimal ] }
+view app shared =
+    { title = "Capybara House - " ++ Translations.footerPrivacyPolicy shared.i18n, body = [ Layout.Minimal.view app.data.minimal ] }
