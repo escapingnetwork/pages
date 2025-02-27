@@ -11,10 +11,12 @@ import Content.Minimal
 import Effect exposing (Effect)
 import ErrorPage
 import FatalError
+import Head
 import Html
 import Html.Attributes as Attrs
 import I18n as Translations
 import I18nUtils
+import Layout
 import Layout.Minimal
 import PagesMsg
 import RouteBuilder exposing (App, StatefulRoute)
@@ -39,7 +41,7 @@ type alias RouteParams =
 route : StatefulRoute RouteParams Data ActionData Model Msg
 route =
     RouteBuilder.serverRender
-        { head = \_ -> []
+        { head = head
         , data = data
         , action = action
         }
@@ -56,6 +58,14 @@ init app shared =
     ( {}
     , Effect.none
     )
+
+
+head : RouteBuilder.App Data ActionData RouteParams -> List Head.Tag
+head app =
+    Layout.seoHeaders
+        (Translations.seoSupportTitle app.data.translation)
+        (Translations.seoSupportDescription app.data.translation)
+        app.data.translation
 
 
 update :

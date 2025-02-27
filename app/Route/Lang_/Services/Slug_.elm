@@ -10,8 +10,9 @@ import BackendTask exposing (BackendTask)
 import Content.Services exposing (Service)
 import FatalError exposing (FatalError)
 import Head
-import I18n exposing (I18n)
+import I18n as Translations exposing (I18n)
 import I18nUtils
+import Layout
 import Layout.Service
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
@@ -50,10 +51,10 @@ pages =
             Content.Services.allServices
                 |> BackendTask.map
                     (\services ->
-                        List.map (\service -> { slug = service.metadata.slug, lang = I18n.languageToString lang }) services
+                        List.map (\service -> { slug = service.metadata.slug, lang = Translations.languageToString lang }) services
                     )
         )
-        I18n.languages
+        Translations.languages
         |> BackendTask.combine
         |> BackendTask.map List.concat
 
@@ -77,7 +78,10 @@ data routeParams =
 
 head : RouteBuilder.App Data ActionData RouteParams -> List Head.Tag
 head app =
-    []
+    Layout.seoHeaders
+        (Translations.seoServicesTitle app.data.translation)
+        (Translations.seoServicesDescription app.data.translation)
+        app.data.translation
 
 
 view :

@@ -81,8 +81,11 @@ data r =
 
 
 head : RouteBuilder.App Data ActionData RouteParams -> List Head.Tag
-head _ =
+head app =
     Layout.seoHeaders
+        (Translations.seoServicesTitle app.data.translations)
+        (Translations.seoServicesDescription app.data.translations)
+        app.data.translations
 
 
 view :

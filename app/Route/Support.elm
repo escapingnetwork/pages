@@ -28,6 +28,7 @@ import Html exposing (Html)
 import Html.Attributes as Attrs
 import I18n as Translations exposing (..)
 import Json.Encode as Encode
+import Layout
 import Layout.Minimal
 import Pages.Form
 import PagesMsg exposing (PagesMsg)
@@ -81,12 +82,6 @@ type alias ActionData =
 
 data : RouteParams -> Request -> BackendTask.BackendTask FatalError (Server.Response.Response Data ErrorPage)
 data routeParams request =
-    mdText
-        |> BackendTask.map Server.Response.render
-
-
-mdText : BackendTask.BackendTask FatalError Data
-mdText =
     Content.Minimal.support ""
         |> BackendTask.allowFatal
         |> BackendTask.map2 Data
@@ -95,11 +90,19 @@ mdText =
                 Captcha.decoder
                 |> BackendTask.allowFatal
             )
+        |> BackendTask.map Server.Response.render
 
 
 head : RouteBuilder.App Data ActionData RouteParams -> List Head.Tag
-head app =
-    []
+head _ =
+    let
+        translations =
+            Translations.init { lang = Translations.En, path = "https://capybara.house" ++ "/i18n" }
+    in
+    Layout.seoHeaders
+        (Translations.seoSupportTitle translations)
+        (Translations.seoSupportDescription translations)
+        translations
 
 
 type alias Contact =

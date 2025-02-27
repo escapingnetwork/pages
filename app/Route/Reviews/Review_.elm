@@ -8,6 +8,7 @@ import Html
 import Html.Attributes as Attrs
 import I18n as Translations exposing (I18n)
 import I18nUtils
+import Layout
 import PagesMsg
 import ReviewUtils exposing (Review, getReview)
 import RouteBuilder exposing (App, StatelessRoute)
@@ -40,7 +41,14 @@ route =
 
 head : RouteBuilder.App Data ActionData RouteParams -> List Head.Tag
 head app =
-    []
+    let
+        translations =
+            Translations.init { lang = Translations.En, path = "https://capybara.house" ++ "/i18n" }
+    in
+    Layout.seoHeaders
+        (Translations.seoReviewsTitle translations)
+        (Translations.seoReviewsDescription translations)
+        translations
 
 
 pages : BackendTask FatalError (List RouteParams)

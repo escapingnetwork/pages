@@ -33,6 +33,7 @@ import I18n as Translations
 import I18nUtils
 import Json.Encode as Encode
 import Json.Encode.Extra as EncodeExtra
+import Layout
 import Layout.Minimal
 import Pages.Form
 import PagesMsg exposing (PagesMsg)
@@ -102,7 +103,10 @@ data routeParams request =
 
 head : RouteBuilder.App Data ActionData RouteParams -> List Head.Tag
 head app =
-    []
+    Layout.seoHeaders
+        (Translations.seoRequestAccommodationTitle app.data.translation)
+        (Translations.seoRequestAccommodationDescription app.data.translation)
+        app.data.translation
 
 
 type Sex

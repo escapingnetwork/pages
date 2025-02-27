@@ -8,6 +8,7 @@ import Html
 import Html.Attributes as Attrs
 import I18n as Translations exposing (I18n)
 import I18nUtils
+import Layout
 import PagesMsg
 import ReviewUtils exposing (Review, getReview)
 import RouteBuilder exposing (App, StatelessRoute)
@@ -41,7 +42,10 @@ route =
 
 head : RouteBuilder.App Data ActionData RouteParams -> List Head.Tag
 head app =
-    []
+    Layout.seoHeaders
+        (Translations.seoReviewsTitle app.data.translation)
+        (Translations.seoReviewsDescription app.data.translation)
+        app.data.translation
 
 
 pages : BackendTask FatalError (List RouteParams)

@@ -27,7 +27,9 @@ import Head
 import Html exposing (Html)
 import Html.Attributes as Attrs
 import I18n as Translations
+import I18nUtils
 import Json.Encode as Encode
+import Layout
 import Layout.Minimal
 import Pages.Form
 import PagesMsg exposing (PagesMsg)
@@ -69,6 +71,7 @@ route =
 
 type alias Data =
     { captcha : Captcha
+    , translation : Translations.I18n
     , minimal : Content.Minimal.Minimal
     }
 
@@ -83,18 +86,22 @@ data : RouteParams -> Request -> BackendTask.BackendTask FatalError (Server.Resp
 data routeParams request =
     Content.Minimal.hosts routeParams.lang
         |> BackendTask.allowFatal
-        |> BackendTask.map2 Data
+        |> BackendTask.map3 Data
             (BackendTask.Custom.run "captcha"
                 Encode.null
                 Captcha.decoder
                 |> BackendTask.allowFatal
             )
+            (I18nUtils.loadLanguage routeParams.lang)
         |> BackendTask.map Server.Response.render
 
 
 head : RouteBuilder.App Data ActionData RouteParams -> List Head.Tag
 head app =
-    []
+    Layout.seoHeaders
+        (Translations.seoHostTitle app.data.translation)
+        (Translations.seoHomeDescription app.data.translation)
+        app.data.translation
 
 
 type ContactMethod
@@ -385,7 +392,7 @@ view app shared =
     , body =
         [ Html.div [ Attrs.class "mx-auto prose max-w-none pb-8 pt-8 dark:prose-invert xl:col-span-2 xl:max-w-5xl xl:px-0" ]
             [ Layout.Minimal.view app.data.minimal
-            , form shared.i18n app.data.captcha
+            , form app.data.translation app.data.captcha
                 |> Pages.Form.renderHtml
                     [ Attrs.class "max-w-sm mx-auto"
                     ]

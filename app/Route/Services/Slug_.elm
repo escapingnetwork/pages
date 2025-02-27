@@ -10,6 +10,8 @@ import BackendTask exposing (BackendTask)
 import Content.Services exposing (Service)
 import FatalError exposing (FatalError)
 import Head
+import I18n as Translations
+import Layout
 import Layout.Service
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
@@ -65,7 +67,14 @@ data routeParams =
 
 head : RouteBuilder.App Data ActionData RouteParams -> List Head.Tag
 head app =
-    []
+    let
+        translations =
+            Translations.init { lang = Translations.En, path = "https://capybara.house" ++ "/i18n" }
+    in
+    Layout.seoHeaders
+        (Translations.seoServicesTitle translations)
+        (Translations.seoServicesDescription translations)
+        translations
 
 
 view :

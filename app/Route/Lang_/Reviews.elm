@@ -63,8 +63,11 @@ data routeParams =
 head :
     App Data ActionData RouteParams
     -> List Head.Tag
-head _ =
+head app =
     Layout.seoHeaders
+        (I18n.seoReviewsTitle app.data.translation)
+        (I18n.seoReviewsDescription app.data.translation)
+        app.data.translation
 
 
 view :

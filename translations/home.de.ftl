@@ -83,3 +83,27 @@ languages-es = Spanisch
 languages-pt = Portugiesisch
 languages-it = Italienisch
 languages-fr = Französisch
+
+seo-home-title = Capybara House - Startseite
+seo-home-description = Finden Sie die besten Unterkunftsmöglichkeiten in Dublin mit Capybara House.
+
+seo-services-title = Capybara House - Unsere Dienstleistungen
+seo-services-description = Entdecken Sie die von Capybara House angebotenen Dienstleistungen für Ihren Aufenthalt in Dublin.
+
+seo-host-title = Capybara House - Werden Sie Gastgeber
+seo-host-description = Erfahren Sie, wie Sie Gastgeber bei Capybara House werden und internationale Studenten beherbergen können.
+
+seo-partner-title = Capybara House - Werden Sie Partner
+seo-partner-description = Werden Sie Partner von Capybara House und helfen Sie, die besten Unterkünfte in Dublin bereitzustellen.
+
+seo-about-title = Capybara House - Über Uns
+seo-about-description = Erfahren Sie mehr über Capybara House und unsere Mission, das Unterkunftserlebnis in Irland zu verbessern.
+
+seo-support-title = Capybara House - Unterstützung
+seo-support-description = Erhalten Sie Unterstützung und Hilfe vom Capybara House-Team.
+
+seo-reviews-title = Capybara House - Bewertungen
+seo-reviews-description = Lesen Sie Kundenbewertungen über Capybara House.
+
+seo-request-accommodation-title = Capybara House - Unterkunft anfragen
+seo-request-accommodation-description = Fragen Sie eine Unterkunft bei Capybara House an und finden Sie den perfekten Ort zum Übernachten in Dublin.

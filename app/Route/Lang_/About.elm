@@ -4,8 +4,9 @@ import BackendTask
 import Content.About exposing (Author)
 import FatalError exposing (FatalError)
 import Head
-import I18n exposing (I18n)
+import I18n as Translations exposing (I18n)
 import I18nUtils
+import Layout
 import Layout.About
 import PagesMsg exposing (PagesMsg)
 import RouteBuilder exposing (App, StatelessRoute)
@@ -47,7 +48,7 @@ route =
 
 pages : BackendTask.BackendTask FatalError (List RouteParams)
 pages =
-    BackendTask.succeed <| List.map (\lang -> I18n.languageToString lang |> RouteParams) I18n.languages
+    BackendTask.succeed <| List.map (\lang -> Translations.languageToString lang |> RouteParams) Translations.languages
 
 
 data : RouteParams -> BackendTask.BackendTask FatalError Data
@@ -62,7 +63,10 @@ head :
     App Data ActionData RouteParams
     -> List Head.Tag
 head app =
-    Layout.About.seoHeaders app.data.author
+    Layout.seoHeaders
+        (Translations.seoAboutTitle app.data.translation)
+        (Translations.seoAboutDescription app.data.translation)
+        app.data.translation
 
 
 view :
@@ -74,7 +78,7 @@ view app model =
     , body =
         [ Layout.About.view app.data.translation
             (case model.language of
-                I18n.En ->
+                Translations.En ->
                     app.data.author
 
                 _ ->

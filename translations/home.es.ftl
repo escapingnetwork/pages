@@ -83,3 +83,27 @@ languages-es = Español
 languages-pt = Portugués
 languages-it = Italiano
 languages-fr = Francés
+
+seo-home-title = Capybara House - Inicio
+seo-home-description = Encuentra las mejores opciones de alojamiento en Dublín con Capybara House.
+
+seo-services-title = Capybara House - Nuestros Servicios
+seo-services-description = Descubre los servicios que ofrece Capybara House para tu estancia en Dublín.
+
+seo-host-title = Capybara House - Conviértete en Anfitrión
+seo-host-description = Descubre cómo convertirte en anfitrión con Capybara House y hospedar a estudiantes internacionales.
+
+seo-partner-title = Capybara House - Conviértete en Socio
+seo-partner-description = Únete a Capybara House como socio y ayuda a proporcionar los mejores alojamientos en Dublín.
+
+seo-about-title = Capybara House - Sobre Nosotros
+seo-about-description = Conoce más sobre Capybara House y nuestra misión de mejorar la experiencia de alojamiento en Irlanda.
+
+seo-support-title = Capybara House - Soporte
+seo-support-description = Obtén soporte y ayuda del equipo de Capybara House.
+
+seo-reviews-title = Capybara House - Reseñas
+seo-reviews-description = Lee las reseñas de los clientes sobre Capybara House.
+
+seo-request-accommodation-title = Capybara House - Solicitar Alojamiento
+seo-request-accommodation-description = Solicita alojamiento con Capybara House y encuentra el lugar perfecto para quedarte en Dublín.

@@ -10,8 +10,8 @@ import Html exposing (Html)
 import Html.Attributes as Attrs
 import Html.Events as Events
 import I18n as Translations exposing (..)
-import LanguageTag.Language as Language
-import LanguageTag.Region as Region
+import LanguageTag.Language as LangTag
+import LanguageTag.Region exposing (Region)
 import List
 import Pages.Url exposing (fromPath, toString)
 import Route exposing (Route)
@@ -21,11 +21,31 @@ import Svg.Attributes as SvgAttr
 import UrlPath
 
 
-seoHeaders : List Tag
-seoHeaders =
+seoHeaders : String -> String -> I18n -> List Tag
+seoHeaders title description translation =
     let
         imageUrl =
             [ "media", "banner.png" ] |> UrlPath.join |> fromPath
+
+        locale =
+            case Translations.currentLanguage translation of
+                Translations.En ->
+                    Just ( LangTag.en, LanguageTag.Region.us )
+
+                Translations.Es ->
+                    Just ( LangTag.es, LanguageTag.Region.es )
+
+                Translations.Pt ->
+                    Just ( LangTag.pt, LanguageTag.Region.pt )
+
+                Translations.De ->
+                    Just ( LangTag.de, LanguageTag.Region.de )
+
+                Translations.It ->
+                    Just ( LangTag.it, LanguageTag.Region.it )
+
+                Translations.Fr ->
+                    Just ( LangTag.fr, LanguageTag.Region.fr )
     in
     Seo.summaryLarge
         { canonicalUrlOverride = Nothing
@@ -36,9 +56,9 @@ seoHeaders =
             , dimensions = Just { width = 500, height = 333 }
             , mimeType = Nothing
             }
-        , description = Settings.subtitle
-        , locale = Just ( Language.en, Region.us )
-        , title = Settings.title
+        , description = description
+        , locale = locale
+        , title = title
         }
         |> Seo.website
 

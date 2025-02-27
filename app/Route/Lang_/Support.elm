@@ -29,6 +29,7 @@ import Html.Attributes as Attrs
 import I18n as Translations exposing (..)
 import I18nUtils
 import Json.Encode as Encode
+import Layout
 import Layout.Minimal
 import Pages.Form
 import PagesMsg exposing (PagesMsg)
@@ -97,7 +98,10 @@ data r request =
 
 head : RouteBuilder.App Data ActionData RouteParams -> List Head.Tag
 head app =
-    []
+    Layout.seoHeaders
+        (Translations.seoSupportTitle app.data.translation)
+        (Translations.seoSupportDescription app.data.translation)
+        app.data.translation
 
 
 type alias Contact =

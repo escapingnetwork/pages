@@ -61,7 +61,14 @@ head :
     App Data ActionData RouteParams
     -> List Head.Tag
 head _ =
+    let
+        translations =
+            Translations.init { lang = Translations.En, path = "https://capybara.house" ++ "/i18n" }
+    in
     Layout.seoHeaders
+        (Translations.seoServicesTitle translations)
+        (Translations.seoServicesDescription translations)
+        translations
 
 
 view :

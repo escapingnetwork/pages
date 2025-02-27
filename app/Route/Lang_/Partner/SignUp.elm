@@ -12,8 +12,9 @@ import FatalError exposing (FatalError)
 import Head
 import Html
 import Html.Attributes as Attrs
-import I18n
+import I18n as Translations
 import I18nUtils
+import Layout
 import Layout.Minimal
 import PagesMsg
 import RouteBuilder exposing (App, StatelessRoute)
@@ -45,11 +46,11 @@ route =
 
 pages : BackendTask.BackendTask FatalError (List RouteParams)
 pages =
-    BackendTask.succeed <| List.map (\lang -> I18n.languageToString lang |> RouteParams) I18n.languages
+    BackendTask.succeed <| List.map (\lang -> Translations.languageToString lang |> RouteParams) Translations.languages
 
 
 type alias Data =
-    { translation : I18n.I18n
+    { translation : Translations.I18n
     , minimal : Content.Minimal.Minimal
     }
 
@@ -67,7 +68,10 @@ data r =
 
 head : RouteBuilder.App Data ActionData RouteParams -> List Head.Tag
 head app =
-    []
+    Layout.seoHeaders
+        (Translations.seoPartnerTitle app.data.translation)
+        (Translations.seoPartnerDescription app.data.translation)
+        app.data.translation
 
 
 view :

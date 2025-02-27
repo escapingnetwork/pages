@@ -32,6 +32,7 @@ import Html.Attributes.Autocomplete exposing (DetailedCompletion(..))
 import I18n as Translations
 import Json.Encode as Encode
 import Json.Encode.Extra as EncodeExtra
+import Layout
 import Layout.Minimal
 import Pages.Form
 import PagesMsg exposing (PagesMsg)
@@ -98,8 +99,15 @@ data routeParams request =
 
 
 head : RouteBuilder.App Data ActionData RouteParams -> List Head.Tag
-head app =
-    []
+head _ =
+    let
+        translations =
+            Translations.init { lang = Translations.En, path = "https://capybara.house" ++ "/i18n" }
+    in
+    Layout.seoHeaders
+        (Translations.seoRequestAccommodationTitle translations)
+        (Translations.seoRequestAccommodationDescription translations)
+        translations
 
 
 type Sex

@@ -11,8 +11,11 @@ import Content.Minimal
 import Effect exposing (Effect)
 import ErrorPage
 import FatalError
+import Head
 import Html
 import Html.Attributes as Attrs
+import I18n as Translations
+import Layout
 import Layout.Minimal
 import PagesMsg
 import RouteBuilder exposing (App, StatefulRoute)
@@ -37,7 +40,7 @@ type alias RouteParams =
 route : StatefulRoute RouteParams Data ActionData Model Msg
 route =
     RouteBuilder.serverRender
-        { head = \_ -> []
+        { head = head
         , data = data
         , action = action
         }
@@ -54,6 +57,18 @@ init app shared =
     ( {}
     , Effect.none
     )
+
+
+head : RouteBuilder.App Data ActionData RouteParams -> List Head.Tag
+head _ =
+    let
+        translations =
+            Translations.init { lang = Translations.En, path = "https://capybara.house" ++ "/i18n" }
+    in
+    Layout.seoHeaders
+        (Translations.seoHostTitle translations)
+        (Translations.seoHomeDescription translations)
+        translations
 
 
 update :
