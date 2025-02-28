@@ -1,7 +1,7 @@
 [build]
 functions = "functions/"
 publish = "dist/"
-command = "npm install &&  npx travelm-agency --elm_path=src/I18n.elm --json_path=public/i18n translations && npm run build"
+command = "npx travelm-agency --elm_path=src/I18n.elm --json_path=public/i18n translations"
 
 [dev]
 command = "npm start"
