@@ -12,13 +12,13 @@ loadLanguage : String -> BackendTask FatalError I18n.I18n
 loadLanguage langString =
     let
         path =
-            "http://localhost:1234/i18n/"
+            "https://capybara.house/i18n/"
 
         lang =
             I18n.languageFromString langString |> Maybe.withDefault I18n.En
 
         langInit =
-            I18n.init { lang = lang, path = "http://localhost:1234/i18n/" }
+            I18n.init { lang = lang, path = "https://capybara.house/i18n/" }
     in
     BackendTask.Http.getJson
         (path ++ I18n.languageToFileName_home lang)

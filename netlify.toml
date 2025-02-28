@@ -12,6 +12,8 @@ framework = "#custom"
 [functions]
 node_bundler = "esbuild"
 included_files = [
+  "public/**",
+
   "content/termsconditions.md",
   "content/en/termsconditions.md",
   "content/es/termsconditions.md",
