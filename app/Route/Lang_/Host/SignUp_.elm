@@ -11,9 +11,12 @@ import Content.Minimal
 import Effect exposing (Effect)
 import ErrorPage
 import FatalError
+import Head
 import Html
 import Html.Attributes as Attrs
 import I18n as Translations
+import I18nUtils
+import Layout
 import Layout.Minimal
 import PagesMsg
 import RouteBuilder exposing (App, StatefulRoute)
@@ -38,7 +41,7 @@ type alias RouteParams =
 route : StatefulRoute RouteParams Data ActionData Model Msg
 route =
     RouteBuilder.serverRender
-        { head = \_ -> []
+        { head = head
         , data = data
         , action = action
         }
@@ -57,6 +60,14 @@ init app shared =
     )
 
 
+head : RouteBuilder.App Data ActionData RouteParams -> List Head.Tag
+head app =
+    Layout.seoHeaders
+        (Translations.seoHostTitle app.data.translation)
+        (Translations.seoHomeDescription app.data.translation)
+        app.data.translation
+
+
 update :
     App Data ActionData RouteParams
     -> Shared.Model
@@ -68,7 +79,9 @@ update app shared msg model =
 
 
 type alias Data =
-    { minimal : Content.Minimal.Minimal }
+    { translation : Translations.I18n
+    , minimal : Content.Minimal.Minimal
+    }
 
 
 type alias ActionData =
@@ -79,7 +92,7 @@ data : RouteParams -> Server.Request.Request -> BackendTask.BackendTask FatalErr
 data routeParams request =
     Content.Minimal.hosts routeParams.lang
         |> BackendTask.allowFatal
-        |> BackendTask.map Data
+        |> BackendTask.map2 Data (I18nUtils.loadLanguage routeParams.lang)
         |> BackendTask.map Server.Response.render
 
 

@@ -107,3 +107,9 @@ seo-reviews-description = Lisez les avis des clients sur Capybara House.
 
 seo-request-accommodation-title = Capybara House - Demander un logement
 seo-request-accommodation-description = Demandez un logement avec Capybara House et trouvez l'endroit parfait pour séjourner à Dublin.
+
+seo-privacy-policy-title = Capybara House - Politique de confidentialité
+seo-privacy-policy-description = Lisez la politique de confidentialité de Capybara House pour savoir comment nous protégeons vos informations.
+
+seo-booking-terms-title = Capybara House - Conditions de réservation
+seo-booking-terms-description = Lisez les conditions de réservation de Capybara House pour comprendre nos politiques de réservation.

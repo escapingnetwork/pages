@@ -11,6 +11,8 @@ import Content.Minimal
 import FatalError exposing (FatalError)
 import Head
 import I18n as Translations
+import I18nUtils
+import Layout
 import Layout.Minimal
 import PagesMsg
 import RouteBuilder exposing (App, StatelessRoute)
@@ -46,7 +48,9 @@ pages =
 
 
 type alias Data =
-    { minimal : Content.Minimal.Minimal }
+    { translation : Translations.I18n
+    , minimal : Content.Minimal.Minimal
+    }
 
 
 type alias ActionData =
@@ -57,12 +61,15 @@ data : RouteParams -> BackendTask.BackendTask FatalError Data
 data r =
     Content.Minimal.privacyPolicy r.lang
         |> BackendTask.allowFatal
-        |> BackendTask.map Data
+        |> BackendTask.map2 Data (I18nUtils.loadLanguage r.lang)
 
 
 head : RouteBuilder.App Data ActionData RouteParams -> List Head.Tag
 head app =
-    Layout.Minimal.seoHeaders app.data.minimal
+    Layout.seoHeaders
+        (Translations.seoPrivacyPolicyTitle app.data.translation)
+        (Translations.seoPrivacyPolicyDescription app.data.translation)
+        app.data.translation
 
 
 view :

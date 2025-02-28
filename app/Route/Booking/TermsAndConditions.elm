@@ -11,6 +11,7 @@ import Content.Minimal
 import FatalError exposing (FatalError)
 import Head
 import I18n as Translations
+import Layout
 import Layout.Minimal
 import PagesMsg
 import RouteBuilder exposing (App)
@@ -56,7 +57,14 @@ data =
 
 head : RouteBuilder.App Data ActionData RouteParams -> List Head.Tag
 head app =
-    Layout.Minimal.seoHeaders app.data.minimal
+    let
+        translations =
+            Translations.init { lang = Translations.En, path = "https://capybara.house" ++ "/i18n" }
+    in
+    Layout.seoHeaders
+        (Translations.seoBookingTermsTitle translations)
+        (Translations.seoBookingTermsDescription translations)
+        translations
 
 
 view :
