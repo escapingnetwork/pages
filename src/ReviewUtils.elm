@@ -399,7 +399,7 @@ ratingToStars rating =
                     Phosphor.Fill
                     |> withSize 18
                     |> withSizeUnit "px"
-                    |> toHtml [ Attrs.class "text-primary-500" ]
+                    |> toHtml [ Attrs.class "text-primary-400" ]
                 )
             )
         |> List.map (\x -> x)
