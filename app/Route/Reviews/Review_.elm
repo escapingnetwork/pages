@@ -8,6 +8,7 @@ import Html.Attributes as Attrs
 import I18n as Translations exposing (I18n)
 import I18nUtils
 import Layout
+import Layout.Reviews exposing (showFullReview)
 import PagesMsg
 import ReviewUtils exposing (Review, getReview)
 import RouteBuilder exposing (App, StatelessRoute)
@@ -95,6 +96,6 @@ view app model =
             ]
         , Html.div
             [ Attrs.class "mx-auto max-w-none dark:prose-invert xl:col-span-2 xl:max-w-5xl xl:px-0  overflow-hidden " ]
-            [ ReviewUtils.showFullReview app.data.translation app.data.review ]
+            [ showFullReview app.data.translation app.data.review ]
         ]
     }

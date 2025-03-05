@@ -3,7 +3,8 @@ module Layout.Home exposing (view)
 import Html exposing (Html)
 import Html.Attributes as Attrs
 import I18n as Translations exposing (..)
-import ReviewUtils exposing (Review, showReview)
+import Layout.Reviews exposing (homeView)
+import ReviewUtils exposing (Review)
 import Route
 
 
@@ -64,17 +65,5 @@ view translation reviews =
             Html.text ""
 
           else
-            Html.div [ Attrs.class "container mx-auto px-4 py-8" ]
-                [ Html.div [ Attrs.class "col-span-1" ]
-                    [ Route.link
-                        [ Attrs.class "cursor-pointer" ]
-                        [ Html.h2 [ Attrs.class "text-3xl font-bold mb-6 text-center text-gray-800 hover:text-primary-600" ]
-                            [ Html.text <| Translations.reviewsTitle translation ]
-                        ]
-                        (Route.Lang___Reviews
-                            { lang = Translations.languageToString <| Translations.currentLanguage translation }
-                        )
-                    , Html.div [ Attrs.class "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" ] (List.map (showReview translation) reviews)
-                    ]
-                ]
+            homeView translation reviews
         ]
