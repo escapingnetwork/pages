@@ -1,7 +1,6 @@
 module Route.Reviews.Review_ exposing (ActionData, Data, Model, Msg, RouteParams, route)
 
 import BackendTask exposing (BackendTask)
-import Effect exposing (Effect)
 import FatalError exposing (FatalError)
 import Head
 import Html

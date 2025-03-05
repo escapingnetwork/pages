@@ -17,6 +17,6 @@ We are a team who have been working with international students and the accommod
 
 Capybara House is a brand owned by Tranquera LLC a USA company.
 
-### Why we are based USA?
+## Why we are based USA?
 
 We are a company which works with international students and Irish providers. For this reason, the USA is perfect to run our international business.

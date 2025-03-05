@@ -17,6 +17,6 @@ Nous sommes une équipe qui travaille avec des étudiants internationaux et le s
 
 Capybara House est une marque détenue par Tranquera LLC, une entreprise américaine.
 
-### Pourquoi sommes-nous basés aux États-Unis ?
+## Pourquoi sommes-nous basés aux États-Unis ?
 
 Nous sommes une entreprise qui travaille avec des étudiants internationaux et des fournisseurs irlandais. Pour cette raison, les États-Unis sont parfaits pour gérer notre entreprise internationale.

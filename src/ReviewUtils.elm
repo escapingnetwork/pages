@@ -9,11 +9,13 @@ import Html exposing (Html, tr)
 import Html.Attributes as Attrs exposing (name)
 import I18n as Translations exposing (I18n)
 import I18nUtils exposing (languageToTranslatedLanguage)
+import Iso8601
 import Json.Decode as Decode
 import Json.Decode.Extra as DecodeExtra
 import Json.Decode.Pipeline as Pipeline exposing (optional, required)
 import Phosphor exposing (toHtml, user, withSize, withSizeUnit)
 import Route exposing (Route)
+import Time
 
 
 type alias EnvVariables =
@@ -32,6 +34,7 @@ type alias Review =
     , content : Maybe String
     , translations : List ReviewTranslation
     , status : ReviewStatus
+    , submittedAt : Maybe Time.Posix
     }
 
 
@@ -138,6 +141,7 @@ decodeReview =
         |> Pipeline.optional "content" (Decode.maybe Decode.string) Nothing
         |> Pipeline.required "review_translation" (Decode.list decodeReviewTranslation)
         |> Pipeline.required "status" (Decode.string |> Decode.andThen (Decode.succeed << reviewStatusStringToEnum))
+        |> Pipeline.optional "submitted_at" (Decode.maybe DecodeExtra.datetime) Nothing
 
 
 decodeReviewTranslation : Decode.Decoder ReviewTranslation
@@ -235,7 +239,7 @@ getReview reviewId =
             |> BackendTask.map (Maybe.withDefault "http://localhost:1234")
         )
         |> BackendTask.andThen (sendGetReviewRequest reviewId)
-        |> BackendTask.map (\reviews -> Maybe.withDefault (Review "" "" "" Student Nothing Nothing Nothing [] ReviewStatusRejected) (List.head reviews))
+        |> BackendTask.map (\reviews -> Maybe.withDefault (Review "" "" "" Student Nothing Nothing Nothing [] ReviewStatusRejected Nothing) (List.head reviews))
 
 
 sendGetReviewRequest : String -> EnvVariables -> BackendTask FatalError (List Review)
@@ -261,6 +265,10 @@ sendGetReviewRequest reviewId envVariables =
                 BackendTask.succeed
                     []
             )
+
+
+
+-- TODO Move to Layout
 
 
 showReview : I18n -> Review -> Html msg
@@ -302,6 +310,9 @@ showReview translation review =
 
                         Nothing ->
                             Html.text ""
+                    , Html.div
+                        [ Attrs.class "text-xs text-gray-500 italic mt-2" ]
+                        [ Html.text <| Maybe.withDefault "" (Maybe.map (\time -> String.left 10 (Iso8601.fromTime time)) review.submittedAt) ]
                     ]
 
               else
@@ -315,6 +326,9 @@ showReview translation review =
 
                         Nothing ->
                             Html.text ""
+                    , Html.div
+                        [ Attrs.class "text-xs text-gray-500 italic  mt-2" ]
+                        [ Html.text <| Maybe.withDefault "" (Maybe.map (\time -> String.left 10 (Iso8601.fromTime time)) review.submittedAt) ]
                     , Html.div
                         [ Attrs.class "absolute bottom-2 right-2 text-xs text-gray-500 italic" ]
                         [ Html.text <| Translations.reviewsTranslated translation ++ " " ++ languageToTranslatedLanguage translation (Maybe.withDefault "en" review.language) ]
@@ -361,6 +375,9 @@ showFullReview translation review =
 
                     Nothing ->
                         Html.text ""
+                , Html.div
+                    [ Attrs.class "text-xs text-gray-500 italic mt-2" ]
+                    [ Html.text <| Maybe.withDefault "" (Maybe.map (\time -> String.left 10 (Iso8601.fromTime time)) review.submittedAt) ]
                 ]
 
           else
@@ -374,6 +391,9 @@ showFullReview translation review =
 
                     Nothing ->
                         Html.text ""
+                , Html.div
+                    [ Attrs.class "text-xs text-gray-500 italic mt-2" ]
+                    [ Html.text <| Maybe.withDefault "" (Maybe.map (\time -> String.left 10 (Iso8601.fromTime time)) review.submittedAt) ]
                 , Html.div
                     [ Attrs.class "absolute bottom-2 right-2 text-xs text-gray-500 italic" ]
                     [ Html.text <| Translations.reviewsTranslated translation ++ " " ++ languageToTranslatedLanguage translation (Maybe.withDefault "en" review.language) ]
@@ -399,7 +419,7 @@ ratingToStars rating =
                     Phosphor.Fill
                     |> withSize 18
                     |> withSizeUnit "px"
-                    |> toHtml [ Attrs.class "text-primary-400" ]
+                    |> toHtml [ Attrs.class "text-primary-500" ]
                 )
             )
         |> List.map (\x -> x)

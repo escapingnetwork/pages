@@ -31,6 +31,10 @@ import NoUnused.Patterns
 import NoUnused.Variables
 import Review.Rule as Rule exposing (Rule)
 import Simplify
+import NoEmptyText
+
+{-| The configuration for elm-review.
+-}
 
 
 config : List Rule
@@ -55,4 +59,5 @@ config =
     , NoUnused.Patterns.rule
     , NoUnused.Variables.rule
     , Simplify.rule Simplify.defaults
+    , NoEmptyText.rule
     ]

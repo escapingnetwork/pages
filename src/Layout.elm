@@ -11,7 +11,7 @@ import Html.Attributes as Attrs
 import Html.Events as Events
 import I18n as Translations exposing (..)
 import LanguageTag.Language as LangTag
-import LanguageTag.Region exposing (Region)
+import LanguageTag.Region
 import List
 import Pages.Url exposing (fromPath, toString)
 import Route exposing (Route)

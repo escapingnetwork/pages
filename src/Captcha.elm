@@ -1,4 +1,4 @@
-module Captcha exposing (..)
+module Captcha exposing (Captcha, decoder, default, toSvg)
 
 import Json.Decode as Decode exposing (Decoder)
 import Svg exposing (Svg)

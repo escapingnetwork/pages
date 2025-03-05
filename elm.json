@@ -33,6 +33,7 @@
             "kuon/elm-string-normalize": "1.0.6",
             "pablohirafuji/elm-syntax-highlight": "3.6.0",
             "phosphor-icons/phosphor-elm": "2.1.0",
+            "rtfeldman/elm-iso8601-date-strings": "1.1.4",
             "supermario/elm-countries": "1.1.1"
         },
         "indirect": {
@@ -61,7 +62,6 @@
             "robinheghan/murmur3": "1.0.0",
             "rtfeldman/elm-css": "18.0.0",
             "rtfeldman/elm-hex": "1.0.0",
-            "rtfeldman/elm-iso8601-date-strings": "1.1.4",
             "stil4m/elm-syntax": "7.3.8",
             "stil4m/structured-writer": "1.0.3",
             "the-sett/elm-pretty-printer": "3.1.0",

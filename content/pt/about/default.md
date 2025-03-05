@@ -17,6 +17,6 @@ Somos uma equipe que trabalha com estudantes internacionais e o setor de acomoda
 
 Capybara House é uma marca da Tranquera LLC, uma empresa americana.
 
-### Por que estamos sediados nos EUA?
+## Por que estamos sediados nos EUA?
 
 Somos uma empresa que trabalha com estudantes internacionais e fornecedores irlandeses. Por este motivo, os EUA são perfeitos para administrar nosso negócio internacional.

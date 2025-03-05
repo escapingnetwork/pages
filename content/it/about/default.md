@@ -17,6 +17,6 @@ Siamo un team che lavora con studenti internazionali e il settore dell'alloggio 
 
 Capybara House è un marchio di proprietà di Tranquera LLC, una società statunitense.
 
-### Perché siamo basati negli USA?
+## Perché siamo basati negli USA?
 
 Siamo una società che lavora con studenti internazionali e fornitori irlandesi. Per questo motivo, gli USA sono perfetti per gestire il nostro business internazionale.

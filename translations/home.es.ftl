@@ -29,6 +29,8 @@ about-product = Nuestro Producto
 about-product-content = Capybara House es una marca propiedad de Tranquera LLC, una empresa estadounidense.
 about-where = ¿Por qué estamos ubicados en EE.UU.?
 about-where-content = Somos una empresa que trabaja con estudiantes internacionales y proveedores irlandeses. Por eso, EE.UU. es el lugar perfecto para gestionar nuestro negocio internacional.
+about-meet-team = Conoce a nuestro equipo
+about-meet-team-content = Nuestro equipo está compuesto por profesionales dedicados que trabajan para garantizar la mejor experiencia para nuestros clientes.
 
 services-title = Nuestros Servicios
 services-half-board = Media Pension

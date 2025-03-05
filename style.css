@@ -1,6 +1,26 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@config "./tailwind.config.js";
+@import "tailwindcss";
+
+@source "./app/**/*.{elm,ts,js}";
+@source "./src/**/*.{elm,ts,js}";
+@source "./index.html";
+
+/* Define dark mode variant */
+@variant dark (&:where(.dark, .dark *));
+
+/* Extend the theme */
+@theme {
+  --color-primary-50: var(--color-yellow-50);
+  --color-primary-100: var(--color-yellow-100);
+  --color-primary-200: var(--color-yellow-200);
+  --color-primary-300: var(--color-yellow-300);
+  --color-primary-400: var(--color-yellow-400);
+  --color-primary-500: var(--color-yellow-500);
+  --color-primary-600: var(--color-yellow-600);
+  --color-primary-700: var(--color-yellow-700);
+  --color-primary-800: var(--color-yellow-800);
+  --color-primary-900: var(--color-yellow-900);
+}
 
 body {
   @apply antialiased text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-900
@@ -26,4 +46,3 @@ code.elmsh {
   padding: 0 20px 0 0;
   opacity: 0.3;
 }
-

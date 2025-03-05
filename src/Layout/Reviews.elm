@@ -1,6 +1,6 @@
-module Layout.Reviews exposing (..)
+module Layout.Reviews exposing (view)
 
-import Html exposing (Html, div, h2, p)
+import Html exposing (Html, div)
 import Html.Attributes exposing (class)
 import I18n exposing (I18n)
 import ReviewUtils exposing (Review, showFullReview)

@@ -17,6 +17,6 @@ Somos un equipo que lleva años trabajando con estudiantes internacionales y el 
 
 Capybara House es una marca de Tranquera LLC, una empresa estadounidense.
 
-### ¿Por qué tenemos nuestra sede en los EE. UU.?
+## ¿Por qué tenemos nuestra sede en los EE. UU.?
 
 Somos una empresa que trabaja con estudiantes internacionales y proveedores irlandeses. Por este motivo, Estados Unidos es perfecto para gestionar nuestros negocios internacionales.

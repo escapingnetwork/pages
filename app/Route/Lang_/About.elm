@@ -1,7 +1,9 @@
 module Route.Lang_.About exposing (ActionData, Data, Model, Msg, RouteParams, route)
 
 import BackendTask
-import Content.About exposing (Author)
+import Content.About exposing (About)
+import Content.Members exposing (Member)
+import Dict
 import FatalError exposing (FatalError)
 import Head
 import I18n as Translations exposing (I18n)
@@ -27,8 +29,9 @@ type alias RouteParams =
 
 
 type alias Data =
-    { translation : I18n
-    , author : Author
+    { about : About
+    , translation : I18n
+    , members : List Member
     }
 
 
@@ -53,10 +56,17 @@ pages =
 
 data : RouteParams -> BackendTask.BackendTask FatalError Data
 data r =
-    Content.About.defaultAuthor r.lang
-        |> BackendTask.allowFatal
-        |> BackendTask.map2 Data
-            (I18nUtils.loadLanguage r.lang)
+    (Content.Members.allMembers
+        |> BackendTask.map (List.filter (\{ language, member } -> language == r.lang))
+        |> BackendTask.map (List.map .member)
+    )
+        |> BackendTask.map3 Data
+            (Content.About.defaultAbout r.lang
+                |> BackendTask.allowFatal
+            )
+            (I18nUtils.loadLanguage
+                r.lang
+            )
 
 
 head :
@@ -76,13 +86,5 @@ view :
 view app model =
     { title = "Capybara House - About"
     , body =
-        [ Layout.About.view app.data.translation
-            (case model.language of
-                Translations.En ->
-                    app.data.author
-
-                _ ->
-                    app.data.author
-            )
-        ]
+        [ Layout.About.view app.data.translation app.data.about app.data.members ]
     }

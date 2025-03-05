@@ -1,8 +1,10 @@
 import { defineConfig } from "vite";
 import adapter from "./netlify.js";
+import tailwindcss from "@tailwindcss/vite";
+
 
 export default {
-  vite: defineConfig({}),
+  vite: defineConfig({ plugins: [tailwindcss()] }),
   adapter,
   headTagsTemplate(context) {
     return `

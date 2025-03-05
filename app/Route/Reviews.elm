@@ -1,4 +1,4 @@
-module Route.Reviews exposing (..)
+module Route.Reviews exposing (ActionData, Data, Model, Msg, RouteParams, route)
 
 import BackendTask exposing (BackendTask)
 import FatalError exposing (FatalError)
@@ -8,11 +8,10 @@ import Html.Attributes as Attrs
 import I18n exposing (I18n)
 import I18nUtils
 import Layout
-import Layout.Reviews exposing (view)
+import Layout.Reviews
 import PagesMsg exposing (PagesMsg)
 import ReviewUtils exposing (Review, getReviews)
 import RouteBuilder exposing (App, StatelessRoute)
-import Settings
 import Shared
 import View exposing (View)
 

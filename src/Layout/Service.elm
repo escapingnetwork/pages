@@ -25,7 +25,7 @@ viewService translation { metadata, body, previousService, nextService } =
                 |> Html.Extra.viewMaybe
                     (\{ title, slug, image } ->
                         Html.div
-                            [ Attrs.class "sm:col-start-1 mt-4 xl:mt-8 relative text-white hover:text-primary-500"
+                            [ Attrs.class "relative text-white hover:text-primary-500 w-full lg:col-start-2"
                             ]
                             [ Route.Lang___Services__Slug_ { lang = Translations.languageToString <| Translations.currentLanguage translation, slug = slug }
                                 |> Route.link
@@ -36,13 +36,13 @@ viewService translation { metadata, body, previousService, nextService } =
                                                 Html.img
                                                     [ Attrs.alt title
                                                     , Attrs.attribute "decoding" "async"
-                                                    , Attrs.class "h-48 w-full object-cover md:h-144 md:w-full"
+                                                    , Attrs.class "h-32 w-full object-cover md:h-48 md:w-full rounded-lg shadow-lg"
                                                     , Attrs.src imagePath
                                                     ]
                                                     []
                                             )
                                     , Html.h2
-                                        [ Attrs.class "uppercase tracking-wide md:text-4xl text-2xl font-extrabold absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+                                        [ Attrs.class "uppercase tracking-wide md:text-2xl text-xl font-extrabold absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
                                         ]
                                         [ Html.text title ]
                                     ]
@@ -54,7 +54,7 @@ viewService translation { metadata, body, previousService, nextService } =
                 |> Html.Extra.viewMaybe
                     (\{ title, slug, image } ->
                         Html.div
-                            [ Attrs.class "sm:col-start-2 mt-4 xl:mt-8 relative text-white hover:text-primary-500"
+                            [ Attrs.class "relative text-white hover:text-primary-500 w-full lg:col-start-3"
                             ]
                             [ Route.Lang___Services__Slug_ { lang = Translations.languageToString <| Translations.currentLanguage translation, slug = slug }
                                 |> Route.link
@@ -65,13 +65,13 @@ viewService translation { metadata, body, previousService, nextService } =
                                                 Html.img
                                                     [ Attrs.alt title
                                                     , Attrs.attribute "decoding" "async"
-                                                    , Attrs.class "h-48 w-full object-cover md:h-144 md:w-full"
+                                                    , Attrs.class "h-32 w-full object-cover md:h-48 md:w-full rounded-lg shadow-lg"
                                                     , Attrs.src imagePath
                                                     ]
                                                     []
                                             )
                                     , Html.h2
-                                        [ Attrs.class "uppercase tracking-wide md:text-4xl text-2xl font-extrabold absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+                                        [ Attrs.class "uppercase tracking-wide md:text-2xl text-xl font-extrabold absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
                                         ]
                                         [ Html.text title ]
                                     ]
@@ -104,7 +104,7 @@ viewService translation { metadata, body, previousService, nextService } =
                                         , Attrs.attribute "loading" "lazy"
                                         , Attrs.attribute "decoding" "async"
                                         , Attrs.attribute "data-nimg" "fill"
-                                        , Attrs.class "object-cover"
+                                        , Attrs.class "object-cover rounded-lg shadow-lg"
                                         , Attrs.attribute "sizes" "100vw"
                                         , Attrs.style "position" "absolute"
                                         , Attrs.style "height" "100%"
@@ -123,16 +123,9 @@ viewService translation { metadata, body, previousService, nextService } =
     in
     Html.div []
         [ header
-
-        -- , Html.Extra.viewMaybe
-        --     (\description ->
-        --         Html.div
-        --             [ Attrs.class "mx-auto prose-p:my-4 prose lg:prose-xl dark:prose-invert" ]
-        --             [ Html.p [ Attrs.class "font-bold" ] [ Html.text description ] ]
-        --     )
-        --     service.description
         , Html.article
-            [ Attrs.class "mx-auto prose lg:prose-xl dark:prose-invert pt-10" ]
+            [ Attrs.class "mx-auto prose lg:prose-xl dark:prose-invert pt-10"
+            ]
             (Markdown.blogpostToHtml body)
         , Html.div [ Attrs.class "text-center mt-10" ]
             [ Route.link
@@ -145,7 +138,8 @@ viewService translation { metadata, body, previousService, nextService } =
                 )
             ]
         , Html.div
-            [ Attrs.class "mx-auto grid grid-flow-row sm:grid-cols-2" ]
+            [ Attrs.class "mx-auto grid grid-cols-1 lg:grid-cols-4 gap-4 mt-10"
+            ]
             [ previous, next ]
         ]
 
@@ -166,19 +160,19 @@ viewListItem translation metadata =
                             [ Html.img
                                 [ Attrs.alt metadata.title
                                 , Attrs.attribute "decoding" "async"
-                                , Attrs.class "h-48 w-full object-cover md:h-144 md:w-full "
+                                , Attrs.class "h-32 w-full object-cover md:h-48 md:w-full rounded-lg shadow-lg"
                                 , Attrs.src imagePath
                                 ]
                                 []
                             , Html.h2
-                                [ Attrs.class "uppercase tracking-wide md:text-4xl text-2xl font-extrabold absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+                                [ Attrs.class "uppercase tracking-wide md:text-2xl text-xl font-extrabold absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
                                 ]
                                 [ Html.text metadata.title ]
                             ]
                     ]
             )
             metadata.image
-        , Html.div [ Attrs.class "p-8" ]
+        , Html.div [ Attrs.class "p-4 md:p-8" ]
             [ Html.Extra.viewMaybe
                 (\description ->
                     Html.div
@@ -211,19 +205,19 @@ viewLangListItem translation metadata =
                             [ Html.img
                                 [ Attrs.alt metadata.title
                                 , Attrs.attribute "decoding" "async"
-                                , Attrs.class "h-48 w-full object-cover md:h-144 md:w-full "
+                                , Attrs.class "h-32 w-full object-cover md:h-48 md:w-full rounded-lg shadow-lg"
                                 , Attrs.src imagePath
                                 ]
                                 []
                             , Html.h2
-                                [ Attrs.class "uppercase tracking-wide md:text-4xl text-2xl font-extrabold absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+                                [ Attrs.class "uppercase tracking-wide md:text-2xl text-xl font-extrabold absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
                                 ]
                                 [ Html.text metadata.title ]
                             ]
                     ]
             )
             metadata.image
-        , Html.div [ Attrs.class "p-8" ]
+        , Html.div [ Attrs.class "p-4 md:p-8" ]
             [ Html.Extra.viewMaybe
                 (\description ->
                     Html.div

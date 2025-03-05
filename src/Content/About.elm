@@ -1,4 +1,4 @@
-module Content.About exposing (Author, allAuthors, defaultAuthor)
+module Content.About exposing (About, defaultAbout)
 
 import BackendTask exposing (BackendTask)
 import BackendTask.File as File
@@ -8,7 +8,7 @@ import FatalError exposing (FatalError)
 import Json.Decode as Decode
 
 
-type alias Author =
+type alias About =
     { body : String
     , name : String
     , avatar : Maybe String
@@ -19,8 +19,8 @@ type alias Author =
     }
 
 
-authorFiles : BackendTask error (List { filePath : String, language : String, slug : String })
-authorFiles =
+aboutFiles : String -> BackendTask error (List { filePath : String, language : String, slug : String })
+aboutFiles lang =
     Glob.succeed
         (\filePath language fileName ->
             { filePath = filePath
@@ -30,32 +30,16 @@ authorFiles =
         )
         |> Glob.captureFilePath
         |> Glob.match (Glob.literal "content/")
-        |> Glob.capture Glob.wildcard
-        |> Glob.match (Glob.literal "/authors/")
+        |> Glob.capture (Glob.literal lang)
+        |> Glob.match (Glob.literal "/about/")
         |> Glob.capture Glob.wildcard
         |> Glob.match (Glob.literal ".md")
         |> Glob.toBackendTask
 
 
-allAuthors : BackendTask FatalError (Dict String Author)
-allAuthors =
-    authorFiles
-        |> BackendTask.map
-            (List.map
-                (\file ->
-                    file.filePath
-                        |> File.bodyWithFrontmatter (authorDecoder file.slug)
-                        |> BackendTask.map (\author -> ( author.slug, author ))
-                )
-            )
-        |> BackendTask.resolve
-        |> BackendTask.allowFatal
-        |> BackendTask.map Dict.fromList
-
-
-authorDecoder : String -> String -> Decode.Decoder Author
-authorDecoder slug body =
-    Decode.map6 (Author body)
+aboutDecoder : String -> String -> Decode.Decoder About
+aboutDecoder slug body =
+    Decode.map6 (About body)
         (Decode.field "name" Decode.string)
         (Decode.maybe <| Decode.field "avatar" Decode.string)
         (Decode.map (Maybe.withDefault []) <| Decode.maybe <| Decode.field "socials" <| Decode.keyValuePairs Decode.string)
@@ -64,14 +48,14 @@ authorDecoder slug body =
         (Decode.succeed slug)
 
 
-defaultAuthor : String -> BackendTask { fatal : FatalError, recoverable : File.FileReadError Decode.Error } Author
-defaultAuthor lang =
+defaultAbout : String -> BackendTask { fatal : FatalError, recoverable : File.FileReadError Decode.Error } About
+defaultAbout lang =
     let
         path =
             if lang == "" then
-                "content/en/authors/default.md"
+                "content/en/about/default.md"
 
             else
-                "content/" ++ lang ++ "/authors/default.md"
+                "content/" ++ lang ++ "/about/default.md"
     in
-    File.bodyWithFrontmatter (authorDecoder "default") path
+    File.bodyWithFrontmatter (aboutDecoder "default") path

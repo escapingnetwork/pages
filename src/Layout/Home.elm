@@ -1,12 +1,9 @@
 module Layout.Home exposing (view)
 
-import Array exposing (get)
-import Html exposing (Html, tr)
+import Html exposing (Html)
 import Html.Attributes as Attrs
 import I18n as Translations exposing (..)
-import I18nUtils exposing (languageToTranslatedLanguage)
-import Phosphor exposing (toHtml, withSize, withSizeUnit)
-import ReviewUtils exposing (Review, getTranslation, showReview)
+import ReviewUtils exposing (Review, showReview)
 import Route
 
 
@@ -18,7 +15,7 @@ view translation reviews =
         [ Html.section
             [ Attrs.class "relative flex items-center justify-center h-screen mb-12 overflow-hidden" ]
             [ Html.div
-                [ Attrs.class "px-4 mx-auto max-w-screen-xl text-center py-24 lg:py-56 relative z-30 p-5 text-2xl text-white"
+                [ Attrs.class "px-4 mx-auto max-w-screen-xl text-center py-24 lg:py-56 relative z-30 p-5 text-2xl text-white "
                 ]
                 [ Html.h1
                     [ Attrs.class "mb-4 text-4xl font-extrabold tracking-tight leading-none text-white md:text-5xl lg:text-6xl"
@@ -71,7 +68,7 @@ view translation reviews =
                 [ Html.div [ Attrs.class "col-span-1" ]
                     [ Route.link
                         [ Attrs.class "cursor-pointer" ]
-                        [ Html.h2 [ Attrs.class "text-3xl font-bold mb-6 text-center text-black" ]
+                        [ Html.h2 [ Attrs.class "text-3xl font-bold mb-6 text-center text-gray-800 hover:text-primary-600" ]
                             [ Html.text <| Translations.reviewsTitle translation ]
                         ]
                         (Route.Lang___Reviews

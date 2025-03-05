@@ -1,4 +1,7 @@
-module Route.Lang_.Review.PendingReview_ exposing (..)
+module Route.Lang_.Review.PendingReview_ exposing
+    ( Model, Msg, RouteParams, route, Data, ActionData
+    , EnvVariables, RatingEnum(..), ReviewForm
+    )
 
 {-|
 

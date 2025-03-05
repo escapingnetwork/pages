@@ -1,39 +1,14 @@
-module Layout.About exposing (seoHeaders, view)
+module Layout.About exposing (view, viewAllMembers)
 
-import Content.About exposing (Author)
-import Head
-import Head.Seo as Seo
+import Content.About exposing (About)
+import Content.Members exposing (Member)
+import Dict exposing (Dict)
 import Html exposing (Html)
 import Html.Attributes as Attrs
 import Html.Extra
 import I18n as Translations exposing (..)
 import Layout.Markdown as Markdown
-import Pages.Url
 import Phosphor
-import Settings
-import UrlPath
-
-
-seoHeaders : Author -> List Head.Tag
-seoHeaders author =
-    let
-        imageUrl =
-            [ "media", "banner.png" ] |> UrlPath.join |> Pages.Url.fromPath
-    in
-    Seo.summary
-        { canonicalUrlOverride = Nothing
-        , siteName = Settings.title
-        , image =
-            { url = imageUrl
-            , alt = author.name
-            , dimensions = Just { width = 300, height = 300 }
-            , mimeType = Nothing
-            }
-        , description = author.name ++ " - " ++ (author.occupation |> Maybe.withDefault Settings.title)
-        , locale = Settings.locale
-        , title = author.name
-        }
-        |> Seo.website
 
 
 socialsView : List ( String, String ) -> Html msg
@@ -83,79 +58,101 @@ socialsView socials =
                 [ Attrs.target "_blank"
                 , Attrs.rel "noopener noreferrer"
                 , Attrs.href <| socialLink name link
+                , Attrs.class "transition-colors duration-200"
                 ]
-                [ Html.span
-                    [ Attrs.class "sr-only"
-                    ]
-                    [ Html.text name ]
+                [ Html.span [ Attrs.class "sr-only" ] [ Html.text name ]
                 , icon name Phosphor.Regular
-                    |> Phosphor.withClass "fill-current text-gray-500 hover:text-primary-500 dark:text-gray-200 dark:hover:text-primary-400 h-8 w-8"
+                    |> Phosphor.withClass "fill-current text-gray-500 hover:text-primary-500 dark:text-gray-300 dark:hover:text-primary-400 h-6 w-6"
                     |> Phosphor.toHtml []
                 ]
     in
-    List.map socialView socials
-        |> Html.div
-            [ Attrs.class "flex space-x-3 pt-6"
-            ]
-
-
-view : I18n -> Author -> Html msg
-view translation author =
     Html.div
-        [ Attrs.class "divide-y divide-gray-200 dark:divide-gray-700 mb-10"
-        ]
+        [ Attrs.class "flex flex-wrap gap-4 mt-6 justify-center" ]
+        (List.map socialView socials)
+
+
+view : I18n -> About -> List Member -> Html msg
+view translation about members =
+    Html.section
+        [ Attrs.class "py-16" ]
         [ Html.div
-            [ Attrs.class "space-y-2 pb-8 pt-6 md:space-y-5"
-            ]
-            [ Html.h1
-                [ Attrs.class "text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14 text-center"
-                ]
-                [ Html.text <| Translations.aboutTitle translation ]
-            ]
-        , Html.div
-            [ Attrs.class "items-start space-y-2 xl:grid xl:grid-cols-3 xl:gap-x-8 xl:space-y-0"
-            ]
-            [ Html.div
-                [ Attrs.class "flex flex-col items-center space-x-2 pt-8"
-                ]
-                [ Html.img
-                    [ Attrs.alt "avatar"
-                    , Attrs.attribute "loading" "lazy"
-                    , Attrs.width 192
-                    , Attrs.height 192
-                    , Attrs.attribute "decoding" "async"
-                    , Attrs.attribute "data-nimg" "1"
-                    , Attrs.class "h-48 w-48 rounded-full bg-primary-200"
-                    , Attrs.src "/media/logo.svg"
-                    , Attrs.style "color" "transparent"
-                    ]
-                    []
-                , Html.h3
-                    [ Attrs.class "pb-2 pt-4 text-2xl font-bold leading-8 tracking-tight"
-                    ]
-                    [ Html.text author.name ]
-                , Html.Extra.viewMaybe
-                    (\occupation ->
-                        Html.div
-                            [ Attrs.class "text-gray-500 dark:text-gray-400"
-                            ]
-                            [ Html.text occupation ]
-                    )
-                    author.occupation
-                , Html.Extra.viewMaybe
-                    (\company ->
-                        Html.div
-                            [ Attrs.class "text-gray-500 dark:text-gray-400"
-                            ]
-                            [ Html.text company ]
-                    )
-                    author.company
-                , socialsView author.socials
+            [ Attrs.class "container mx-auto px-4 sm:px-6 lg:px-8" ]
+            [ Html.header
+                [ Attrs.class "text-center mb-12" ]
+                [ Html.h1
+                    [ Attrs.class "text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl md:text-5xl" ]
+                    [ Html.text <| Translations.aboutTitle translation ]
                 ]
             , Html.div
-                [ Attrs.class "prose max-w-none pb-8 pt-8 dark:prose-invert xl:col-span-2"
+                [ Attrs.class "prose prose-lg max-w-3xl mx-auto mt-8 text-gray-600 dark:text-gray-300" ]
+                (Markdown.toHtml about.body)
+            , Html.div
+                [ Attrs.class "mt-24" ]
+                [ viewAllMembers translation members ]
+            ]
+        ]
+
+
+viewAllMembers : I18n -> List Member -> Html msg
+viewAllMembers translation members =
+    let
+        teamHeader =
+            Html.header
+                [ Attrs.class "text-center mb-12" ]
+                [ Html.h2
+                    [ Attrs.class "text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl md:text-5xl" ]
+                    [ Html.text <| Translations.aboutMeetTeam translation ]
+                , Html.p
+                    [ Attrs.class "prose prose-lg max-w-3xl mx-auto mt-8 text-gray-600 dark:text-gray-300" ]
+                    [ Html.text <| Translations.aboutMeetTeamContent translation ]
                 ]
-              <|
-                Markdown.toHtml author.body
+
+        teamMemberCard member =
+            Html.div
+                [ Attrs.class "rounded-lg p-6" ]
+                [ Html.div
+                    [ Attrs.class "flex flex-col items-center text-center" ]
+                    [ Html.img
+                        [ Attrs.alt <| member.name ++ "'s avatar"
+                        , Attrs.attribute "loading" "lazy"
+                        , Attrs.width 120
+                        , Attrs.height 120
+                        , Attrs.class "h-40 w-40 rounded-full object-cover mb-4 border-4 border-gray-100 dark:border-gray-700"
+                        , Attrs.src <| Maybe.withDefault "/media/logo.svg" member.avatar
+                        ]
+                        []
+                    , Html.h3
+                        [ Attrs.class "text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2" ]
+                        [ Html.text member.name ]
+                    , Html.Extra.viewMaybe
+                        (\occupation ->
+                            Html.p
+                                [ Attrs.class "text-gray-600 dark:text-gray-400 text-sm mb-1" ]
+                                [ Html.text occupation ]
+                        )
+                        member.occupation
+                    , Html.Extra.viewMaybe
+                        (\position ->
+                            Html.p
+                                [ Attrs.class "text-gray-500 dark:text-gray-300 text-sm mb-4 italic" ]
+                                [ Html.text position ]
+                        )
+                        member.company
+                    , socialsView member.socials
+
+                    -- , Html.div
+                    --     [ Attrs.class "prose prose-md text-gray-600 dark:text-gray-300 mt-4" ]
+                    --     (Markdown.toHtml member.body)
+                    ]
+                ]
+    in
+    Html.section
+        [ Attrs.class "py-12" ]
+        [ Html.div
+            [ Attrs.class "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" ]
+            [ teamHeader
+            , Html.div
+                [ Attrs.class "grid grid-cols-1 sm:grid-cols-2 gap-6" ]
+                (members |> List.map teamMemberCard)
             ]
         ]

@@ -17,6 +17,6 @@ Wir sind ein Team, das seit Jahren mit internationalen Studenten und dem Unterku
 
 Capybara House ist eine Marke von Tranquera LLC, einem US-amerikanischen Unternehmen.
 
-### Warum haben wir unseren Sitz in den USA?
+## Warum haben wir unseren Sitz in den USA?
 
 Wir sind ein Unternehmen, das mit internationalen Studenten und irischen Anbietern zusammenarbeitet. Aus diesem Grund sind die USA perfekt für die Führung unseres internationalen Geschäfts.

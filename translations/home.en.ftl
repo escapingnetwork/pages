@@ -29,6 +29,8 @@ about-product = Our Product
 about-product-content = Capybara House is a brand owned by Tranquera LLC a USA company.
 about-where = Why we are based USA?
 about-where-content = We are a company which works with international students and Irish providers. For this reason, the USA is perfect to run our international business.
+about-meet-team = Meet Our Team
+about-meet-team-content = Our team is composed of dedicated professionals who work to ensure the best experience for our clients.
 
 services-title = Our Services
 services-half-board = Half-Board

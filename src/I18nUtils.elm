@@ -3,9 +3,7 @@ module I18nUtils exposing (languageToTranslatedLanguage, loadLanguage)
 import BackendTask exposing (BackendTask)
 import BackendTask.Http
 import FatalError exposing (FatalError)
-import Html.Attributes exposing (lang)
 import I18n
-import LanguageTag.Language exposing (de)
 
 
 loadLanguage : String -> BackendTask FatalError I18n.I18n

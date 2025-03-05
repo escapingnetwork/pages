@@ -1,7 +1,7 @@
 ---
-name: Capybara House
-avatar: /media/logo.svg
-company: Tranquera LLC
+name: Leo
+avatar: /media/jplm.png
+company: CTO at Tranquera LLC
 socials:
   email: info@capybara.house
   linkedin: https://www.linkedin.com/company/tranquera-llc
@@ -17,6 +17,6 @@ We are a team who have been working with international students and the accommod
 
 Capybara House is a brand owned by Tranquera LLC a USA company.
 
-### Why we are based USA?
+## Why we are based USA?
 
 We are a company which works with international students and Irish providers. For this reason, the USA is perfect to run our international business.

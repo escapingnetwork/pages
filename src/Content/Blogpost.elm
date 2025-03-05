@@ -189,7 +189,7 @@ allBlogposts =
                 blogposts
         )
         blogpostFiles
-        Content.About.allAuthors
+        Content.About.allMembers
         |> BackendTask.resolve
         |> BackendTask.andThen
             (\blogposts ->
