@@ -65,10 +65,7 @@ showFullReview translation review =
                 [ Html.text review.name ]
             , case review.rating of
                 Just rating ->
-                    Html.span
-                        [ Attrs.class "flex items-center justify-between" ]
-                    <|
-                        [ ratingToStars rating ]
+                    ratingToStars rating
 
                 Nothing ->
                     Html.text ""
@@ -118,9 +115,9 @@ ratingToStars rating =
             Phosphor.Fill
             |> withSize 18
             |> withSizeUnit "px"
-            |> toHtml [ Attrs.class "fill-(--color-yellow-500)" ]
+            |> toHtml []
         )
-        |> Html.div [ Attrs.class "flex items-center" ]
+        |> Html.div [ Attrs.class "flex items-center fill-current text-primary-500" ]
 
 
 showReview : I18n -> Review -> Html msg
@@ -143,10 +140,7 @@ showReview translation review =
                     [ Html.text review.name ]
                 , case review.rating of
                     Just rating ->
-                        Html.span
-                            [ Attrs.class "flex items-center justify-between" ]
-                        <|
-                            [ ratingToStars rating ]
+                        ratingToStars rating
 
                     Nothing ->
                         Html.text ""
