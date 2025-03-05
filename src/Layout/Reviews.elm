@@ -66,9 +66,7 @@ showFullReview translation review =
             , case review.rating of
                 Just rating ->
                     Html.span
-                        [ Attrs.class "flex items-center justify-between"
-                        , Attrs.value <| "value: " ++ String.fromInt rating
-                        ]
+                        [ Attrs.class "flex items-center justify-between" ]
                     <|
                         [ ratingToStars rating ]
 
@@ -115,25 +113,13 @@ showFullReview translation review =
 ratingToStars : Int -> Html msg
 ratingToStars rating =
     List.repeat
-        (5 - rating)
+        rating
         (Phosphor.star
             Phosphor.Fill
             |> withSize 18
             |> withSizeUnit "px"
-            |> toHtml []
+            |> toHtml [ Attrs.class "fill-(--color-yellow-500)" ]
         )
-        |> List.map (\x -> x)
-        |> List.append
-            (List.repeat
-                rating
-                (Phosphor.star
-                    Phosphor.Fill
-                    |> withSize 18
-                    |> withSizeUnit "px"
-                    |> toHtml [ Attrs.class "fill-(--color-yellow-500)" ]
-                )
-            )
-        |> List.map (\x -> x)
         |> Html.div [ Attrs.class "flex items-center" ]
 
 
