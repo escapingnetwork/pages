@@ -8,6 +8,7 @@ export default {
   adapter,
   headTagsTemplate(context) {
     return `
+<link rel="preload" href="/style.css" as="style" />
 <link rel="stylesheet" href="/style.css" />
 <link rel="icon" href="/media/logo.svg">
 <link rel="mask-icon" href="/media/logo.svg" color="#000000">
