@@ -61,7 +61,7 @@ showFullReview translation review =
                 [ Attrs.class "px-2 py-1 text-xs font-semibold text-white bg-gray-400 rounded" ]
                 [ Html.text <| userRoleEnumToTranslatedString translation review.role ]
             , Html.span
-                [ Attrs.class "mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white" ]
+                [ Attrs.class "text-2xl font-bold tracking-tight text-gray-900 dark:text-white" ]
                 [ Html.text review.name ]
             , case review.rating of
                 Just rating ->
@@ -90,7 +90,7 @@ showFullReview translation review =
             Html.div
                 [ Attrs.class "text-gray-700 dark:text-gray-400 mb-2" ]
                 [ case review.content of
-                    Just comment ->
+                    Just _ ->
                         Html.p
                             [ Attrs.class "font-normal text-gray-700 dark:text-gray-400 " ]
                             [ Html.text <| getTranslation currentLanguage review.translations ]
@@ -136,7 +136,7 @@ showReview translation review =
                     [ Attrs.class "px-2 py-1 text-xs font-semibold text-white bg-gray-400 rounded" ]
                     [ Html.text <| userRoleEnumToTranslatedString translation review.role ]
                 , Html.span
-                    [ Attrs.class "mb-2 text-2xl font-bold tracking-tight text-gray-900" ]
+                    [ Attrs.class "text-2xl font-bold tracking-tight text-gray-900" ]
                     [ Html.text review.name ]
                 , case review.rating of
                     Just rating ->
