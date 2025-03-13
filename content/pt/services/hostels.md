@@ -1,7 +1,7 @@
 ---
 name: Hostels
 description: "Ótima opção para fazer amigos"
-image: "/images/services/hostels.jpg"
+image: "/assets/services/hostels.jpg"
 ---
 
 Você quer viver a experiência de morar no exterior e conhecer novas pessoas com a mesma vibe? 

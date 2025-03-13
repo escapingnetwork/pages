@@ -1,4 +1,4 @@
-module Content.Minimal exposing (Minimal, accommodation, completeRegistration, hosts, partners, privacyPolicy, review, support, termsAndConditions)
+module Content.Minimal exposing (Minimal, accommodation, completeRegistration, hosts, howItWorks, partners, privacyPolicy, review, support, termsAndConditions)
 
 import BackendTask exposing (BackendTask)
 import BackendTask.File as File
@@ -124,3 +124,16 @@ completeRegistration lang =
                 "content/" ++ lang ++ "/completeregistration.md"
     in
     File.bodyWithFrontmatter (minimalDecoder "completeregistration") path
+
+
+howItWorks : String -> BackendTask { fatal : FatalError, recoverable : File.FileReadError Decode.Error } Minimal
+howItWorks lang =
+    let
+        path =
+            if lang == "" then
+                "content/en/howitworks.md"
+
+            else
+                "content/" ++ lang ++ "/howitworks.md"
+    in
+    File.bodyWithFrontmatter (minimalDecoder "howitworks") path

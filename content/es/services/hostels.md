@@ -1,7 +1,7 @@
 ---
 name: Hostales
 description: "Una excelente opción para hacer amigos"
-image: "/images/services/hostels.jpg"
+image: "/assets/services/hostels.jpg"
 ---
 
 ¿Quieres vivir la experiencia de vivir en el extranjero y conocer a nuevas personas con la misma onda? ¿Estás buscando hostales pero no estás seguro de cuál elegir?

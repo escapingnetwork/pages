@@ -3,7 +3,7 @@ title: Conviértase en Socio
 company: Tranquera LLC
 ---
 
-![Dublin](/images/dublin.jpg)
+![Dublin](/assets/partners/dublin.jpg)
 
 # Proveedores
 

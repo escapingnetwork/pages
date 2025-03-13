@@ -1,7 +1,7 @@
 ---
 name: Mezza Pensione
 description: "Include sia la colazione che la cena durante il soggiorno"
-image: "/images/services/half-board.jpg"
+image: "/assets/services/half-board.jpg"
 ---
 
 Siamo lieti di offrirti il nostro servizio di mezza pensione, che include sia

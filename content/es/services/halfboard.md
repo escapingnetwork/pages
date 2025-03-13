@@ -1,7 +1,7 @@
 ---
 name: Media Pensión
 description: "Incluye tanto el desayuno como la cena durante tu estancia"
-image: "/images/services/half-board.jpg"
+image: "/assets/services/half-board.jpg"
 ---
 
 Nos complace ofrecerte nuestro servicio de media pensión, que incluye tanto el desayuno como la cena durante tu estancia. Nuestro objetivo es hacer que tu tiempo con nosotros sea cómodo, agradable y un verdadero hogar lejos de casa.

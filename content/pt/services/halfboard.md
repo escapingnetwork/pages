@@ -1,7 +1,7 @@
 ---
 name: Meia Pensão
 description: "Inclui café da manhã e jantar durante sua estadia"
-image: "/images/services/half-board.jpg"
+image: "/assets/services/half-board.jpg"
 ---
 
 Temos o prazer de oferecer nosso serviço de meia pensão, que inclui café da manhã e jantar durante sua estadia. Nosso objetivo é tornar seu tempo conosco confortável, agradável e uma verdadeira casa longe de casa.

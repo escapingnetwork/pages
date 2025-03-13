@@ -3,6 +3,7 @@ navbar-services = Our Services
 navbar-host = Become a Host
 navbar-partner = Become a Partner
 navbar-about = About Us
+navbar-howitworks = How it works
 
 home-headline = Looking for accommodation in Dublin?
 home-subline = Here at Capybara House we focus on providing the best options for lodging in Ireland.

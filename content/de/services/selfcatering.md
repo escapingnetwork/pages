@@ -1,7 +1,7 @@
 ---
 name: Selbstverpflegung
 description: "Flexibilität und Freiheit, Ihre Mahlzeiten nach Ihren Wünschen und Ihrem Zeitplan zu gestalten"
-image: "/images/services/self-catering.jpg"
+image: "/assets/services/self-catering.jpg"
 ---
 
 Wir freuen uns, Ihnen eine Selbstversorger-Unterkunft anbieten zu können.

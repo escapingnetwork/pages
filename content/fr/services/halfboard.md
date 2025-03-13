@@ -1,7 +1,7 @@
 ---
 name: Demi-Pension
 description: "Comprend à la fois le petit-déjeuner et le dîner pendant votre séjour"
-image: "/images/services/half-board.jpg"
+image: "/assets/services/half-board.jpg"
 ---
 
 Nous sommes heureux de vous offrir notre service de demi-pension, qui comprend à la fois

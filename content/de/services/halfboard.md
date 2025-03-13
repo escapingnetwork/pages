@@ -1,7 +1,7 @@
 ---
 name: Halbpension
 description: "Enthält Frühstück und Abendessen während Ihres Aufenthalts"
-image: "/images/services/half-board.jpg"
+image: "/assets/services/half-board.jpg"
 ---
 
 Wir freuen uns, Ihnen unseren Halbpensions-Service anbieten zu können, der Frühstück und Abendessen während Ihres Aufenthalts umfasst. Unser Ziel ist es, Ihren Aufenthalt bei uns angenehm, erfreulich und wie zu Hause zu gestalten.

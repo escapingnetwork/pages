@@ -1,7 +1,7 @@
 ---
 name: Ostelli
 description: "Ottima opzione per fare amicizia"
-image: "/images/services/hostels.jpg"
+image: "/assets/services/hostels.jpg"
 ---
 
 Vuoi vivere l'esperienza di vivere all'estero e incontrare nuove persone con la stessa vibrazione?

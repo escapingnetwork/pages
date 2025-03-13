@@ -1,7 +1,7 @@
 ---
 name: Half-Board
 description: "Includes both breakfast and dinner during your stay"
-image: "/images/services/half-board.jpg"
+image: "/assets/services/half-board.jpg"
 ---
 
 We are pleased to offer you our half-board service, which includes both

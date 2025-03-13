@@ -1,7 +1,7 @@
 ---
 name: Hostels
 description: "Großartige Möglichkeit, Freunde zu finden"
-image: "/images/services/hostels.jpg"
+image: "/assets/services/hostels.jpg"
 ---
 
 Möchten Sie die Erfahrung machen, im Ausland zu leben und neue Leute mit der gleichen Stimmung kennenzulernen?

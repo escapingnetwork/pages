@@ -1,7 +1,7 @@
 ---
 name: Autossuficiente
 description: "Flexibilidade e liberdade para adaptar suas refeições de acordo com suas preferências e horários"
-image: "/images/services/self-catering.jpg"
+image: "/assets/services/self-catering.jpg"
 ---
 
 Temos o prazer de oferecer uma experiência de acomodação autossuficiente. Esta opção oferece flexibilidade e liberdade para adaptar suas refeições de acordo com suas preferências e horários, permitindo que você aproveite ao máximo sua estadia.

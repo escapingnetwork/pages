@@ -3,6 +3,7 @@ navbar-services = Nuestros Servicios
 navbar-host = Conviértete en Anfitrión
 navbar-partner = Conviértete en Socio
 navbar-about = Sobre Nosotros
+navbar-howitworks = Cómo Funciona
 
 home-headline = ¿Buscas alojamiento en Dublín?
 home-subline = Aquí en Capybara House nos enfocamos en ofrecer las mejores opciones de hospedaje en Irlanda.

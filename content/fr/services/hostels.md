@@ -1,7 +1,7 @@
 ---
 name: Auberges
 description: "Excellente option pour se faire des amis"
-image: "/images/services/hostels.jpg"
+image: "/assets/services/hostels.jpg"
 ---
 
 Voulez-vous vivre l'expérience de vivre à l'étranger et rencontrer de nouvelles personnes avec la même ambiance?

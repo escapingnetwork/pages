@@ -3,7 +3,7 @@ title: Torne-se um Parceiro
 company: Tranquera LLC
 ---
 
-![Dublin](/images/dublin.jpg)
+![Dublin](/assets/partners/dublin.jpg)
 
 # Fornecedores
 

@@ -1,14 +1,15 @@
 navbar-home = Accueil
-navbar-services = Nos services
-navbar-host = Devenir un hôte
-navbar-partner = Devenir un partenaire
-navbar-about = À propos de nous
+navbar-services = Nos Services
+navbar-host = Devenir un Hôte
+navbar-partner = Devenir un Partenaire
+navbar-about = À propos de Nous
+navbar-howitworks = Comment ça Marche
 
 home-headline = Vous cherchez un logement à Dublin?
 home-subline = Ici à Capybara House, nous nous concentrons sur la fourniture des meilleures options d'hébergement en Irlande.
 
-button-request-accommodation = Demander un logement
-button-services = Nos services
+button-request-accommodation = Demander un Logement
+button-services = Nos Services
 
 footer-contact = Contactez-nous
 footer-support = Support

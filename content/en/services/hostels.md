@@ -1,7 +1,7 @@
 ---
 name: Hostels
 description: "Great option for making friends"
-image: "/images/services/hostels.jpg"
+image: "/assets/services/hostels.jpg"
 ---
 
 Do you want to live the experience of living abroad and meet new people with the same vibe? 

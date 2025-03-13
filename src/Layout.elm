@@ -65,7 +65,8 @@ seoHeaders title description translation =
 
 menu : I18n -> List { label : String, route : Route }
 menu translation =
-    [ { label = navbarServices translation, route = Route.Lang___Services { lang = Translations.languageToString <| Translations.currentLanguage translation } }
+    [ { label = navbarHowitworks translation, route = Route.Lang___HowItWorks { lang = Translations.languageToString <| Translations.currentLanguage translation } }
+    , { label = navbarServices translation, route = Route.Lang___Services { lang = Translations.languageToString <| Translations.currentLanguage translation } }
     , { label = navbarHost translation, route = Route.Lang___Host__SignUp { lang = Translations.languageToString <| Translations.currentLanguage translation } }
     , { label = navbarPartner translation, route = Route.Lang___Partner__SignUp { lang = Translations.languageToString <| Translations.currentLanguage translation } }
     , { label = navbarAbout translation, route = Route.Lang___About { lang = Translations.languageToString <| Translations.currentLanguage translation } }
@@ -277,21 +278,46 @@ logo =
         ]
 
 
-viewMainMenuItem : I18n -> { label : String, route : Route } -> Html msg
-viewMainMenuItem translation { label, route } =
+viewMainMenuItem : UrlPath.UrlPath -> I18n -> { label : String, route : Route } -> Html msg
+viewMainMenuItem path translation { label, route } =
+    let
+        isActive =
+            case Route.urlToRoute { path = Pages.Url.fromPath path |> Pages.Url.toString } of
+                Just routeFromPath ->
+                    Route.toString route == Route.toString routeFromPath
+
+                Nothing ->
+                    False
+    in
     Route.link
         (if label == Translations.buttonRequestAccommodation translation then
             [ Attrs.class "hidden sm:block font-bold tracking-widest text-primary-500 dark:text-gray-100 hover:text-primary-600" ]
 
          else
-            [ Attrs.class "hidden sm:block font-medium text-gray-900 dark:text-gray-100  hover:text-primary-600 decoration-primary-500" ]
+            [ Attrs.class
+                (if isActive then
+                    "hidden sm:block font-medium text-primary-500 dark:text-gray-100 hover:text-primary-600 decoration-primary-500"
+
+                 else
+                    "hidden sm:block font-medium text-gray-900 dark:text-gray-100 hover:text-primary-600 decoration-primary-500"
+                )
+            ]
         )
         [ Html.text label ]
         route
 
 
-viewSideMainMenuItem : msg -> I18n -> { label : String, route : Route } -> Html msg
-viewSideMainMenuItem onMenuToggle translation { label, route } =
+viewSideMainMenuItem : msg -> UrlPath.UrlPath -> I18n -> { label : String, route : Route } -> Html msg
+viewSideMainMenuItem onMenuToggle path translation { label, route } =
+    let
+        isActive =
+            case Route.urlToRoute { path = Pages.Url.fromPath path |> Pages.Url.toString } of
+                Just routeFromPath ->
+                    Route.toString route == Route.toString routeFromPath
+
+                Nothing ->
+                    False
+    in
     Html.div
         [ Attrs.class "px-12 py-4"
         ]
@@ -302,7 +328,13 @@ viewSideMainMenuItem onMenuToggle translation { label, route } =
                 ]
 
              else
-                [ Attrs.class "text-2xl font-bold tracking-widest text-gray-900 dark:text-gray-100"
+                [ Attrs.class
+                    (if isActive then
+                        "text-2xl font-bold tracking-widest text-primary-500 dark:text-gray-100"
+
+                     else
+                        "text-2xl font-bold tracking-widest text-gray-900 dark:text-gray-100"
+                    )
                 , Events.onClick onMenuToggle
                 ]
             )
@@ -317,7 +349,7 @@ viewMenu path translation showMenu onMenuToggle onLanguageChange =
         mainMenuItems =
             { label = Translations.buttonRequestAccommodation translation, route = Route.Lang___Student__SignUp { lang = Translations.languageToString <| Translations.currentLanguage translation } }
                 :: menu translation
-                |> List.map (viewMainMenuItem translation)
+                |> List.map (viewMainMenuItem path translation)
 
         sideMenuItems =
             { label = Translations.navbarHome translation
@@ -327,7 +359,7 @@ viewMenu path translation showMenu onMenuToggle onLanguageChange =
             }
                 :: { label = Translations.buttonRequestAccommodation translation, route = Route.Lang___Student__SignUp { lang = Translations.languageToString <| Translations.currentLanguage translation } }
                 :: menu translation
-                |> List.map (viewSideMainMenuItem onMenuToggle translation)
+                |> List.map (viewSideMainMenuItem onMenuToggle path translation)
 
         sidebarLanguages =
             Html.div [ Attrs.class "px-12 py-4 bottom-2 fixed" ]
@@ -456,6 +488,15 @@ view path translation showMenu onMenuToggle onLanguageChange body =
 
 footer : UrlPath.UrlPath -> I18n -> (Language -> msg) -> Html msg
 footer path translation onLanguageChange =
+    let
+        isActive route =
+            case Route.urlToRoute { path = Pages.Url.fromPath path |> Pages.Url.toString } of
+                Just routeFromPath ->
+                    Route.toString route == Route.toString routeFromPath
+
+                Nothing ->
+                    False
+    in
     Html.footer
         [ Attrs.class "bg-white dark:bg-gray-900"
         ]
@@ -495,7 +536,13 @@ footer path translation onLanguageChange =
                                 [ Attrs.class "mb-4"
                                 ]
                                 [ Route.link
-                                    [ Attrs.class "hover:text-primary-600 "
+                                    [ Attrs.class
+                                        (if isActive (Route.Lang___Support { lang = Translations.languageToString <| Translations.currentLanguage translation }) then
+                                            "hover:text-primary-600 text-primary-500"
+
+                                         else
+                                            "hover:text-primary-600"
+                                        )
                                     ]
                                     [ Html.text <| Translations.footerSupport translation ]
                                     (Route.Lang___Support
@@ -550,7 +597,13 @@ footer path translation onLanguageChange =
                                 [ Attrs.class "mb-4"
                                 ]
                                 [ Route.link
-                                    [ Attrs.class "hover:text-primary-600"
+                                    [ Attrs.class
+                                        (if isActive (Route.Lang___PrivacyPolicy { lang = Translations.languageToString <| Translations.currentLanguage translation }) then
+                                            "hover:text-primary-600 text-primary-500"
+
+                                         else
+                                            "hover:text-primary-600"
+                                        )
                                     ]
                                     [ Html.text <| Translations.footerPrivacyPolicy translation ]
                                     (Route.Lang___PrivacyPolicy
@@ -559,7 +612,13 @@ footer path translation onLanguageChange =
                                 ]
                             , Html.li []
                                 [ Route.link
-                                    [ Attrs.class "hover:text-primary-600"
+                                    [ Attrs.class
+                                        (if isActive (Route.Lang___Booking__TermsAndConditions { lang = Translations.languageToString <| Translations.currentLanguage translation }) then
+                                            "hover:text-primary-600 text-primary-500"
+
+                                         else
+                                            "hover:text-primary-600"
+                                        )
                                     ]
                                     [ Html.text <| Translations.footerTermsConditions translation ]
                                     (Route.Lang___Booking__TermsAndConditions

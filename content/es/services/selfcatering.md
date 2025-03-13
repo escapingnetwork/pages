@@ -1,7 +1,7 @@
 ---
 name: Autoservicio
 description: "Flexibilidad y libertad para adaptar tus comidas según tus preferencias y horarios"
-image: "/images/services/self-catering.jpg"
+image: "/assets/services/self-catering.jpg"
 ---
 
 Nos complace ofrecerte una experiencia de alojamiento con autoservicio. Esta opción te proporciona la flexibilidad y libertad para adaptar tus comidas según tus preferencias y horarios, permitiéndote aprovechar al máximo tu estancia.

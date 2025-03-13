@@ -36,7 +36,7 @@ viewService translation { metadata, body, previousService, nextService } =
                                                 Html.img
                                                     [ Attrs.alt title
                                                     , Attrs.attribute "decoding" "async"
-                                                    , Attrs.class "h-32 w-full object-cover md:h-48 md:w-full rounded-lg shadow-lg"
+                                                    , Attrs.class "h-32 w-full object-cover md:h-48 md:w-full rounded-lg"
                                                     , Attrs.src imagePath
                                                     ]
                                                     []
@@ -65,7 +65,7 @@ viewService translation { metadata, body, previousService, nextService } =
                                                 Html.img
                                                     [ Attrs.alt title
                                                     , Attrs.attribute "decoding" "async"
-                                                    , Attrs.class "h-32 w-full object-cover md:h-48 md:w-full rounded-lg shadow-lg"
+                                                    , Attrs.class "h-32 w-full object-cover md:h-48 md:w-full rounded-lg"
                                                     , Attrs.src imagePath
                                                     ]
                                                     []
@@ -104,7 +104,7 @@ viewService translation { metadata, body, previousService, nextService } =
                                         , Attrs.attribute "loading" "lazy"
                                         , Attrs.attribute "decoding" "async"
                                         , Attrs.attribute "data-nimg" "fill"
-                                        , Attrs.class "object-cover rounded-lg shadow-lg"
+                                        , Attrs.class "object-cover rounded-lg"
                                         , Attrs.attribute "sizes" "100vw"
                                         , Attrs.style "position" "absolute"
                                         , Attrs.style "height" "100%"
@@ -160,7 +160,7 @@ viewListItem translation metadata =
                             [ Html.img
                                 [ Attrs.alt metadata.title
                                 , Attrs.attribute "decoding" "async"
-                                , Attrs.class "h-32 w-full object-cover md:h-48 md:w-full rounded-lg shadow-lg"
+                                , Attrs.class "h-32 w-full object-cover md:h-48 md:w-full rounded-lg"
                                 , Attrs.src imagePath
                                 ]
                                 []
@@ -205,7 +205,7 @@ viewLangListItem translation metadata =
                             [ Html.img
                                 [ Attrs.alt metadata.title
                                 , Attrs.attribute "decoding" "async"
-                                , Attrs.class "h-32 w-full object-cover md:h-48 md:w-full rounded-lg shadow-lg"
+                                , Attrs.class "h-32 w-full object-cover md:h-48 md:w-full rounded-lg"
                                 , Attrs.src imagePath
                                 ]
                                 []

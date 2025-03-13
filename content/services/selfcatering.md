@@ -1,7 +1,7 @@
 ---
 name: Self-Catering
 description: "Flexibility and freedom to tailor your meals according to your preferences and schedule"
-image: "/images/services/self-catering.jpg"
+image: "/assets/services/self-catering.jpg"
 ---
 
 We are pleased to offer you a self-catering accommodation experience.

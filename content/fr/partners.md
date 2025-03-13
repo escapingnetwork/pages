@@ -3,7 +3,7 @@ title: Devenir un Partenaire
 company: Tranquera LLC
 ---
 
-![](/images/dublin.jpg)
+![](/assets/partners/dublin.jpg)
 
 # Fournisseurs
 
