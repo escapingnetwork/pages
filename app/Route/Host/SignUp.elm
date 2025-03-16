@@ -182,6 +182,7 @@ type alias Host =
     , phoneNumber : String
     , service : Maybe Service
     , contactMethod : Maybe ContactMethod
+    , language : String
     , captcha : String
     , hiddenCaptcha : String
     }
@@ -195,6 +196,7 @@ emptyForm =
     , phoneNumber = ""
     , service = Nothing
     , contactMethod = Nothing
+    , language = ""
     , captcha = ""
     , hiddenCaptcha = ""
     }
@@ -203,7 +205,7 @@ emptyForm =
 form : Translations.I18n -> Captcha -> Form.HtmlForm String Host Host (PagesMsg Msg)
 form t captchaData =
     Form.form
-        (\forename surname email phoneNumber service contactMethod captcha hiddenCaptcha ->
+        (\forename surname email phoneNumber service contactMethod language captcha hiddenCaptcha ->
             { combine =
                 Validation.succeed Host
                     |> Validation.andMap forename
@@ -212,6 +214,7 @@ form t captchaData =
                     |> Validation.andMap phoneNumber
                     |> Validation.andMap service
                     |> Validation.andMap contactMethod
+                    |> Validation.andMap language
                     |> Validation.andMap
                         (Validation.map2
                             (\captchaValue hCaptchaValue ->
@@ -371,6 +374,11 @@ form t captchaData =
                 ]
                 (\_ -> "Invalid")
             )
+        |> Form.hiddenField "language"
+            (Field.text
+                |> Field.required (Translations.formsErrorRequired t)
+                |> Field.withInitialValue .language
+            )
         |> Form.field "captcha"
             (Field.text
                 |> Field.required (Translations.formsErrorRequired t)
@@ -397,7 +405,7 @@ view app shared =
                         [ Attrs.class "max-w-sm mx-auto"
                         ]
                         (Form.options "host-form"
-                            |> Form.withInput { emptyForm | hiddenCaptcha = app.data.captcha.text }
+                            |> Form.withInput { emptyForm | language = "en", hiddenCaptcha = app.data.captcha.text }
                             |> Form.withServerResponse (app.action |> Maybe.map .formResponse)
                         )
                         app
@@ -470,6 +478,7 @@ hostRequestToJSON hostRequest =
         , ( "phone", Encode.string hostRequest.phoneNumber )
         , ( "service", Encode.string (maybeServiceToString hostRequest.service) )
         , ( "method", Encode.string (maybeContactMethodToString hostRequest.contactMethod) )
+        , ( "language", Encode.string hostRequest.language )
         ]
 
 

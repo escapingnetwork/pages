@@ -111,6 +111,7 @@ type alias Contact =
     , phoneNumber : String
     , message : String
     , captcha : String
+    , language : String
     , hiddenCaptcha : String
     }
 
@@ -122,6 +123,7 @@ emptyForm =
     , email = ""
     , phoneNumber = ""
     , message = ""
+    , language = ""
     , captcha = ""
     , hiddenCaptcha = ""
     }
@@ -134,7 +136,7 @@ form translation captchaData =
             Maybe.withDefault (Translations.init { lang = Translations.En, path = "https://capybara.house" ++ "/i18n" }) translation
     in
     Form.form
-        (\forename surname email phoneNumber message captcha hiddenCaptcha ->
+        (\forename surname email phoneNumber message language captcha hiddenCaptcha ->
             { combine =
                 Validation.succeed Contact
                     |> Validation.andMap forename
@@ -142,6 +144,7 @@ form translation captchaData =
                     |> Validation.andMap email
                     |> Validation.andMap phoneNumber
                     |> Validation.andMap message
+                    |> Validation.andMap language
                     |> Validation.andMap
                         (Validation.map2
                             (\captchaValue hCaptchaValue ->
@@ -253,6 +256,11 @@ form translation captchaData =
                     }
                 |> Field.required (Translations.formsErrorRequired t)
             )
+        |> Form.hiddenField "language"
+            (Field.text
+                |> Field.required (Translations.formsErrorRequired t)
+                |> Field.withInitialValue .language
+            )
         |> Form.field "captcha"
             (Field.text
                 |> Field.required (Translations.formsErrorRequired t)
@@ -279,7 +287,7 @@ view app shared =
                         [ Attrs.class "max-w-sm mx-auto"
                         ]
                         (Form.options "support-form"
-                            |> Form.withInput { emptyForm | hiddenCaptcha = app.data.captcha.text }
+                            |> Form.withInput { emptyForm | language = Translations.languageToString <| Translations.currentLanguage app.data.translation, hiddenCaptcha = app.data.captcha.text }
                             |> Form.withServerResponse (app.action |> Maybe.map .formResponse)
                         )
                         app
@@ -351,6 +359,7 @@ contactToJSON contact =
         , ( "email", Encode.string contact.email )
         , ( "phone", Encode.string contact.phoneNumber )
         , ( "message", Encode.string contact.message )
+        , ( "language", Encode.string contact.language )
         ]
 
 

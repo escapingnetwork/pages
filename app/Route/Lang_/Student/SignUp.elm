@@ -192,6 +192,7 @@ type alias Accommodation =
     , from : Date
     , to : Date
     , message : Maybe String
+    , language : String
     , captcha : String
     , hiddenCaptcha : String
     }
@@ -211,6 +212,7 @@ emptyForm =
     , from = Date.fromCalendarDate 1969 Time.Jul 20
     , to = Date.fromCalendarDate 1969 Time.Jul 20
     , message = Nothing
+    , language = ""
     , captcha = ""
     , hiddenCaptcha = ""
     }
@@ -219,7 +221,7 @@ emptyForm =
 form : Translations.I18n -> Captcha -> Form.HtmlForm String Accommodation Accommodation (PagesMsg Msg)
 form t captchaData =
     Form.form
-        (\forename surname email phoneNumber nationality age sex institution service from to message captcha hiddenCaptcha ->
+        (\forename surname email phoneNumber nationality age sex institution service from to message language captcha hiddenCaptcha ->
             { combine =
                 Validation.succeed Accommodation
                     |> Validation.andMap forename
@@ -234,6 +236,7 @@ form t captchaData =
                     |> Validation.andMap from
                     |> Validation.andMap to
                     |> Validation.andMap message
+                    |> Validation.andMap language
                     |> Validation.andMap
                         (Validation.map2
                             (\captchaValue hCaptchaValue ->
@@ -445,6 +448,11 @@ form t captchaData =
                     , cols = Just 20
                     }
             )
+        |> Form.hiddenField "language"
+            (Field.text
+                |> Field.required (Translations.formsErrorRequired t)
+                |> Field.withInitialValue .language
+            )
         |> Form.field "captcha"
             (Field.text
                 |> Field.required (Translations.formsErrorRequired t)
@@ -471,7 +479,7 @@ view app shared =
                         [ Attrs.class "max-w-sm mx-auto"
                         ]
                         (Form.options "student-form-netlify"
-                            |> Form.withInput { emptyForm | hiddenCaptcha = app.data.captcha.text }
+                            |> Form.withInput { emptyForm | language = Translations.languageToString <| Translations.currentLanguage app.data.translation, hiddenCaptcha = app.data.captcha.text }
                             |> Form.withServerResponse (app.action |> Maybe.map .formResponse)
                         )
                         app
@@ -550,6 +558,7 @@ accommodationRequestToJSON accommodationRequest =
         , ( "from", Encode.string (Date.toIsoString accommodationRequest.from) )
         , ( "to", Encode.string (Date.toIsoString accommodationRequest.to) )
         , ( "message", EncodeExtra.maybe Encode.string accommodationRequest.message )
+        , ( "language", Encode.string accommodationRequest.language )
         ]
 
 
