@@ -390,42 +390,42 @@ view :
 view app shared =
     { title = "Capybara House - Become A Host"
     , body =
-        [ Html.div [ Attrs.class "mx-auto prose max-w-none pb-8 pt-8 dark:prose-invert xl:col-span-2 xl:max-w-5xl xl:px-0" ]
-            [ Layout.Minimal.view app.data.minimal
-            , form shared.i18n app.data.captcha
-                |> Pages.Form.renderHtml
-                    [ Attrs.class "max-w-sm mx-auto"
-                    ]
-                    (Form.options "host-form"
-                        |> Form.withInput { emptyForm | hiddenCaptcha = app.data.captcha.text }
-                        |> Form.withServerResponse (app.action |> Maybe.map .formResponse)
-                    )
-                    app
-            , if Dict.isEmpty <| Maybe.withDefault Dict.empty ((app.action |> Maybe.map .formResponse) |> Maybe.map .serverSideErrors) then
-                Html.text ""
+        [ Html.div [ Attrs.class "mx-auto prose max-w-none pb-8 pt-8 dark:prose-invert xl:col-span-2 xl:max-w-5xl xl:px-0" ] <|
+            List.append (Layout.Minimal.viewEmbeded app.data.minimal)
+                [ form shared.i18n app.data.captcha
+                    |> Pages.Form.renderHtml
+                        [ Attrs.class "max-w-sm mx-auto"
+                        ]
+                        (Form.options "host-form"
+                            |> Form.withInput { emptyForm | hiddenCaptcha = app.data.captcha.text }
+                            |> Form.withServerResponse (app.action |> Maybe.map .formResponse)
+                        )
+                        app
+                , if Dict.isEmpty <| Maybe.withDefault Dict.empty ((app.action |> Maybe.map .formResponse) |> Maybe.map .serverSideErrors) then
+                    Html.text ""
 
-              else
-                Html.div
-                    [ Attrs.class "max-w-sm mx-auto p-4 mb-4 mt-4 border border-red-300 text-center text-md text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
-                    , Attrs.attribute "role" "alert"
-                    ]
-                    [ Html.span
-                        [ Attrs.class "font-semibold"
+                  else
+                    Html.div
+                        [ Attrs.class "max-w-sm mx-auto p-4 mb-4 mt-4 border border-red-300 text-center text-md text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+                        , Attrs.attribute "role" "alert"
                         ]
-                        [ Html.text <| Translations.formsError shared.i18n ]
-                    , Html.span
-                        [ Attrs.class "font-medium"
-                        ]
-                        [ Html.br [] []
-                        , Html.text <| Translations.formsErrorContact shared.i18n ++ " "
-                        , Html.a
-                            [ Attrs.href "mailto:info@capybara.house"
-                            , Attrs.class "hover:text-primary-600 "
+                        [ Html.span
+                            [ Attrs.class "font-semibold"
                             ]
-                            [ Html.text "info@capybara.house" ]
+                            [ Html.text <| Translations.formsError shared.i18n ]
+                        , Html.span
+                            [ Attrs.class "font-medium"
+                            ]
+                            [ Html.br [] []
+                            , Html.text <| Translations.formsErrorContact shared.i18n ++ " "
+                            , Html.a
+                                [ Attrs.href "mailto:info@capybara.house"
+                                , Attrs.class "hover:text-primary-600 "
+                                ]
+                                [ Html.text "info@capybara.house" ]
+                            ]
                         ]
-                    ]
-            ]
+                ]
         ]
     }
 

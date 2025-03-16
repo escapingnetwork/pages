@@ -370,6 +370,10 @@ viewMenu path translation showMenu onMenuToggle onLanguageChange =
                 , Html.div [ Attrs.class "grid grid-flow-col gap-2 text-lg font-bold tracking-widest text-gray-900 dark:text-gray-100" ] <|
                     List.map
                         (\lang ->
+                            let
+                                flagSrc =
+                                    "/assets/flags/" ++ Translations.languageToString lang ++ ".svg"
+                            in
                             Html.div []
                                 [ Html.button
                                     [ Attrs.class "hover:text-primary-600"
@@ -378,13 +382,18 @@ viewMenu path translation showMenu onMenuToggle onLanguageChange =
                                     [ Html.a
                                         [ Attrs.href <| changeLanguageUrlPath path lang
                                         , Attrs.hreflang <| Translations.languageToString lang
-                                        , if Translations.currentLanguage translation == lang then
-                                            Attrs.class "text-primary-500"
-
-                                          else
-                                            Attrs.class "text-gray-500"
                                         ]
-                                        [ Html.text <| String.toUpper <| Translations.languageToString lang ]
+                                        [ Html.img
+                                            [ Attrs.src flagSrc
+                                            , Attrs.alt <| Translations.languageToString lang
+                                            , if Translations.currentLanguage translation == lang then
+                                                Attrs.class "w-6 h-6 inline-block mr-2"
+
+                                              else
+                                                Attrs.class "w-6 h-6 inline-block mr-2 grayscale hover:grayscale-0"
+                                            ]
+                                            []
+                                        ]
                                     ]
                                 ]
                         )
@@ -667,6 +676,10 @@ footerLanguages path translation onLanguageChange =
         , Html.div [ Attrs.class "grid grid-flow-col align-baseline font-normal" ] <|
             List.map
                 (\lang ->
+                    let
+                        flagSrc =
+                            "/assets/flags/" ++ Translations.languageToString lang ++ ".svg"
+                    in
                     Html.div []
                         [ Html.button
                             [ Attrs.class "hover:text-primary-600"
@@ -675,13 +688,18 @@ footerLanguages path translation onLanguageChange =
                             [ Html.a
                                 [ Attrs.href <| changeLanguageUrlPath path lang
                                 , Attrs.hreflang <| Translations.languageToString lang
-                                , if Translations.currentLanguage translation == lang then
-                                    Attrs.class "text-primary-500 hover:text-primary-600 font-bold"
-
-                                  else
-                                    Attrs.class "text-gray-500 hover:text-primary-600"
                                 ]
-                                [ Html.text <| String.toUpper <| Translations.languageToString lang ]
+                                [ Html.img
+                                    [ Attrs.src flagSrc
+                                    , Attrs.alt <| Translations.languageToString lang
+                                    , if Translations.currentLanguage translation == lang then
+                                        Attrs.class "w-6 h-6 inline-block mr-2"
+
+                                      else
+                                        Attrs.class "w-6 h-6 inline-block mr-2 grayscale hover:grayscale-0"
+                                    ]
+                                    []
+                                ]
                             ]
                         ]
                 )

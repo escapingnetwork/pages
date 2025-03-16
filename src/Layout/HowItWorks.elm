@@ -107,119 +107,116 @@ view howItWorksText translation =
     in
     Html.div
         [ Attrs.class "mx-auto prose max-w-none pb-8 pt-8 dark:prose-invert xl:col-span-2 xl:max-w-5xl xl:px-0" ]
-        [ Html.div
-            [ Attrs.class "max-w-4xl mx-auto py-8 px-4" ]
-            [ title
-            , intro
-            , Html.div
-                [ Attrs.class "flex flex-col md:flex-row items-center mb-12 items-center" ]
-                [ Html.div
-                    [ Attrs.class "md:w-1/3 mb-4 md:mb-0" ]
-                    [ Html.img
-                        [ Attrs.src "/assets/howitworks/step1.png"
-                        , Attrs.alt "Student filling out a form"
-                        , Attrs.class "w-full rounded-lg"
-                        ]
-                        []
+        [ title
+        , intro
+        , Html.div
+            [ Attrs.class "flex flex-col md:flex-row items-center mb-12 items-center" ]
+            [ Html.div
+                [ Attrs.class "md:w-1/3 mb-4 md:mb-0" ]
+                [ Html.img
+                    [ Attrs.src "/assets/howitworks/step1.svg"
+                    , Attrs.alt "Student filling out a form"
+                    , Attrs.class "w-full rounded-lg"
                     ]
-                , Html.div
-                    [ Attrs.class "md:w-2/3 md:pl-6" ]
-                    [ step1Header
-                    , step1Text
-                    ]
+                    []
                 ]
             , Html.div
-                [ Attrs.class "flex flex-col md:flex-row items-center mb-12" ]
-                [ Html.div
-                    [ Attrs.class "md:w-1/3 mb-4 md:mb-0" ]
-                    [ Html.img
-                        [ Attrs.src "/assets/howitworks/step2.png"
-                        , Attrs.alt "Team reviewing a submission"
-                        , Attrs.class "w-full rounded-lg"
-                        ]
-                        []
+                [ Attrs.class "md:w-2/3 md:pl-6" ]
+                [ step1Header
+                , step1Text
+                ]
+            ]
+        , Html.div
+            [ Attrs.class "flex flex-col md:flex-row items-center mb-12" ]
+            [ Html.div
+                [ Attrs.class "md:w-1/3 mb-4 md:mb-0" ]
+                [ Html.img
+                    [ Attrs.src "/assets/howitworks/step2.svg"
+                    , Attrs.alt "Team reviewing a submission"
+                    , Attrs.class "w-full rounded-lg"
                     ]
-                , Html.div
-                    [ Attrs.class "md:w-2/3 md:pl-6" ]
-                    [ step2Header
-                    , step2Text
-                    ]
+                    []
                 ]
             , Html.div
-                [ Attrs.class "flex flex-col md:flex-row items-center mb-12" ]
-                [ Html.div
-                    [ Attrs.class "md:w-1/3 mb-4 md:mb-0" ]
-                    [ Html.img
-                        [ Attrs.src "/assets/howitworks/step3.png"
-                        , Attrs.alt "Student making a payment"
-                        , Attrs.class "w-full rounded-lg"
-                        ]
-                        []
+                [ Attrs.class "md:w-2/3 md:pl-6" ]
+                [ step2Header
+                , step2Text
+                ]
+            ]
+        , Html.div
+            [ Attrs.class "flex flex-col md:flex-row items-center mb-12" ]
+            [ Html.div
+                [ Attrs.class "md:w-1/3 mb-4 md:mb-0" ]
+                [ Html.img
+                    [ Attrs.src "/assets/howitworks/step3.svg"
+                    , Attrs.alt "Student making a payment"
+                    , Attrs.class "w-full rounded-lg"
                     ]
-                , Html.div
-                    [ Attrs.class "md:w-2/3 md:pl-6" ]
-                    [ step3Header
-                    , step3Text
-                    ]
+                    []
                 ]
             , Html.div
-                [ Attrs.class "flex flex-col md:flex-row items-center mb-12" ]
-                [ Html.div
-                    [ Attrs.class "md:w-1/3 mb-4 md:mb-0" ]
-                    [ Html.img
-                        [ Attrs.src "/assets/howitworks/step4.png"
-                        , Attrs.alt "Team coordinating with hosts"
-                        , Attrs.class "w-full rounded-lg"
-                        ]
-                        []
+                [ Attrs.class "md:w-2/3 md:pl-6" ]
+                [ step3Header
+                , step3Text
+                ]
+            ]
+        , Html.div
+            [ Attrs.class "flex flex-col md:flex-row items-center mb-12" ]
+            [ Html.div
+                [ Attrs.class "md:w-1/3 mb-4 md:mb-0" ]
+                [ Html.img
+                    [ Attrs.src "/assets/howitworks/step4.svg"
+                    , Attrs.alt "Team coordinating with hosts"
+                    , Attrs.class "w-full rounded-lg"
                     ]
-                , Html.div
-                    [ Attrs.class "md:w-2/3 md:pl-6" ]
-                    [ step4Header
-                    , step4Text
-                    ]
+                    []
                 ]
             , Html.div
-                [ Attrs.class "flex flex-col md:flex-row items-center mb-12" ]
-                [ Html.div
-                    [ Attrs.class "md:w-1/3 mb-4 md:mb-0" ]
-                    [ Html.img
-                        [ Attrs.src "/assets/howitworks/step5.png"
-                        , Attrs.alt "Student arriving at new home"
-                        , Attrs.class "w-full rounded-lg"
-                        ]
-                        []
+                [ Attrs.class "md:w-2/3 md:pl-6" ]
+                [ step4Header
+                , step4Text
+                ]
+            ]
+        , Html.div
+            [ Attrs.class "flex flex-col md:flex-row items-center mb-12" ]
+            [ Html.div
+                [ Attrs.class "md:w-1/3 mb-4 md:mb-0" ]
+                [ Html.img
+                    [ Attrs.src "/assets/howitworks/step5.svg"
+                    , Attrs.alt "Student arriving at new home"
+                    , Attrs.class "w-full rounded-lg"
                     ]
-                , Html.div
-                    [ Attrs.class "md:w-2/3 md:pl-6" ]
-                    [ step5Header
-                    , step5Text
-                    ]
+                    []
                 ]
             , Html.div
-                [ Attrs.class "flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0 mb-12"
+                [ Attrs.class "md:w-2/3 md:pl-6" ]
+                [ step5Header
+                , step5Text
                 ]
-                [ Route.link
-                    [ Attrs.class "inline-flex justify-center items-center py-3 px-5 text-base font-semibold text-center text-white rounded-lg bg-primary-500 hover:bg-primary-600 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-600"
-                    , Attrs.style "text-decoration" "none"
-                    ]
-                    [ Html.text <| Translations.buttonRequestAccommodation translation ]
-                    (Route.Lang___Student__SignUp
-                        { lang = Translations.languageToString <| Translations.currentLanguage translation }
-                    )
-                , Route.link
-                    [ Attrs.class "inline-flex justify-center hover:text-gray-900 items-center py-3 px-5 sm:ms-4 text-base font-semibold text-center text-primary-500 rounded-lg border border-primary-500  focus:ring-4 focus:ring-primary-300"
-                    , Attrs.style "text-decoration" "none"
-                    ]
-                    [ Html.text <| Translations.buttonServices translation ]
-                    (Route.Lang___Services
-                        { lang = Translations.languageToString <| Translations.currentLanguage translation }
-                    )
+            ]
+        , Html.div
+            [ Attrs.class "flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0 mb-12"
+            ]
+            [ Route.link
+                [ Attrs.class "inline-flex justify-center items-center py-3 px-5 text-base font-semibold text-center text-white rounded-lg bg-primary-500 hover:bg-primary-600 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-600"
+                , Attrs.style "text-decoration" "none"
                 ]
-            , Html.div
-                [ Attrs.class "bg-gray-100 p-6 rounded-lg text-center" ]
-                [ specialHeader
-                , specialText
+                [ Html.text <| Translations.buttonRequestAccommodation translation ]
+                (Route.Lang___Student__SignUp
+                    { lang = Translations.languageToString <| Translations.currentLanguage translation }
+                )
+            , Route.link
+                [ Attrs.class "inline-flex justify-center hover:text-gray-900 items-center py-3 px-5 sm:ms-4 text-base font-semibold text-center text-primary-500 rounded-lg border border-primary-500  focus:ring-4 focus:ring-primary-300"
+                , Attrs.style "text-decoration" "none"
                 ]
+                [ Html.text <| Translations.buttonServices translation ]
+                (Route.Lang___Services
+                    { lang = Translations.languageToString <| Translations.currentLanguage translation }
+                )
+            ]
+        , Html.div
+            [ Attrs.class "bg-gray-100 p-6 rounded-lg text-center mx-auto prose max-w-none" ]
+            [ specialHeader
+            , specialText
             ]
         ]

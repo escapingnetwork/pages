@@ -1,4 +1,4 @@
-module Layout.Minimal exposing (seoHeaders, view)
+module Layout.Minimal exposing (seoHeaders, view, viewEmbeded)
 
 import Content.Minimal exposing (Minimal)
 import Head
@@ -44,3 +44,8 @@ view minimal =
           <|
             Markdown.toHtml minimal.body
         ]
+
+
+viewEmbeded : Minimal -> List (Html msg)
+viewEmbeded minimal =
+    Markdown.toHtml minimal.body

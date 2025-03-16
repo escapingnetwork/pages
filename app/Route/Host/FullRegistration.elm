@@ -67,18 +67,19 @@ view :
 view app shared =
     { title = "Capybara House - Become A Host"
     , body =
-        [ Html.div [ Attrs.class "mx-auto prose max-w-none pb-8 pt-8 dark:prose-invert xl:col-span-2 xl:max-w-5xl xl:px-0" ]
-            [ Layout.Minimal.view app.data.minimal
-            , Html.iframe
-                [ Attrs.attribute "data-tally-src" "https://tally.so/embed/3xYZMG?alignLeft=0&hideTitle=1&transparentBackground=1&dynamicHeight=1"
-                , Attrs.attribute "frameborder" "0"
-                , Attrs.style "width" "100%"
-                , Attrs.height 2400
-                , Attrs.class "mx-auto prose dark:prose-invert xl:max-w-5xl xl:px-0"
-                , Attrs.title "Become A Host"
-                , Attrs.src "https://tally.so/embed/3xYZMG?alignLeft=0&hideTitle=1&transparentBackground=1&dynamicHeight=1"
+        [ Html.div [ Attrs.class "mx-auto prose max-w-none pb-8 pt-8 dark:prose-invert xl:col-span-2 xl:max-w-5xl xl:px-0" ] <|
+            List.append
+                (Layout.Minimal.viewEmbeded app.data.minimal)
+                [ Html.iframe
+                    [ Attrs.attribute "data-tally-src" "https://tally.so/embed/3xYZMG?alignLeft=0&hideTitle=1&transparentBackground=1&dynamicHeight=1"
+                    , Attrs.attribute "frameborder" "0"
+                    , Attrs.style "width" "100%"
+                    , Attrs.height 2400
+                    , Attrs.class "mx-auto prose dark:prose-invert xl:max-w-5xl xl:px-0"
+                    , Attrs.title "Become A Host"
+                    , Attrs.src "https://tally.so/embed/3xYZMG?alignLeft=0&hideTitle=1&transparentBackground=1&dynamicHeight=1"
+                    ]
+                    []
                 ]
-                []
-            ]
         ]
     }

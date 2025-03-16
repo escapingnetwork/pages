@@ -76,8 +76,9 @@ view :
 view app shared =
     { title = "Capybara House - Become A Partner"
     , body =
-        [ Html.div [ Attrs.class "mx-auto prose max-w-none pb-8 pt-8 dark:prose-invert xl:col-span-2 xl:max-w-5xl xl:px-0" ]
-            [ Layout.Minimal.view app.data.minimal ]
+        [ Html.div [ Attrs.class "mx-auto prose max-w-none pb-8 pt-8 dark:prose-invert xl:col-span-2 xl:max-w-5xl xl:px-0" ] <|
+            Layout.Minimal.viewEmbeded
+                app.data.minimal
 
         -- [ Html.iframe
         --     [ Attrs.attribute "data-tally-src" "https://tally.so/embed/nPz85x?hideTitle=0&transparentBackground=1&dynamicHeight=1"
