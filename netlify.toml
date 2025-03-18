@@ -78,6 +78,14 @@ included_files = [
   "content/it/support.md",
   "content/fr/support.md",
 
+  "content/howitworks.md",
+  "content/en/howitworks.md",
+  "content/es/howitworks.md",
+  "content/de/howitworks.md",
+  "content/pt/howitworks.md",
+  "content/it/howitworks.md",
+  "content/fr/howitworks.md",
+
   "content/services/halfboard.md",
   "content/en/services/halfboard.md",
   "content/es/services/halfboard.md",
