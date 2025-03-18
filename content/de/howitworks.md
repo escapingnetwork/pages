@@ -11,7 +11,7 @@ Die Suche nach dem richtigen Ort zum Wohnen während deines Studiums in Irland s
 Alles beginnt mit dir! Fülle unser Unterkunftsanfrageformular aus und teile uns mit, wo du studieren wirst (z. B. welche Universität oder Hochschule) und wie lange du bleiben möchtest. Das hilft uns, den perfekten Ort zu finden, der auf deine Bedürfnisse zugeschnitten ist.
 
 ## 2. Wir Prüfen und Melden Uns
-Sobald wir dein Formular erhalten haben, prüft unser Team es sorgfältig, um sicherzustellen, dass alle Details stimmen. Anschließend nehmen wir Kontakt mit dir auf, um alles zu bestätigen und dich durch den Zahlungsprozess zu führen, der 4 Wochen vor deinem Anreisedatum abgeschlossen sein muss, um deinen Platz zu sichern.
+Sobald wir dein Formular erhalten haben, prüft unser Team es sorgfältig, um sicherzustellen, dass alle Details stimmen. Anschließend nehmen wir Kontakt mit dir auf, um alles zu bestätigen und dich durch den Zahlungsprozess zu führen, der 8 Wochen vor deinem Anreisedatum abgeschlossen sein muss, um deinen Platz zu sichern.
 
 ## 3. Du Tätigst die Zahlung
 Wenn alles geregelt ist, schließt du die Zahlung sicher und einfach ab. Dieser Schritt sichert deine Reservierung und ermöglicht es uns, mit der Suche nach deinem idealen Zuhause fortzufahren.

@@ -11,7 +11,7 @@ Encontrar o lugar certo para ficar enquanto estuda na Irlanda deve ser empolgant
 Tudo começa com você! Preencha nosso Formulário de Solicitação de Acomodação, informando-nos onde você vai estudar (como qual universidade ou faculdade) e por quanto tempo pretende ficar. Isso nos ajuda a encontrar o lugar perfeito adaptado às suas necessidades.
 
 ## 2. Revisamos e Entramos em Contato
-Assim que recebermos seu formulário, nossa equipe o revisará cuidadosamente para garantir que todos os detalhes estejam corretos. Em seguida, entraremos em contato para confirmar tudo e orientá-lo no processo de pagamento, que deve ser concluído 4 semanas antes da data de chegada para garantir seu lugar.
+Assim que recebermos seu formulário, nossa equipe o revisará cuidadosamente para garantir que todos os detalhes estejam corretos. Em seguida, entraremos em contato para confirmar tudo e orientá-lo no processo de pagamento, que deve ser concluído 8 semanas antes da data de chegada para garantir seu lugar.
 
 ## 3. Você Realiza o Pagamento
 Com tudo acertado, você concluirá o pagamento de forma segura e fácil. Esta etapa confirma sua reserva e nos permite avançar na busca pela sua casa ideal.

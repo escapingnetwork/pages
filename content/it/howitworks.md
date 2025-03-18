@@ -11,7 +11,7 @@ Trovare il posto giusto dove soggiornare mentre studi in Irlanda dovrebbe essere
 Tutto inizia con te! Compila il nostro Modulo di Richiesta di Alloggio, dicendoci dove studierai (ad esempio, quale università o college) e per quanto tempo prevedi di rimanere. Questo ci aiuta a trovare il posto perfetto adatto alle tue esigenze.
 
 ## 2. Esaminiamo e Ti Contattiamo
-Una volta ricevuto il tuo modulo, il nostro team lo esamina attentamente per assicurarsi che tutti i dettagli siano corretti. Ti contatteremo poi per confermare tutto e guidarti attraverso il processo di pagamento, che deve essere completato 4 settimane prima della data di arrivo per assicurarti il posto.
+Una volta ricevuto il tuo modulo, il nostro team lo esamina attentamente per assicurarsi che tutti i dettagli siano corretti. Ti contatteremo poi per confermare tutto e guidarti attraverso il processo di pagamento, che deve essere completato 8 settimane prima della data di arrivo per assicurarti il posto.
 
 ## 3. Effettui il Pagamento
 Con tutto a posto, completerai il pagamento in modo sicuro e semplice. Questo passaggio blocca la tua prenotazione e ci permette di procedere con la ricerca della tua casa ideale.
