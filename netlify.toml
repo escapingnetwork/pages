@@ -138,9 +138,3 @@ included_files = [
   "Comismsh.ttf",
   "functions/fonts/Comismsh.ttf",
 ]
-
-[[redirects]]
-  from = "/*/"
-  to = "/:splat"
-  status = 301
-  force = true
