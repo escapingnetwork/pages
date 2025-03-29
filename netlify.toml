@@ -138,3 +138,9 @@ included_files = [
   "Comismsh.ttf",
   "functions/fonts/Comismsh.ttf",
 ]
+
+[[redirects]]
+  from = "/*/"/  # Matches paths with at least one segment before the slash
+  to = "/:splat"
+  status = 301
+  force = true
