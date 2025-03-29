@@ -138,3 +138,7 @@ included_files = [
   "Comismsh.ttf",
   "functions/fonts/Comismsh.ttf",
 ]
+
+[[rewrites]]
+  from = "/:splat/"
+  to = "/:splat"
