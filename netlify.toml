@@ -140,7 +140,7 @@ included_files = [
 ]
 
 [[redirects]]
-  from = "/*/"/  # Matches paths with at least one segment before the slash
+  from = "/*/"
   to = "/:splat"
   status = 301
   force = true
