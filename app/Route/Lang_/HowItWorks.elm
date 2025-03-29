@@ -75,8 +75,8 @@ data r =
 head : RouteBuilder.App Data ActionData RouteParams -> List Head.Tag
 head app =
     Layout.seoHeaders
-        (Translations.seoPrivacyPolicyTitle app.data.translation)
-        (Translations.seoPrivacyPolicyDescription app.data.translation)
+        (Translations.seoHowItWorksTitle app.data.translation)
+        (Translations.seoHowItWorksDescription app.data.translation)
         app.data.translation
 
 

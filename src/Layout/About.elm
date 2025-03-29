@@ -25,8 +25,11 @@ socialsView socials =
                 "github" ->
                     Phosphor.githubLogo
 
-                "twitter" ->
-                    Phosphor.twitterLogo
+                "instagram" ->
+                    Phosphor.instagramLogo
+
+                "x" ->
+                    Phosphor.xLogo
 
                 "linkedin" ->
                     Phosphor.linkedinLogo

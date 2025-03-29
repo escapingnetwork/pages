@@ -116,3 +116,6 @@ seo-privacy-policy-description = Read Capybara House's privacy policy to learn h
 
 seo-booking-terms-title = Capybara House - Booking Terms and Conditions
 seo-booking-terms-description = Read Capybara House's booking terms and conditions to understand our booking policies.
+
+seo-how-it-works-title = Capybara House - How it Works
+seo-how-it-works-description = Discover how Capybara House works and how we can help you find the best accommodation in Dublin.
