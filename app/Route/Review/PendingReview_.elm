@@ -13,7 +13,6 @@ import BackendTask
 import BackendTask.Custom
 import BackendTask.Env as Env
 import BackendTask.Http exposing (jsonBody)
-import Captcha exposing (Captcha)
 import Content.Minimal
 import Dict
 import ErrorPage exposing (ErrorPage)
@@ -71,8 +70,7 @@ route =
 
 
 type alias Data =
-    { captcha : Captcha
-    , pendingReview : Review
+    { pendingReview : Review
     , translation : Translations.I18n
     , minimal : Content.Minimal.Minimal
     }
@@ -88,12 +86,7 @@ data : RouteParams -> Request -> BackendTask.BackendTask FatalError (Server.Resp
 data routeParams request =
     Content.Minimal.review ""
         |> BackendTask.allowFatal
-        |> BackendTask.map4 Data
-            (BackendTask.Custom.run "captcha"
-                Encode.null
-                Captcha.decoder
-                |> BackendTask.allowFatal
-            )
+        |> BackendTask.map3 Data
             (getReview routeParams.pendingReview)
             (I18nUtils.loadLanguage "en")
         |> BackendTask.map Server.Response.render
@@ -111,8 +104,6 @@ type alias ReviewForm =
     { id : String
     , content : String
     , rating : Maybe RatingEnum
-    , captcha : String
-    , hiddenCaptcha : String
     }
 
 
@@ -121,8 +112,6 @@ emptyForm =
     { id = ""
     , content = ""
     , rating = Nothing
-    , captcha = ""
-    , hiddenCaptcha = ""
     }
 
 
@@ -172,29 +161,15 @@ rtingToInt rting =
             5
 
 
-form : I18n -> Captcha -> Form.HtmlForm String ReviewForm ReviewForm (PagesMsg Msg)
-form t captchaData =
+form : I18n -> Form.HtmlForm String ReviewForm ReviewForm (PagesMsg Msg)
+form t =
     Form.form
-        (\id content rating captcha hiddenCaptcha ->
+        (\id content rating ->
             { combine =
                 Validation.succeed ReviewForm
                     |> Validation.andMap id
                     |> Validation.andMap content
                     |> Validation.andMap rating
-                    |> Validation.andMap
-                        (Validation.map2
-                            (\captchaValue hCaptchaValue ->
-                                if captchaValue == hCaptchaValue then
-                                    Validation.succeed captchaValue
-
-                                else
-                                    Validation.fail (Translations.formsErrorCaptcha t) captcha
-                            )
-                            captcha
-                            hiddenCaptcha
-                            |> Validation.andThen identity
-                        )
-                    |> Validation.andMap hiddenCaptcha
             , view =
                 \formState ->
                     let
@@ -258,21 +233,9 @@ form t captchaData =
                                     ]
                                 , errorsView field
                                 ]
-
-                        fieldViewCaptcha : String -> Captcha -> Validation.Field String parsed Form.FieldView.Input -> Html msg
-                        fieldViewCaptcha label captchaSvg field =
-                            Html.div [ Attrs.class "mb-5" ]
-                                [ Html.label [ Attrs.class "block mb-2 text-lg font-semibold text-gray-900 dark:text-white" ]
-                                    [ Html.text label
-                                    , captchaSvg |> Captcha.toSvg
-                                    , field |> Form.FieldView.input [ Attrs.class "bg-gray-50 mt-2 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" ]
-                                    ]
-                                , errorsView field
-                                ]
                     in
                     [ fieldViewRating (Translations.formsRatingCapybara t) rating
                     , fieldView (Translations.formsContentCapybara t) content
-                    , fieldViewCaptcha "Captcha" captchaData captcha
                     , Html.button [ Attrs.class "text-white bg-primary-500 hover:bg-primary-600 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-md w-full sm:w-auto px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800" ]
                         [ Html.text
                             (if formState.submitting then
@@ -309,16 +272,6 @@ form t captchaData =
                 (\_ -> "Invalid")
                 |> Field.withInitialValue (\_ -> Five)
             )
-        |> Form.field "captcha"
-            (Field.text
-                |> Field.required (Translations.formsErrorRequired t)
-                |> Field.withInitialValue .captcha
-            )
-        |> Form.hiddenField "hiddenCaptcha"
-            (Field.text
-                |> Field.required (Translations.formsErrorRequired t)
-                |> Field.withInitialValue .hiddenCaptcha
-            )
 
 
 view :
@@ -337,12 +290,12 @@ view app shared =
                         ]
 
                   else
-                    form app.data.translation app.data.captcha
+                    form app.data.translation
                         |> Pages.Form.renderHtml
                             [ Attrs.class "max-w-sm mx-auto"
                             ]
                             (Form.options "review-form"
-                                |> Form.withInput { emptyForm | id = app.data.pendingReview |> .id, hiddenCaptcha = app.data.captcha.text }
+                                |> Form.withInput { emptyForm | id = app.data.pendingReview |> .id }
                                 |> Form.withServerResponse (app.action |> Maybe.map .formResponse)
                             )
                             app
@@ -380,7 +333,7 @@ action :
     -> Request.Request
     -> BackendTask.BackendTask FatalError.FatalError (Server.Response.Response ActionData ErrorPage.ErrorPage)
 action routeParams request =
-    case request |> Request.formData (form (Translations.init { lang = Translations.En, path = "https://capybara.house" ++ "/i18n" }) Captcha.default |> Form.Handler.init identity) of
+    case request |> Request.formData (form (Translations.init { lang = Translations.En, path = "https://capybara.house" ++ "/i18n" }) |> Form.Handler.init identity) of
         Nothing ->
             "Expected form submission."
                 |> FatalError.fromString
